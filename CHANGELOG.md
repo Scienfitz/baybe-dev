@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Basic deserialization tests using different class type specifiers
 - `GammaPrior`, `HalfCauchyPrior`, `NormalPrior`, `HalfNormalPrior`, `LogNormalPrior`
   and `SmoothedBoxPrior` can now be chosen as lengthscale prior
+- User guide about environment variables for configuration
 
 ### Changed
 - Reorganized acquisition.py into `acquisition` subpackage
