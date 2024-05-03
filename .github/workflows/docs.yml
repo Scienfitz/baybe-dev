@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       force:
-        description: 'Ignore errors such as link checks'
+        description: 'Force'
         default: false
         required: false
         type: boolean
@@ -33,10 +33,10 @@ jobs:
       - name: Install tox
         run: pip install tox-uv
       - name: Build Docs
-        if: ${{ inputs.force != 'true' }}
+        if: ${{ inputs.force != true }}
         run: tox -e docs-py39
       - name: Build Docs (Force)
-        if: ${{ inputs.force == 'true' }}
+        if: ${{ inputs.force == true }}
         run: tox -e docs-py39 -- -f
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v1
