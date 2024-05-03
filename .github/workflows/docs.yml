@@ -38,7 +38,7 @@ jobs:
       - name: Build Docs ${{ inputs.force == true && '(Force)' || '' }}
         run: tox -e docs-py39 ${{ inputs.force == true && '-- -f' || '' }}
       - name: Upload docs artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v4
         with:
           path: 'build/docs'
 
