@@ -5,6 +5,12 @@ on:
     types:
       - published
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Ignore errors such as link checks'
+        default: false
+        required: false
+        type: boolean
 
 concurrency:
   group: ${{ github.workflow }}
@@ -24,10 +30,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.9"}
+      - name: Install tox
+        run: pip install tox-uv
       - name: Build Docs
-        run: |
-          pip install tox-uv
-          tox -e docs-py39
+        if: ${{ inputs.force != 'true' }}
+        run: tox -e docs-py39
+      - name: Build Docs (Force)
+        if: ${{ inputs.force == 'true' }}
+        run: tox -e docs-py39 -- -f
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v1
         with:
