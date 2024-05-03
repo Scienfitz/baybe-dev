@@ -36,7 +36,6 @@ jobs:
       - name: Install tox
         run: pip install tox-uv
       - name: Build Docs ${{ inputs.force == true && '(Force)' || '' }}
-        if: ${{ inputs.force == true }}
         run: tox -e docs-py39 ${{ inputs.force == true && '-- -f' || '' }}
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v1
