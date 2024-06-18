@@ -17,8 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `SubspaceDiscrete.to_searchspace` and `SubspaceContinuous.to_searchspace`
   convenience constructor
 - Validators for `Campaign` attributes
-_ `_optional` subpackage for managing optional dependencies
+- `_optional` subpackage for managing optional dependencies
 - Acquisition function for active learning: `qNIPV`
+- User guide for active learning
 
 ### Changed
 - Passing an `Objective` to `Campaign` is now optional
