@@ -121,12 +121,24 @@ class qNegIntegratedPosteriorVariance(AcquisitionFunction):
 
 
 ########################################################################################
-### Posterior Mean
+### Posterior Statistics
 @define(frozen=True)
 class PosteriorMean(AcquisitionFunction):
     """Posterior mean."""
 
     abbreviation: ClassVar[str] = "PM"
+
+
+@define(frozen=True)
+class PosteriorStandardDeviation(AcquisitionFunction):
+    """Posterior standard deviation."""
+
+    abbreviation: ClassVar[str] = "PSTD"
+
+    maximize: bool = field(default=True, validator=instance_of(bool))
+    """Consider the problem a maximization problem. If set to False, acqf value is
+    negated. As a consequence, optimize_* will return -1 * minimum of the posterior
+    standard deviation."""
 
 
 ########################################################################################
