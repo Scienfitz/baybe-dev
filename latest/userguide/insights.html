@@ -1010,6 +1010,15 @@
 required for the basic measure-recommend loop. Dependencies needed for insights are
 optional and available by installing baybe with the respective dependency group, e.g.
 via <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">baybe[insights]</span></code>.</p>
+<div class="note admonition">
+<p class="admonition-title">Examples On This Page</p>
+<p>In what follows, we show results from the same campaign also studied in the
+<a class="reference internal" href="../examples/Backtesting/full_lookup.html"><span class="doc std std-doc">full lookup example</span></a>. This aims at
+maximizing the yield of a chemical reaction and involves 3 substance parameters and 2
+numerical parameters (all 5 discrete). We randomly sampled 100 measurements from the
+lookup table and added them to the campaign, providing a basis for creating a
+<code class="docutils literal notranslate"><span class="pre">SHAPInsight</span></code>.</p>
+</div>
 <section id="parameter-importance-via-shap">
 <h2>Parameter Importance via SHAP<a class="headerlink" href="#parameter-importance-via-shap" title="Link to this heading">¶</a></h2>
 <p><a class="reference external" href="https://shap.readthedocs.io/en/latest/index.html"><strong>SH</strong>apley <strong>A</strong>dditive ex<strong>P</strong>lanations</a>
@@ -1024,10 +1033,9 @@ be applied in designing future campaigns. The interface is provided by the
 <p>While feature importance is a method well studied, it is generally applied in data
 regimes where models are fed with plenty of data. However, in BO, we often operate in
 the <em>low-to-no-data regime</em>, making feature importance interpretation potentially tricky.
-We urge the users to consider this and be careful with their interpretations. As
-possible avenue, we suggest a study, where the avaialble amount of data is
-sub-sampled, and the obtained parameter importances are checked for convergence and
-consistency.</p>
+We urge the users to consider this and be careful with their interpretations. For
+instance, we suggest a study where the avaialble amount of data is sub-sampled, and the
+obtained parameter importances are checked for convergence and consistency.</p>
 </div>
 <section id="basic-usage">
 <h3>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h3>
@@ -1055,14 +1063,6 @@ via <a class="reference internal" href="../_autosummary/baybe.insights.shap.SHAP
 <p>In these examples, <code class="docutils literal notranslate"><span class="pre">data</span></code> corresponds to the background data. In general, this will be
 the measurements obtained during your experimental campaign (<code class="docutils literal notranslate"><span class="pre">from_campaign</span></code>
 automatically infers the <code class="docutils literal notranslate"><span class="pre">measurements</span></code> from the <code class="docutils literal notranslate"><span class="pre">campaign</span></code> object).</p>
-<div class="note admonition">
-<p class="admonition-title">Results Shown Here</p>
-<p>In what follows, we show results from the campaign also studied in the
-<a class="reference internal" href="../examples/Backtesting/full_lookup.html"><span class="doc std std-doc">full lookup example</span></a>. This aims at
-maximizing the yield of a chemical reaction and involves 3 substance parameters and 2
-numerical parameters. We randomly sampled 100 measurements from the lookup table and
-added them to the campaign, providing a basis for reating a <code class="docutils literal notranslate"><span class="pre">SHAPInsight</span></code>.</p>
-</div>
 </section>
 <section id="plots">
 <h3>Plots<a class="headerlink" href="#plots" title="Link to this heading">¶</a></h3>
@@ -1070,8 +1070,8 @@ added them to the campaign, providing a basis for reating a <code class="docutil
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">insight</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><img alt="SHAP_Bar_Exp_Rep" src="../_images/shap_bar_exp_rep.svg" />
-This result agrees well with the chemical intuition that ligands are the most important
+<p><img alt="SHAP_Bar_Exp_Rep" src="../_images/shap_bar_exp_rep.svg" /></p>
+<p>This result agrees well with the chemical intuition that ligands are the most important
 reactants to activate the conversion resulting in higher yields.</p>
 <p>A subset of SHAP plots is available via the <a class="reference internal" href="../_autosummary/baybe.insights.shap.SHAPInsight.html#baybe.insights.shap.SHAPInsight.plot" title="baybe.insights.shap.SHAPInsight.plot"><span class="xref myst py py-meth">.plot</span></a>
 interface, please refer to <a class="reference internal" href="../_autosummary/baybe.insights.shap.SHAP_PLOTS.html#baybe.insights.shap.SHAP_PLOTS" title="baybe.insights.shap.SHAP_PLOTS"><span class="xref myst py py-data">available SHAP plots</span></a>.</p>
@@ -1091,9 +1091,9 @@ they want to visualize via <code class="docutils literal notranslate"><span clas
 </section>
 <section id="explainers">
 <h3>Explainers<a class="headerlink" href="#explainers" title="Link to this heading">¶</a></h3>
-<p>In general, SHAP is an exhaustive method testing many subsets of models features. In
-practice, this means that the exhaustive algorithm (called <code class="docutils literal notranslate"><span class="pre">ExactExplainer</span></code>) is
-unfeasible, and various approximate variants are available, see
+<p>In general, SHAP is an exhaustive method testing all combinations of features. This
+exhaustive algorithm (called <code class="docutils literal notranslate"><span class="pre">ExactExplainer</span></code>) in practice is often unfeasible, and
+various approximate variants are available, see
 <a class="reference internal" href="../_autosummary/baybe.insights.shap.EXPLAINERS.html#baybe.insights.shap.EXPLAINERS" title="baybe.insights.shap.EXPLAINERS"><span class="xref myst py py-data">supported explainers</span></a>. For details about their inner
 mechanics, we refer to the <a class="reference external" href="https://shap.readthedocs.io/en/latest/api.html#explainers">SHAP documentation</a>.</p>
 <p>The explainer can be changed when creating the insight:</p>

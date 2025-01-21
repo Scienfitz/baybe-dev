@@ -261,15 +261,15 @@ print(recommendation)
     
     
     Recommended experiments: 
-               Solvent            Base                        Ligand  Temperature  \
-    129  Butyornitrile  Cesium acetate  Di-tert-butylphenylphosphine        105.0   
-    18     Butyl Ester  Cesium acetate  Di-tert-butylphenylphosphine         90.0   
-    26     Butyl Ester  Cesium acetate  Di-tert-butylphenylphosphine        120.0   
+          Solvent               Base                        Ligand  Temperature  \
+    344  p-Xylene     Cesium acetate  Di-tert-butylphenylphosphine         90.0   
+    289      DMAc  Potassium acetate  Di-tert-butylphenylphosphine         90.0   
+    388  p-Xylene  Potassium acetate                     BrettPhos         90.0   
     
          Concentration  
-    129          0.057  
-    18           0.057  
-    26           0.153  
+    344          0.153  
+    289          0.100  
+    388          0.100  
 
 
 
@@ -282,15 +282,15 @@ print(recommendation)
     
     
     Recommended experiments with fake measured values: 
-               Solvent            Base                        Ligand  Temperature  \
-    129  Butyornitrile  Cesium acetate  Di-tert-butylphenylphosphine        105.0   
-    18     Butyl Ester  Cesium acetate  Di-tert-butylphenylphosphine         90.0   
-    26     Butyl Ester  Cesium acetate  Di-tert-butylphenylphosphine        120.0   
+          Solvent               Base                        Ligand  Temperature  \
+    344  p-Xylene     Cesium acetate  Di-tert-butylphenylphosphine         90.0   
+    289      DMAc  Potassium acetate  Di-tert-butylphenylphosphine         90.0   
+    388  p-Xylene  Potassium acetate                     BrettPhos         90.0   
     
-         Concentration      yield  
-    129          0.057  31.256107  
-    18           0.057   9.718868  
-    26           0.153  16.189817  
+         Concentration     yield  
+    344          0.153  8.226204  
+    289          0.100  0.014144  
+    388          0.100  8.183863  
 
 
 
