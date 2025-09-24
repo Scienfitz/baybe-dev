@@ -33,7 +33,7 @@ ContinuousLinearConstraint
       ~ContinuousLinearConstraint.operator
       ~ContinuousLinearConstraint.coefficients
       ~ContinuousLinearConstraint.rhs
-      ~ContinuousLinearConstraint.eval_during_augmentation
+      ~ContinuousLinearConstraint.consider_data_augmentation
       ~ContinuousLinearConstraint.eval_during_creation
       ~ContinuousLinearConstraint.eval_during_modeling
       ~ContinuousLinearConstraint.is_continuous

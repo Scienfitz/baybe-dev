@@ -33,11 +33,14 @@ SubstanceParameter
 
    .. autosummary::
    
+      ~SubstanceParameter.active_values
       ~SubstanceParameter.comp_df
       ~SubstanceParameter.comp_rep_columns
+      ~SubstanceParameter.description
       ~SubstanceParameter.is_continuous
       ~SubstanceParameter.is_discrete
       ~SubstanceParameter.is_numerical
+      ~SubstanceParameter.unit
       ~SubstanceParameter.values
       ~SubstanceParameter.data
       ~SubstanceParameter.decorrelate
@@ -45,5 +48,6 @@ SubstanceParameter
       ~SubstanceParameter.kwargs_fingerprint
       ~SubstanceParameter.kwargs_conformer
       ~SubstanceParameter.name
+      ~SubstanceParameter.metadata
    
    

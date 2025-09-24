@@ -33,15 +33,19 @@ CustomDiscreteParameter
 
    .. autosummary::
    
+      ~CustomDiscreteParameter.active_values
       ~CustomDiscreteParameter.comp_df
       ~CustomDiscreteParameter.comp_rep_columns
+      ~CustomDiscreteParameter.description
       ~CustomDiscreteParameter.is_continuous
       ~CustomDiscreteParameter.is_discrete
       ~CustomDiscreteParameter.is_numerical
+      ~CustomDiscreteParameter.unit
       ~CustomDiscreteParameter.values
       ~CustomDiscreteParameter.data
       ~CustomDiscreteParameter.decorrelate
       ~CustomDiscreteParameter.encoding
       ~CustomDiscreteParameter.name
+      ~CustomDiscreteParameter.metadata
    
    

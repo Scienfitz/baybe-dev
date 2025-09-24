@@ -120,20 +120,6 @@ The default acquisition function is q-Log Expected Improvement.
 ACQ_FUNCTION = "qLogEI"
 ```
 
-## Other parameters
-
-Two other boolean hyperparameters can be specified when creating a recommender object.
-The first one allows the recommendation of points that were already recommended
-previously.
-The second one allows the recommendation of points that have already been measured.
-Per default, they are set to `True`.
-
-
-```python
-ALLOW_REPEATED_RECOMMENDATIONS = True
-ALLOW_RECOMMENDING_ALREADY_MEASURED = True
-```
-
 ## Creating the recommender object
 
 To create the recommender object, each parameter described above can be specified as
@@ -146,10 +132,7 @@ Therefore one does not need to specify all of them to create a recommender objec
 recommender = TwoPhaseMetaRecommender(
     initial_recommender=INITIAL_RECOMMENDER,
     recommender=BotorchRecommender(
-        surrogate_model=SURROGATE_MODEL,
-        acquisition_function=ACQ_FUNCTION,
-        allow_repeated_recommendations=ALLOW_REPEATED_RECOMMENDATIONS,
-        allow_recommending_already_measured=ALLOW_RECOMMENDING_ALREADY_MEASURED,
+        surrogate_model=SURROGATE_MODEL, acquisition_function=ACQ_FUNCTION
     ),
 )
 ```
@@ -171,7 +154,7 @@ print(recommender)
                    Kernel factory: DefaultKernelFactory()
              Acquisition function: qLogExpectedImprovement()
              Compatibility: SearchSpaceType.HYBRID
-             Sequential continuous: False
+             Sequential continuous: True
              Hybrid sampler: None
              Sampling percentage: 1.0
        Switch after: 1
@@ -234,7 +217,7 @@ searchspace = SearchSpace.from_product(parameters=parameters)
 
 
 ```python
-objective = SingleTargetObjective(target=NumericalTarget(name="yield", mode="MAX"))
+objective = SingleTargetObjective(target=NumericalTarget(name="yield"))
 ```
 
 ## Creating the campaign
@@ -263,15 +246,15 @@ print(recommendation)
     
     
     Recommended experiments: 
-             Solvent                Base         Ligand  Temperature  \
-    82   Butyl Ester  Potassium pivalate  (t-Bu)PhCPhos         90.0   
-    9    Butyl Ester      Cesium acetate      BrettPhos         90.0   
-    421     p-Xylene  Potassium pivalate      BrettPhos        120.0   
+               Solvent             Base                        Ligand  \
+    216           DMAc   Cesium acetate                 (t-Bu)PhCPhos   
+    370       p-Xylene  Cesium pivalate  Di-tert-butylphenylphosphine   
+    131  Butyornitrile   Cesium acetate  Di-tert-butylphenylphosphine   
     
-         Concentration  
-    82           0.100  
-    9            0.057  
-    421          0.100  
+         Temperature  Concentration  
+    216         90.0          0.057  
+    370         90.0          0.100  
+    131        105.0          0.153  
 
 
 
@@ -284,15 +267,15 @@ print(recommendation)
     
     
     Recommended experiments with fake measured values: 
-             Solvent                Base         Ligand  Temperature  \
-    82   Butyl Ester  Potassium pivalate  (t-Bu)PhCPhos         90.0   
-    9    Butyl Ester      Cesium acetate      BrettPhos         90.0   
-    421     p-Xylene  Potassium pivalate      BrettPhos        120.0   
+               Solvent             Base                        Ligand  \
+    216           DMAc   Cesium acetate                 (t-Bu)PhCPhos   
+    370       p-Xylene  Cesium pivalate  Di-tert-butylphenylphosphine   
+    131  Butyornitrile   Cesium acetate  Di-tert-butylphenylphosphine   
     
-         Concentration      yield  
-    82           0.100  16.918673  
-    9            0.057  19.354546  
-    421          0.100   5.049645  
+         Temperature  Concentration      yield  
+    216         90.0          0.057  -4.620113  
+    370         90.0          0.100  50.674153  
+    131        105.0          0.153  52.149092  
 
 
 

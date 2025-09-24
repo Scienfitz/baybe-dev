@@ -58,7 +58,7 @@ parameters = [
 ```python
 campaign = Campaign(
     searchspace=SearchSpace.from_product(parameters=parameters, constraints=None),
-    objective=SingleTargetObjective(target=NumericalTarget(name="Yield", mode="MAX")),
+    objective=SingleTargetObjective(target=NumericalTarget(name="Yield")),
     recommender=TwoPhaseMetaRecommender(
         recommender=BotorchRecommender(),
         initial_recommender=FPSRecommender(),
@@ -89,14 +89,16 @@ print(campaign, end="\n" * 3)
           Search Space Type: DISCRETE
           SubspaceDiscrete
              Discrete Parameters
-                                    Name                        Type  Num_Values
-Encoding
-                0            Granularity        CategoricalParameter           3
-CategoricalEncoding.OHE
-                1          Pressure[bar]  NumericalDiscreteParameter           3
-None
-                2  Temperature[degree_C]  NumericalDiscreteParameter          10
-None
+                                    Name                        Type  ...
+Encoding nActiveValues
+                0            Granularity        CategoricalParameter  ...
+CategoricalEncoding.OHE           3.0
+                1          Pressure[bar]  NumericalDiscreteParameter  ...
+None           NaN
+                2  Temperature[degree_C]  NumericalDiscreteParameter  ...
+None           NaN
+                
+                [3 rows x 5 columns]
              Experimental Representation
                    Granularity  Pressure[bar]  Temperature[degr
                 0       coarse            1.0          100.000 
@@ -134,10 +136,8 @@ Temperature[degr
        Objective
           Type: SingleTargetObjective
           Targets
-                           Type   Name  ... Upper_Bound  Transformation
-             0  NumericalTarget  Yield  ...         inf            None
-             
-             [1 rows x 6 columns]
+                           Type   Name   Transformation  Minimize
+             0  NumericalTarget  Yield  IdentityTran...     False
        TwoPhaseMetaRecommender
           Initial recommender
              FPSRecommender
@@ -148,9 +148,9 @@ Temperature[degr
                    GaussianProcessSurrogate
                       Supports Transfer Learning: True
                       Kernel factory: DefaultKernelFactory()
-                Acquisition function: qLogExpectedImprovement()
+                Acquisition function: None
                 Compatibility: SearchSpaceType.HYBRID
-                Sequential continuous: False
+                Sequential continuous: True
                 Hybrid sampler: None
                 Sampling percentage: 1.0
           Switch after: 1
@@ -192,14 +192,16 @@ print(campaign_recreate, end="\n" * 3)
           Search Space Type: DISCRETE
           SubspaceDiscrete
              Discrete Parameters
-                                    Name                        Type  Num_Values
-Encoding
-                0            Granularity        CategoricalParameter           3
-CategoricalEncoding.OHE
-                1          Pressure[bar]  NumericalDiscreteParameter           3
-None
-                2  Temperature[degree_C]  NumericalDiscreteParameter          10
-None
+                                    Name                        Type  ...
+Encoding nActiveValues
+                0            Granularity        CategoricalParameter  ...
+CategoricalEncoding.OHE           3.0
+                1          Pressure[bar]  NumericalDiscreteParameter  ...
+None           NaN
+                2  Temperature[degree_C]  NumericalDiscreteParameter  ...
+None           NaN
+                
+                [3 rows x 5 columns]
              Experimental Representation
                    Granularity  Pressure[bar]  Temperature[degr
                 0       coarse            1.0          100.000 
@@ -237,10 +239,8 @@ Temperature[degr
        Objective
           Type: SingleTargetObjective
           Targets
-                           Type   Name  ... Upper_Bound  Transformation
-             0  NumericalTarget  Yield  ...         inf            None
-             
-             [1 rows x 6 columns]
+                           Type   Name   Transformation  Minimize
+             0  NumericalTarget  Yield  IdentityTran...     False
        TwoPhaseMetaRecommender
           Initial recommender
              FPSRecommender
@@ -251,9 +251,9 @@ Temperature[degr
                    GaussianProcessSurrogate
                       Supports Transfer Learning: True
                       Kernel factory: DefaultKernelFactory()
-                Acquisition function: qLogExpectedImprovement()
+                Acquisition function: None
                 Compatibility: SearchSpaceType.HYBRID
-                Sequential continuous: False
+                Sequential continuous: True
                 Hybrid sampler: None
                 Sampling percentage: 1.0
           Switch after: 1
@@ -293,8 +293,8 @@ print(recommendation_orig)
 
     Recommendation from original object:
        Granularity  Pressure[bar]  Temperature[degree_C]
-    0       coarse            1.0                  100.0
-    59        fine           10.0                  200.0
+    62      medium            1.0             122.222222
+    59        fine           10.0             200.000000
 
 
 
@@ -305,6 +305,6 @@ print(recommendation_recreate)
 
     Recommendation from recreated object:
        Granularity  Pressure[bar]  Temperature[degree_C]
-    0       coarse            1.0                  100.0
-    59        fine           10.0                  200.0
+    21      coarse           10.0             111.111111
+    69      medium            1.0             200.000000
 

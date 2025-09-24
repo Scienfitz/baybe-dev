@@ -129,15 +129,15 @@ constraint = DiscreteCustomConstraint(
 searchspace = SearchSpace.from_product(parameters=parameters, constraints=[constraint])
 ```
 
-    /home/runner/work/baybe-dev/baybe-dev/.tox/docs-py310/lib/python3.10/site-
-packages/baybe/utils/chemistry.py:126: DeprecationWarning: Substance encoding 'RDKIT' is
-deprecated and will be disabled in a future version. Use 'RDKIT2DDESCRIPTORS' instead.
+    /home/runner/work/baybe-dev/baybe-dev/baybe/utils/chemistry.py:126:
+DeprecationWarning: Substance encoding 'RDKIT' is deprecated and will be disabled in a
+future version. Use 'RDKIT2DDESCRIPTORS' instead.
       warnings.warn(
 
 
 
 ```python
-objective = SingleTargetObjective(target=NumericalTarget(name="yield", mode="MAX"))
+objective = SingleTargetObjective(target=NumericalTarget(name="yield"))
 ```
 
 ## Creating and printing the campaign
@@ -160,16 +160,18 @@ print(campaign)
           Search Space Type: DISCRETE
           SubspaceDiscrete
              Discrete Parameters
-                            Name                        Type  Num_Values
-Encoding
-                0  Concentration  NumericalDiscreteParameter           4
-None
-                1        Solvent          SubstanceParameter           8
-SubstanceEncoding.RDKIT
-                2          Speed        CategoricalParameter           5
-CategoricalEncoding.INT
-                3    Temperature  NumericalDiscreteParameter           3
-None
+                            Name                        Type  ...
+Encoding nActiveValues
+                0  Concentration  NumericalDiscreteParameter  ...
+None           NaN
+                1        Solvent          SubstanceParameter  ...
+SubstanceEncoding.RDKIT           8.0
+                2          Speed        CategoricalParameter  ...
+CategoricalEncoding.INT           5.0
+                3    Temperature  NumericalDiscreteParameter  ...
+None           NaN
+                
+                [4 rows x 5 columns]
              Experimental Representation
                     Solvent      Speed  Temperature  Concentration
                 0        C1       fast        100.0            1.0
@@ -198,10 +200,8 @@ None
        Objective
           Type: SingleTargetObjective
           Targets
-                           Type   Name  ... Upper_Bound  Transformation
-             0  NumericalTarget  yield  ...         inf            None
-             
-             [1 rows x 6 columns]
+                           Type   Name   Transformation  Minimize
+             0  NumericalTarget  yield  IdentityTran...     False
        TwoPhaseMetaRecommender
           Initial recommender
              RandomRecommender
@@ -212,9 +212,9 @@ None
                    GaussianProcessSurrogate
                       Supports Transfer Learning: True
                       Kernel factory: DefaultKernelFactory()
-                Acquisition function: qLogExpectedImprovement()
+                Acquisition function: None
                 Compatibility: SearchSpaceType.HYBRID
-                Sequential continuous: False
+                Sequential continuous: True
                 Hybrid sampler: None
                 Sampling percentage: 1.0
           Switch after: 1
@@ -231,7 +231,7 @@ constraints.
 ```python
 N_ITERATIONS = 3
 for kIter in range(N_ITERATIONS):
-    print(f"\n\n#### ITERATION {kIter+1} ####")
+    print(f"\n\n#### ITERATION {kIter + 1} ####")
 
     print("## ASSERTS ##")
     print(
@@ -283,6 +283,8 @@ for kIter in range(N_ITERATIONS):
     Number of entries with water, temp > 120 and concentration > 5:       0
     Number of entries with C2, temp > 180 and concentration > 3:          0
     Number of entries with C3, temp > 150 and concentration > 3:          0
+
+
     
     
     #### ITERATION 2 ####

@@ -32,7 +32,7 @@ DiscreteLinkedParametersConstraint
 
    .. autosummary::
    
-      ~DiscreteLinkedParametersConstraint.eval_during_augmentation
+      ~DiscreteLinkedParametersConstraint.consider_data_augmentation
       ~DiscreteLinkedParametersConstraint.eval_during_creation
       ~DiscreteLinkedParametersConstraint.eval_during_modeling
       ~DiscreteLinkedParametersConstraint.is_continuous

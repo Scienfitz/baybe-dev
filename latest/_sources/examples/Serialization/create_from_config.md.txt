@@ -69,8 +69,7 @@ CONFIG = str(
         "target":
             {
                 "type": "NumericalTarget",
-                "name": "Yield",
-                "mode": "MAX"
+                "name": "Yield"
             }
     },
     "recommender": {
@@ -83,12 +82,12 @@ CONFIG = str(
             "surrogate_model": {
                 "type": "GaussianProcessSurrogate"
             },
-            "acquisition_function": "qEI",
-            "allow_repeated_recommendations": false,
-            "allow_recommending_already_measured": false
+            "acquisition_function": "qEI"
         },
         "switch_after": 1
-    }
+    },
+    "allow_recommending_already_recommended": false,
+    "allow_recommending_already_measured": false
 }
 """
 )
@@ -113,7 +112,7 @@ print(recommendation)
 ```
 
        Granularity  Pressure[bar]    Solvent
-    0       coarse            1.0  Solvent A
-    21        fine           10.0  Solvent B
-    31  ultra-fine            5.0  Solvent D
+    14        fine            1.0  Solvent C
+    32  ultra-fine           10.0  Solvent A
+    9       coarse           10.0  Solvent B
 

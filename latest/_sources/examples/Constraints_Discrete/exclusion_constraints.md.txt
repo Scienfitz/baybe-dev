@@ -127,15 +127,15 @@ searchspace = SearchSpace.from_product(
 )
 ```
 
-    /home/runner/work/baybe-dev/baybe-dev/.tox/docs-py310/lib/python3.10/site-
-packages/baybe/utils/chemistry.py:126: DeprecationWarning: Substance encoding 'RDKIT' is
-deprecated and will be disabled in a future version. Use 'RDKIT2DDESCRIPTORS' instead.
+    /home/runner/work/baybe-dev/baybe-dev/baybe/utils/chemistry.py:126:
+DeprecationWarning: Substance encoding 'RDKIT' is deprecated and will be disabled in a
+future version. Use 'RDKIT2DDESCRIPTORS' instead.
       warnings.warn(
 
 
 
 ```python
-objective = SingleTargetObjective(target=NumericalTarget(name="Target_1", mode="MAX"))
+objective = SingleTargetObjective(target=NumericalTarget(name="Target_1"))
 ```
 
 
@@ -157,16 +157,18 @@ print(campaign)
           Search Space Type: DISCRETE
           SubspaceDiscrete
              Discrete Parameters
-                       Name                        Type  Num_Values
-Encoding
-                0  Pressure  NumericalDiscreteParameter           4
-None
-                1      Solv          SubstanceParameter           8
-SubstanceEncoding.RDKIT
-                2     Speed        CategoricalParameter           5
-CategoricalEncoding.INT
-                3      Temp  NumericalDiscreteParameter          15
-None
+                       Name                        Type  ...                 Encoding
+nActiveValues
+                0  Pressure  NumericalDiscreteParameter  ...                     None
+NaN
+                1      Solv          SubstanceParameter  ...  SubstanceEncoding.RDKIT
+8.0
+                2     Speed        CategoricalParameter  ...  CategoricalEncoding.INT
+5.0
+                3      Temp  NumericalDiscreteParameter  ...                     None
+NaN
+                
+                [4 rows x 5 columns]
              Experimental Representation
                        Solv      Speed     Temp  Pressure
                 0        C1       fast  100.000       1.0
@@ -197,10 +199,8 @@ None
        Objective
           Type: SingleTargetObjective
           Targets
-                           Type      Name  ... Upper_Bound  Transformation
-             0  NumericalTarget  Target_1  ...         inf            None
-             
-             [1 rows x 6 columns]
+                           Type      Name   Transformation  Minimize
+             0  NumericalTarget  Target_1  IdentityTran...     False
        TwoPhaseMetaRecommender
           Initial recommender
              RandomRecommender
@@ -211,9 +211,9 @@ None
                    GaussianProcessSurrogate
                       Supports Transfer Learning: True
                       Kernel factory: DefaultKernelFactory()
-                Acquisition function: qLogExpectedImprovement()
+                Acquisition function: None
                 Compatibility: SearchSpaceType.HYBRID
-                Sequential continuous: False
+                Sequential continuous: True
                 Hybrid sampler: None
                 Sampling percentage: 1.0
           Switch after: 1
@@ -229,7 +229,7 @@ The following loop performs some iterations and manually verifies the given cons
 ```python
 N_ITERATIONS = 3
 for kIter in range(N_ITERATIONS):
-    print(f"\n\n#### ITERATION {kIter+1} ####")
+    print(f"\n\n#### ITERATION {kIter + 1} ####")
 
     print("## ASSERTS ##")
     print(
@@ -270,6 +270,8 @@ for kIter in range(N_ITERATIONS):
     Number of entries with either Solvents C2 or C4 and a temperature above 151:  0
     Number of entries with either Solvents C5 or C6 and a pressure above 5:       0
     Number of entries with pressure below 3 and temperature above 120:            0
+
+
     
     
     #### ITERATION 2 ####

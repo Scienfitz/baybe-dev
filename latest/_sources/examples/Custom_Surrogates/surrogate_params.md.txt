@@ -82,13 +82,13 @@ surrogate_model = NGBoostSurrogate(model_params={"n_estimators": 50, "verbose": 
 ```python
 try:
     invalid_surrogate_model = NGBoostSurrogate(model_params={"NOT_A_PARAM": None})
-except ValueError as e:
+except TypeError as e:
     print("The validator will give an error here:")
     print(e)
 ```
 
     The validator will give an error here:
-    Invalid model params for NGBoostSurrogate: NOT_A_PARAM.
+    The provided dictionary for 'model_params' is invalid.
 
 
 ## Links for documentation
@@ -103,7 +103,7 @@ except ValueError as e:
 ```python
 campaign = Campaign(
     searchspace=SearchSpace.from_product(parameters=parameters, constraints=None),
-    objective=SingleTargetObjective(target=NumericalTarget(name="Yield", mode="MAX")),
+    objective=SingleTargetObjective(target=NumericalTarget(name="Yield")),
     recommender=TwoPhaseMetaRecommender(
         recommender=BotorchRecommender(surrogate_model=surrogate_model),
         initial_recommender=FPSRecommender(),
@@ -122,7 +122,8 @@ print(surrogate_model.to_json(), end="\n" * 3)
 ```
 
     The model object in json format:
-    {"type": "NGBoostSurrogate", "model_params": {"n_estimators": 50, "verbose": true}}
+    {"type": "NGBoostSurrogate", "consider_data_augmentation": true, "model_params":
+{"n_estimators": 50, "verbose": true}}
     
     
 
@@ -140,8 +141,8 @@ print(recommendation)
 ```
 
     Recommendation from campaign:
-      Granularity  Pressure[bar]  Temperature[degree_C]    Solvent
-    3      coarse            1.0                  100.0  Solvent D
+        Granularity  Pressure[bar]  Temperature[degree_C]    Solvent
+    295      medium            5.0             133.333333  Solvent D
 
 
 

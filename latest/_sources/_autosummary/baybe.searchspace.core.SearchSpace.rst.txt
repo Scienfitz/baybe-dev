@@ -15,6 +15,7 @@ SearchSpace
    .. autosummary::
    
       ~SearchSpace.__init__
+      ~SearchSpace.augment_measurements
       ~SearchSpace.estimate_product_space_size
       ~SearchSpace.from_dataframe
       ~SearchSpace.from_dict
@@ -44,6 +45,7 @@ SearchSpace
       ~SearchSpace.n_tasks
       ~SearchSpace.parameter_names
       ~SearchSpace.parameters
+      ~SearchSpace.scaling_bounds
       ~SearchSpace.task_idx
       ~SearchSpace.type
    

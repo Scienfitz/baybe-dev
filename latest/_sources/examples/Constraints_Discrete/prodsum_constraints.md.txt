@@ -126,15 +126,15 @@ constraints = [sum_constraint_1, sum_constraint_2, prod_constraint]
 searchspace = SearchSpace.from_product(parameters=parameters, constraints=constraints)
 ```
 
-    /home/runner/work/baybe-dev/baybe-dev/.tox/docs-py310/lib/python3.10/site-
-packages/baybe/utils/chemistry.py:126: DeprecationWarning: Substance encoding 'RDKIT' is
-deprecated and will be disabled in a future version. Use 'RDKIT2DDESCRIPTORS' instead.
+    /home/runner/work/baybe-dev/baybe-dev/baybe/utils/chemistry.py:126:
+DeprecationWarning: Substance encoding 'RDKIT' is deprecated and will be disabled in a
+future version. Use 'RDKIT2DDESCRIPTORS' instead.
       warnings.warn(
 
 
 
 ```python
-objective = SingleTargetObjective(target=NumericalTarget(name="Target_1", mode="MAX"))
+objective = SingleTargetObjective(target=NumericalTarget(name="Target_1"))
 ```
 
 ## Creating and printing the campaign
@@ -157,24 +157,24 @@ print(campaign)
           Search Space Type: DISCRETE
           SubspaceDiscrete
              Discrete Parameters
-                         Name                        Type  Num_Values
-Encoding
-                0   NumParam1  NumericalDiscreteParameter           3
-None
-                1   NumParam2  NumericalDiscreteParameter           3
-None
-                2   NumParam3  NumericalDiscreteParameter           3
-None
-                ..        ...                         ...         ...
+                         Name                        Type  ...                 Encoding
+nActiveValues
+                0   NumParam1  NumericalDiscreteParameter  ...                     None
+NaN
+                1   NumParam2  NumericalDiscreteParameter  ...                     None
+NaN
+                2   NumParam3  NumericalDiscreteParameter  ...                     None
+NaN
+                ..        ...                         ...  ...                      ...
 ...
-                5   NumParam6  NumericalDiscreteParameter           3
-None
-                6     Solvent          SubstanceParameter           3
-SubstanceEncoding.RDKIT
-                7       Speed        CategoricalParameter           3
-CategoricalEncoding.INT
+                5   NumParam6  NumericalDiscreteParameter  ...                     None
+NaN
+                6     Solvent          SubstanceParameter  ...  SubstanceEncoding.RDKIT
+3.0
+                7       Speed        CategoricalParameter  ...  CategoricalEncoding.INT
+3.0
                 
-                [8 rows x 4 columns]
+                [8 rows x 5 columns]
              Experimental Representation
                     Solvent Speed  ...  NumParam5  NumParam6
                 0        C1  fast  ...        0.0      100.0
@@ -205,10 +205,8 @@ CategoricalEncoding.INT
        Objective
           Type: SingleTargetObjective
           Targets
-                           Type      Name  ... Upper_Bound  Transformation
-             0  NumericalTarget  Target_1  ...         inf            None
-             
-             [1 rows x 6 columns]
+                           Type      Name   Transformation  Minimize
+             0  NumericalTarget  Target_1  IdentityTran...     False
        TwoPhaseMetaRecommender
           Initial recommender
              RandomRecommender
@@ -219,9 +217,9 @@ CategoricalEncoding.INT
                    GaussianProcessSurrogate
                       Supports Transfer Learning: True
                       Kernel factory: DefaultKernelFactory()
-                Acquisition function: qLogExpectedImprovement()
+                Acquisition function: None
                 Compatibility: SearchSpaceType.HYBRID
-                Sequential continuous: False
+                Sequential continuous: True
                 Hybrid sampler: None
                 Sampling percentage: 1.0
           Switch after: 1
@@ -238,7 +236,7 @@ constraints.
 ```python
 N_ITERATIONS = 2 if SMOKE_TEST else 5
 for kIter in range(N_ITERATIONS):
-    print(f"\n\n#### ITERATION {kIter+1} ####")
+    print(f"\n\n#### ITERATION {kIter + 1} ####")
 
     print("## ASSERTS ##")
     print(
@@ -281,6 +279,8 @@ for kIter in range(N_ITERATIONS):
     Number of entries with 1,2-sum above 150:       0
     Number of entries with 3,4-product under 30:    0
     Number of entries with 5,6-sum unequal to 100:  0
+
+
     
     
     #### ITERATION 2 ####

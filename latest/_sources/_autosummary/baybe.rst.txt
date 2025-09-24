@@ -41,8 +41,6 @@
 
    kernels
 
-   objective
-
    objectives
 
    parameters
@@ -61,7 +59,7 @@
 
    targets
 
-   telemetry
+   transformations
 
    utils
 
