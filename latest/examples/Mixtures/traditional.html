@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Custom Hooks" href="../Custom_Hooks/Custom_Hooks.html" /><link rel="prev" title="Modeling a Mixture in Slot-Based Representation" href="slot_based.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Modeling a Mixture in Slot-Based Representation" href="slot_based.html" /><link rel="prev" title="Mixtures" href="Mixtures.html" />
 
     <link rel="shortcut icon" href="../../_static/favicon.ico"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>Modeling a Mixture in Traditional Representation - BayBE documentation</title>
@@ -303,27 +303,27 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../Searchspaces/Searchspaces.html">Searchspaces</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Searchspaces</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Searchspaces/continuous_space.html">Continuous Space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Searchspaces/discrete_space.html">Discrete Space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Searchspaces/hybrid_space.html">Hybrid Space</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Searchspaces/continuous_space.html">Continuous Space</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../Constraints_Discrete/Constraints_Discrete.html">Constraints Discrete</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Constraints Discrete</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../Constraints_Discrete/custom_constraints.html">Custom</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Constraints_Discrete/dependency_constraints.html">Dependency</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Constraints_Discrete/augmentation.html">Augmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Constraints_Discrete/exclusion_constraints.html">Exclusion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constraints_Discrete/augmentation.html">Augmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Constraints_Discrete/prodsum_constraints.html">Product/Sum</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../Constraints_Continuous/Constraints_Continuous.html">Constraints Continuous</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Constraints Continuous</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../Constraints_Continuous/hybrid_space.html">Hybrid Space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Constraints_Continuous/linear_constraints.html">Linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constraints_Continuous/hybrid_space.html">Hybrid Space</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../Multi_Target/Multi_Target.html">Multi Target</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of Multi Target</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../Multi_Target/desirability.html">Desirability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Multi_Target/pareto.html">Pareto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Multi_Target/desirability.html">Desirability</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../Serialization/Serialization.html">Serialization</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of Serialization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -337,35 +337,34 @@
 <li class="toctree-l3"><a class="reference internal" href="../Custom_Surrogates/custom_pretrained.html">Custom Pretrained</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../Multi_Armed_Bandit/Multi_Armed_Bandit.html">Multi Armed Bandit</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Multi Armed Bandit</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../Multi_Armed_Bandit/bernoulli_multi_armed_bandit.html">Bernoulli Multi Armed Bandit</a></li>
-</ul>
-</li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../Backtesting/Backtesting.html">Backtesting</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Backtesting</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../Backtesting/Backtesting.html">Backtesting</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of Backtesting</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Backtesting/impute_mode.html">Impute Mode</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Backtesting/full_initial_data.html">Full Initial Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Backtesting/custom_blackbox.html">Custom Blackbox</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Backtesting/full_lookup.html">Full Lookup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Backtesting/impute_mode.html">Impute Mode</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../Transformations/Transformations.html">Transformations</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Transformations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../Transformations/laser_tuning.html">Laser Tuning</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../Multi_Armed_Bandit/Multi_Armed_Bandit.html">Multi Armed Bandit</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of Multi Armed Bandit</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Multi_Armed_Bandit/bernoulli_multi_armed_bandit.html">Bernoulli Multi Armed Bandit</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../Transfer_Learning/Transfer_Learning.html">Transfer Learning</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Transfer Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../Transfer_Learning/backtesting.html">Backtesting</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../Transfer_Learning/Transfer_Learning.html">Transfer Learning</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of Transfer Learning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../Transfer_Learning/basic_transfer_learning.html">Basic Transfer Learning</a></li>
 </ul>
 </li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../Transformations/Transformations.html">Transformations</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of Transformations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Transformations/laser_tuning.html">Laser Tuning</a></li>
+</ul>
+</li>
 <li class="toctree-l2 current has-children"><a class="reference internal" href="Mixtures.html">Mixtures</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of Mixtures</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="slot_based.html">Slot Based</a></li>
 <li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Traditional</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slot_based.html">Slot Based</a></li>
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../Custom_Hooks/Custom_Hooks.html">Custom Hooks</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of Custom Hooks</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../Custom_Hooks/probability_of_improvement.html">Probability Of Improvement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Custom_Hooks/campaign_stopping.html">Campaign Stopping</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Custom_Hooks/basics.html">Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Custom_Hooks/campaign_stopping.html">Campaign Stopping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Custom_Hooks/probability_of_improvement.html">Probability Of Improvement</a></li>
 </ul>
 </li>
 </ul>
@@ -1201,16 +1200,16 @@ random points from the search space:</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>       Base1      Base2  PhaseAgent1  PhaseAgent2   Solvent1   Solvent2
-0  11.892008  12.504047     2.816447     1.380676  48.565369  22.841453
-1   4.467227  11.498219     3.086714     0.282480  24.349624  56.315736
-2   8.786065   1.267263     0.685187     3.288979  21.254129  64.718377
-3  17.466066  10.687999     0.085207     3.418916  17.089752  51.252060
-4  14.803436   5.634046     1.439930     0.314935  10.060798  67.746855
-5  10.379140   7.929926     0.136276     2.529220  43.970506  35.054932
-6  10.325552   9.698639     2.240361     1.484551  74.503852   1.747046
-7  11.094844   6.159926     0.282995     0.899202  14.331357  67.231677
-8   5.477079  16.128947     1.103771     0.138605  11.556656  65.594942
-9  18.645334  13.734926     1.891068     0.221167  53.077492  12.430013
+0   2.167096  13.427672     0.584680     3.289641  57.747310  22.783600
+1  17.772348   2.525364     0.244623     1.351454  25.264171  52.842040
+2  18.986045   0.327695     0.081591     4.729014  18.568467  57.307188
+3   0.288848  13.227752     0.613567     4.034560   6.846389  74.988883
+4   3.372977   8.991127     0.664320     3.906331   3.537784  79.527460
+5   6.901458  14.258708     1.847707     2.018741   5.306848  69.666538
+6  16.667429  12.421007     3.819511     0.626112   7.219356  59.246585
+7   7.916446   3.642598     1.384123     1.103769  60.303214  25.649849
+8   0.185079  18.709297     2.264186     1.395639  71.365421   6.080378
+9  17.046944   3.554977     1.144785     2.598000  47.872879  27.782415
 </pre></div>
 </div>
 <p>Computing the respective row sums reveals the expected result:</p>
@@ -1225,16 +1224,16 @@ random points from the search space:</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>   Total  Total_Bases  Total_Phase_Agents
-0  100.0    24.396055            4.197123
-1  100.0    15.965446            3.369194
-2  100.0    10.053329            3.974166
-3  100.0    28.154065            3.504123
-4  100.0    20.437482            1.754865
-5  100.0    18.309066            2.665496
-6  100.0    20.024190            3.724911
-7  100.0    17.254770            1.182197
-8  100.0    21.606025            1.242376
-9  100.0    32.380261            2.112234
+0  100.0    15.594769            3.874321
+1  100.0    20.297712            1.596077
+2  100.0    19.313740            4.810605
+3  100.0    13.516601            4.648127
+4  100.0    12.364104            4.570652
+5  100.0    21.160166            3.866448
+6  100.0    29.088435            4.445624
+7  100.0    11.559044            2.487893
+8  100.0    18.894375            3.659825
+9  100.0    20.601921            3.742785
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;Total&quot;</span><span class="p">],</span> <span class="mi">100</span><span class="p">)</span>
@@ -1250,23 +1249,23 @@ random points from the search space:</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../Custom_Hooks/Custom_Hooks.html">
+          <a class="next-page" href="slot_based.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Custom Hooks</div>
+                <div class="title">Modeling a Mixture in Slot-Based Representation</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="slot_based.html">
+          <a class="prev-page" href="Mixtures.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Modeling a Mixture in Slot-Based Representation</div>
+                <div class="title">Mixtures</div>
                 
               </div>
             </a>

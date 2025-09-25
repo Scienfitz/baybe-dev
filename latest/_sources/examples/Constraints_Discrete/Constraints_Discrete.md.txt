@@ -8,7 +8,7 @@ can be applied to discrete search spaces.
 
 Custom <custom_constraints>
 Dependency <dependency_constraints>
-Augmentation<augmentation>
 Exclusion <exclusion_constraints>
+Augmentation<augmentation>
 Product/Sum <prodsum_constraints>
 ```
