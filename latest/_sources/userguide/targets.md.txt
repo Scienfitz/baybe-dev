@@ -275,18 +275,24 @@ purpose. If set to `True`, the resulting target will seek to avoid the specified
 target = NumericalTarget.match_quadratic(
     name="Particle_Size",
     match_value=50,
-    mismatch_instead=True,  # try to avoid the particle size 50
+    mismatch_instead=True,  # Try to avoid particle size 50
 )
 ```
 
-The `match_*` constructors also have the `match_mode` argument. The default `"="` corresponds
-to matching the exact match point. But if you use `">="` or `<=` you can indicate that
-the entire respective number region is a valid match. This enables to express desired 
-targets like 
+The `match_*` constructors also have the `match_mode` argument. The default `"="`
+corresponds to matching the exact `match_value`. But if you use `">="` or `"<="` you
+can indicate that the entire respective number region is a valid match. This enables to
+express desired outcomes like:
 - "The rate should be lower than 200 per minute, but it does not matter how much lower."
   (`NumericalTarget.match_absolute("rate", 200, match_mode="<=")`)
 - "The yield should be at least 80%, but it does not matter if it's even higher."
   (`NumericalTarget.match_absolute("yield", 80, match_mode=">=")`)
+
+Behind the scenes, BayBE transforms the targets in a way such that all 
+values inside the region specified by the operator are considered equally good (or bad
+if `mismatch_instead=True`). If the value of the target beyond the `match_value`
+matters, it is rather a case for traditional maximization / minimization without match
+considerations.
 
 **Example**
 ```python
@@ -300,12 +306,8 @@ target2 = NumericalTarget(
 )
 ```
 
-Behind the scenes, BayBE transforms the targets in a way such that all 
-values inside the region specified by the operator are considered equally good (or bad
-if `mismatch_instead=True`). If the value of the target beyond the `match_value`
-matters, it is rather a case for traditional maximization / minimization without match
-considerations. Below we illustrate the overall transformations resulting from
-different combinations of the arguments for the exemplary case of 
+Below we illustrate the overall transformations resulting from different combinations
+of the arguments for the exemplary case of
 {meth}`~baybe.targets.numerical.NumericalTarget.match_bell`:
 
 ![Advanced_Matching_Options](../_static/targets/matching.svg)

@@ -1344,20 +1344,25 @@ purpose. If set to <code class="docutils literal notranslate"><span class="pre">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">target</span> <span class="o">=</span> <span class="n">NumericalTarget</span><span class="o">.</span><span class="n">match_quadratic</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Particle_Size&quot;</span><span class="p">,</span>
     <span class="n">match_value</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-    <span class="n">mismatch_instead</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># try to avoid the particle size 50</span>
+    <span class="n">mismatch_instead</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Try to avoid particle size 50</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">match_*</span></code> constructors also have the <code class="docutils literal notranslate"><span class="pre">match_mode</span></code> argument. The default <code class="docutils literal notranslate"><span class="pre">&quot;=&quot;</span></code> corresponds
-to matching the exact match point. But if you use <code class="docutils literal notranslate"><span class="pre">&quot;&gt;=&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> you can indicate that
-the entire respective number region is a valid match. This enables to express desired
-targets like</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">match_*</span></code> constructors also have the <code class="docutils literal notranslate"><span class="pre">match_mode</span></code> argument. The default <code class="docutils literal notranslate"><span class="pre">&quot;=&quot;</span></code>
+corresponds to matching the exact <code class="docutils literal notranslate"><span class="pre">match_value</span></code>. But if you use <code class="docutils literal notranslate"><span class="pre">&quot;&gt;=&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;&lt;=&quot;</span></code> you
+can indicate that the entire respective number region is a valid match. This enables to
+express desired outcomes like:</p>
 <ul class="simple">
 <li><p>“The rate should be lower than 200 per minute, but it does not matter how much lower.”
 (<code class="docutils literal notranslate"><span class="pre">NumericalTarget.match_absolute(&quot;rate&quot;,</span> <span class="pre">200,</span> <span class="pre">match_mode=&quot;&lt;=&quot;)</span></code>)</p></li>
 <li><p>“The yield should be at least 80%, but it does not matter if it’s even higher.”
 (<code class="docutils literal notranslate"><span class="pre">NumericalTarget.match_absolute(&quot;yield&quot;,</span> <span class="pre">80,</span> <span class="pre">match_mode=&quot;&gt;=&quot;)</span></code>)</p></li>
 </ul>
+<p>Behind the scenes, BayBE transforms the targets in a way such that all
+values inside the region specified by the operator are considered equally good (or bad
+if <code class="docutils literal notranslate"><span class="pre">mismatch_instead=True</span></code>). If the value of the target beyond the <code class="docutils literal notranslate"><span class="pre">match_value</span></code>
+matters, it is rather a case for traditional maximization / minimization without match
+considerations.</p>
 <p><strong>Example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">target1</span> <span class="o">=</span> <span class="n">NumericalTarget</span><span class="o">.</span><span class="n">match_absolute</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Yield&quot;</span><span class="p">,</span>
@@ -1369,12 +1374,8 @@ targets like</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Behind the scenes, BayBE transforms the targets in a way such that all
-values inside the region specified by the operator are considered equally good (or bad
-if <code class="docutils literal notranslate"><span class="pre">mismatch_instead=True</span></code>). If the value of the target beyond the <code class="docutils literal notranslate"><span class="pre">match_value</span></code>
-matters, it is rather a case for traditional maximization / minimization without match
-considerations. Below we illustrate the overall transformations resulting from
-different combinations of the arguments for the exemplary case of
+<p>Below we illustrate the overall transformations resulting from different combinations
+of the arguments for the exemplary case of
 <a class="reference internal" href="../_autosummary/baybe.targets.numerical.NumericalTarget.html#baybe.targets.numerical.NumericalTarget.match_bell" title="baybe.targets.numerical.NumericalTarget.match_bell"><code class="xref py py-meth docutils literal notranslate"><span class="pre">match_bell()</span></code></a>:</p>
 <p><img alt="Advanced_Matching_Options" src="../_images/matching.svg" /></p>
 </section>
