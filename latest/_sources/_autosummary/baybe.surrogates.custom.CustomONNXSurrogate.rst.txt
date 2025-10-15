@@ -36,7 +36,6 @@ CustomONNXSurrogate
    
       ~CustomONNXSurrogate.onnx_input_name
       ~CustomONNXSurrogate.onnx_str
-      ~CustomONNXSurrogate.consider_data_augmentation
       ~CustomONNXSurrogate.supports_multi_output
       ~CustomONNXSurrogate.supports_transfer_learning
    

@@ -33,7 +33,7 @@ DiscreteProductConstraint
    .. autosummary::
    
       ~DiscreteProductConstraint.condition
-      ~DiscreteProductConstraint.consider_data_augmentation
+      ~DiscreteProductConstraint.eval_during_augmentation
       ~DiscreteProductConstraint.eval_during_creation
       ~DiscreteProductConstraint.eval_during_modeling
       ~DiscreteProductConstraint.is_continuous

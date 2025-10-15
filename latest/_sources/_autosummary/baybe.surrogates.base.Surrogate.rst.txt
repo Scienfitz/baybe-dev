@@ -33,7 +33,6 @@ Surrogate
 
    .. autosummary::
    
-      ~Surrogate.consider_data_augmentation
       ~Surrogate.supports_multi_output
       ~Surrogate.supports_transfer_learning
    

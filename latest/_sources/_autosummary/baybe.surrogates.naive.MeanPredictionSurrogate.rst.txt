@@ -33,7 +33,6 @@ MeanPredictionSurrogate
 
    .. autosummary::
    
-      ~MeanPredictionSurrogate.consider_data_augmentation
       ~MeanPredictionSurrogate.supports_multi_output
       ~MeanPredictionSurrogate.supports_transfer_learning
    

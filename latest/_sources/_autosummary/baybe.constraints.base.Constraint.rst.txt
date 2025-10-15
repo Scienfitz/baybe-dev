@@ -30,7 +30,7 @@ Constraint
    .. autosummary::
    
       ~Constraint.parameters
-      ~Constraint.consider_data_augmentation
+      ~Constraint.eval_during_augmentation
       ~Constraint.is_continuous
       ~Constraint.is_discrete
       ~Constraint.numerical_only

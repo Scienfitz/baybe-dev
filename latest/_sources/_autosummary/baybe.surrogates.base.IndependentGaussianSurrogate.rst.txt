@@ -33,7 +33,6 @@ IndependentGaussianSurrogate
 
    .. autosummary::
    
-      ~IndependentGaussianSurrogate.consider_data_augmentation
       ~IndependentGaussianSurrogate.supports_multi_output
       ~IndependentGaussianSurrogate.supports_transfer_learning
    

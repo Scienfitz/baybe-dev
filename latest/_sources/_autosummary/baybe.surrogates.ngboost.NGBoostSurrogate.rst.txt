@@ -34,7 +34,6 @@ NGBoostSurrogate
    .. autosummary::
    
       ~NGBoostSurrogate.model_params
-      ~NGBoostSurrogate.consider_data_augmentation
       ~NGBoostSurrogate.supports_multi_output
       ~NGBoostSurrogate.supports_transfer_learning
    

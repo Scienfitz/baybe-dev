@@ -33,7 +33,7 @@ DiscreteCustomConstraint
    .. autosummary::
    
       ~DiscreteCustomConstraint.validator
-      ~DiscreteCustomConstraint.consider_data_augmentation
+      ~DiscreteCustomConstraint.eval_during_augmentation
       ~DiscreteCustomConstraint.eval_during_creation
       ~DiscreteCustomConstraint.eval_during_modeling
       ~DiscreteCustomConstraint.is_continuous

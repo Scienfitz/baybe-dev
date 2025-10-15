@@ -33,7 +33,7 @@ DiscretePermutationInvarianceConstraint
    .. autosummary::
    
       ~DiscretePermutationInvarianceConstraint.dependencies
-      ~DiscretePermutationInvarianceConstraint.consider_data_augmentation
+      ~DiscretePermutationInvarianceConstraint.eval_during_augmentation
       ~DiscretePermutationInvarianceConstraint.eval_during_creation
       ~DiscretePermutationInvarianceConstraint.eval_during_modeling
       ~DiscretePermutationInvarianceConstraint.is_continuous

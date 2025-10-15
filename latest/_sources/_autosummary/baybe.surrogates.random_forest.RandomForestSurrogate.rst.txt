@@ -34,7 +34,6 @@ RandomForestSurrogate
    .. autosummary::
    
       ~RandomForestSurrogate.model_params
-      ~RandomForestSurrogate.consider_data_augmentation
       ~RandomForestSurrogate.supports_multi_output
       ~RandomForestSurrogate.supports_transfer_learning
    
