@@ -246,15 +246,15 @@ print(recommendation)
     
     
     Recommended experiments: 
-             Solvent                Base                        Ligand  \
-    251         DMAc     Cesium pivalate                 (t-Bu)PhCPhos   
-    348     p-Xylene      Cesium acetate  Di-tert-butylphenylphosphine   
-    93   Butyl Ester  Potassium pivalate                     BrettPhos   
+               Solvent                Base                        Ligand  \
+    211  Butyornitrile  Potassium pivalate  Di-tert-butylphenylphosphine   
+    184  Butyornitrile   Potassium acetate  Di-tert-butylphenylphosphine   
+    63     Butyl Ester   Potassium acetate                     BrettPhos   
     
          Temperature  Concentration  
-    251        120.0          0.153  
-    348        120.0          0.057  
-    93         105.0          0.057  
+    211        105.0          0.100  
+    184        105.0          0.100  
+    63          90.0          0.057  
 
 
 
@@ -267,15 +267,15 @@ print(recommendation)
     
     
     Recommended experiments with fake measured values: 
-             Solvent                Base                        Ligand  \
-    251         DMAc     Cesium pivalate                 (t-Bu)PhCPhos   
-    348     p-Xylene      Cesium acetate  Di-tert-butylphenylphosphine   
-    93   Butyl Ester  Potassium pivalate                     BrettPhos   
+               Solvent                Base                        Ligand  \
+    211  Butyornitrile  Potassium pivalate  Di-tert-butylphenylphosphine   
+    184  Butyornitrile   Potassium acetate  Di-tert-butylphenylphosphine   
+    63     Butyl Ester   Potassium acetate                     BrettPhos   
     
          Temperature  Concentration      yield  
-    251        120.0          0.153  99.649536  
-    348        120.0          0.057   3.307089  
-    93         105.0          0.057 -18.002419  
+    211        105.0          0.100  -9.027574  
+    184        105.0          0.100  -2.117596  
+    63          90.0          0.057 -77.471190  
 
 
 
