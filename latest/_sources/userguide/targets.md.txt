@@ -293,12 +293,12 @@ considerations or applying [custom transformations](#custom-transformation).
 **Example**
 ```python
 target1 = NumericalTarget.match_absolute(
-    name="Yield",
+    name="yield",
     match_value=80,
-    match_mode=">=",  # Yield should be over 80. 95 is *not* considered better than 80
+    match_mode=">=",  # yield should be over 80. 95 is *not* considered better than 80
 )
 target2 = NumericalTarget(
-    name="Yield"  # Yield should be as high as possible, 95 is considered better than 80
+    name="yield"  # yield should be as high as possible, 95 is considered better than 80
 )
 ```
 

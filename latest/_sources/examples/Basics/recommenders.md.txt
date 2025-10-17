@@ -246,15 +246,10 @@ print(recommendation)
     
     
     Recommended experiments: 
-               Solvent                Base         Ligand  Temperature  \
-    206  Butyornitrile  Potassium pivalate      BrettPhos        120.0   
-    221           DMAc      Cesium acetate  (t-Bu)PhCPhos        105.0   
-    7      Butyl Ester      Cesium acetate  (t-Bu)PhCPhos        120.0   
-    
-         Concentration  
-    206          0.153  
-    221          0.153  
-    7            0.100  
+               Solvent             Base         Ligand  Temperature  Concentration
+    246           DMAc  Cesium pivalate  (t-Bu)PhCPhos        105.0          0.057
+    112  Butyornitrile   Cesium acetate  (t-Bu)PhCPhos        105.0          0.100
+    111  Butyornitrile   Cesium acetate  (t-Bu)PhCPhos        105.0          0.057
 
 
 
@@ -267,15 +262,15 @@ print(recommendation)
     
     
     Recommended experiments with fake measured values: 
-               Solvent                Base         Ligand  Temperature  \
-    206  Butyornitrile  Potassium pivalate      BrettPhos        120.0   
-    221           DMAc      Cesium acetate  (t-Bu)PhCPhos        105.0   
-    7      Butyl Ester      Cesium acetate  (t-Bu)PhCPhos        120.0   
+               Solvent             Base         Ligand  Temperature  \
+    246           DMAc  Cesium pivalate  (t-Bu)PhCPhos        105.0   
+    112  Butyornitrile   Cesium acetate  (t-Bu)PhCPhos        105.0   
+    111  Butyornitrile   Cesium acetate  (t-Bu)PhCPhos        105.0   
     
          Concentration      yield  
-    206          0.153  14.645038  
-    221          0.153 -58.421431  
-    7            0.100  76.134726  
+    246          0.057  43.576323  
+    112          0.100  82.281734  
+    111          0.057 -43.807626  
 
 
 
