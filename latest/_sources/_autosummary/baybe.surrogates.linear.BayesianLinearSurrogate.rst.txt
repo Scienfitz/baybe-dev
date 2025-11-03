@@ -15,6 +15,7 @@ BayesianLinearSurrogate
    .. autosummary::
    
       ~BayesianLinearSurrogate.__init__
+      ~BayesianLinearSurrogate.augment_measurements
       ~BayesianLinearSurrogate.fit
       ~BayesianLinearSurrogate.from_dict
       ~BayesianLinearSurrogate.from_json
@@ -36,5 +37,6 @@ BayesianLinearSurrogate
       ~BayesianLinearSurrogate.model_params
       ~BayesianLinearSurrogate.supports_multi_output
       ~BayesianLinearSurrogate.supports_transfer_learning
+      ~BayesianLinearSurrogate.symmetries
    
    

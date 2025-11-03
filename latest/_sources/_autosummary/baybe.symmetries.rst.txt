@@ -1,0 +1,34 @@
+baybe.symmetries
+================
+
+.. automodule:: baybe.symmetries
+  
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:                                       
+      :template: custom-class-template.rst              
+   
+      DependencySymmetry
+      MirrorSymmetry
+      PermutationSymmetry
+      Symmetry
+   
+   
+
+   
+   
+   
+
+
+

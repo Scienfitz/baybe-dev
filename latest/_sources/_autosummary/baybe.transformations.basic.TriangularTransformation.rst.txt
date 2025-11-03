@@ -27,10 +27,12 @@ TriangularTransformation
       ~TriangularTransformation.hold_output_left_from
       ~TriangularTransformation.hold_output_outside
       ~TriangularTransformation.hold_output_right_from
+      ~TriangularTransformation.hshift
       ~TriangularTransformation.negate
       ~TriangularTransformation.to_botorch_objective
       ~TriangularTransformation.to_dict
       ~TriangularTransformation.to_json
+      ~TriangularTransformation.vshift
    
    
 

@@ -15,6 +15,7 @@ BetaBernoulliMultiArmedBanditSurrogate
    .. autosummary::
    
       ~BetaBernoulliMultiArmedBanditSurrogate.__init__
+      ~BetaBernoulliMultiArmedBanditSurrogate.augment_measurements
       ~BetaBernoulliMultiArmedBanditSurrogate.fit
       ~BetaBernoulliMultiArmedBanditSurrogate.from_dict
       ~BetaBernoulliMultiArmedBanditSurrogate.from_json
@@ -38,5 +39,6 @@ BetaBernoulliMultiArmedBanditSurrogate
       ~BetaBernoulliMultiArmedBanditSurrogate.prior
       ~BetaBernoulliMultiArmedBanditSurrogate.supports_multi_output
       ~BetaBernoulliMultiArmedBanditSurrogate.supports_transfer_learning
+      ~BetaBernoulliMultiArmedBanditSurrogate.symmetries
    
    

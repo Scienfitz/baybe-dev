@@ -15,6 +15,7 @@ Surrogate
    .. autosummary::
    
       ~Surrogate.__init__
+      ~Surrogate.augment_measurements
       ~Surrogate.fit
       ~Surrogate.from_dict
       ~Surrogate.from_json
@@ -33,6 +34,7 @@ Surrogate
 
    .. autosummary::
    
+      ~Surrogate.symmetries
       ~Surrogate.supports_multi_output
       ~Surrogate.supports_transfer_learning
    

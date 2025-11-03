@@ -15,6 +15,7 @@ MeanPredictionSurrogate
    .. autosummary::
    
       ~MeanPredictionSurrogate.__init__
+      ~MeanPredictionSurrogate.augment_measurements
       ~MeanPredictionSurrogate.fit
       ~MeanPredictionSurrogate.from_dict
       ~MeanPredictionSurrogate.from_json
@@ -35,5 +36,6 @@ MeanPredictionSurrogate
    
       ~MeanPredictionSurrogate.supports_multi_output
       ~MeanPredictionSurrogate.supports_transfer_learning
+      ~MeanPredictionSurrogate.symmetries
    
    

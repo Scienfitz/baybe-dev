@@ -25,10 +25,12 @@ TwoSidedAffineTransformation
       ~TwoSidedAffineTransformation.hold_output_left_from
       ~TwoSidedAffineTransformation.hold_output_outside
       ~TwoSidedAffineTransformation.hold_output_right_from
+      ~TwoSidedAffineTransformation.hshift
       ~TwoSidedAffineTransformation.negate
       ~TwoSidedAffineTransformation.to_botorch_objective
       ~TwoSidedAffineTransformation.to_dict
       ~TwoSidedAffineTransformation.to_json
+      ~TwoSidedAffineTransformation.vshift
    
    
 

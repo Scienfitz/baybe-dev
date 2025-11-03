@@ -32,7 +32,6 @@ DiscreteCardinalityConstraint
 
    .. autosummary::
    
-      ~DiscreteCardinalityConstraint.eval_during_augmentation
       ~DiscreteCardinalityConstraint.eval_during_creation
       ~DiscreteCardinalityConstraint.eval_during_modeling
       ~DiscreteCardinalityConstraint.is_continuous

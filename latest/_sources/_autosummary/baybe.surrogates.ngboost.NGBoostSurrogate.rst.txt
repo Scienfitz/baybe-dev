@@ -15,6 +15,7 @@ NGBoostSurrogate
    .. autosummary::
    
       ~NGBoostSurrogate.__init__
+      ~NGBoostSurrogate.augment_measurements
       ~NGBoostSurrogate.fit
       ~NGBoostSurrogate.from_dict
       ~NGBoostSurrogate.from_json
@@ -36,5 +37,6 @@ NGBoostSurrogate
       ~NGBoostSurrogate.model_params
       ~NGBoostSurrogate.supports_multi_output
       ~NGBoostSurrogate.supports_transfer_learning
+      ~NGBoostSurrogate.symmetries
    
    

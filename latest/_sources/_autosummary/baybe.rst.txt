@@ -57,6 +57,8 @@
 
    surrogates
 
+   symmetries
+
    targets
 
    transformations

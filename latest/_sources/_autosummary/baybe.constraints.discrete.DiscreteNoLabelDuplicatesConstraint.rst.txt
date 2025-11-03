@@ -32,7 +32,6 @@ DiscreteNoLabelDuplicatesConstraint
 
    .. autosummary::
    
-      ~DiscreteNoLabelDuplicatesConstraint.eval_during_augmentation
       ~DiscreteNoLabelDuplicatesConstraint.eval_during_creation
       ~DiscreteNoLabelDuplicatesConstraint.eval_during_modeling
       ~DiscreteNoLabelDuplicatesConstraint.is_continuous

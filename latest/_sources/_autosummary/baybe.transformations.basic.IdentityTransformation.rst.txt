@@ -25,11 +25,13 @@ IdentityTransformation
       ~IdentityTransformation.hold_output_left_from
       ~IdentityTransformation.hold_output_outside
       ~IdentityTransformation.hold_output_right_from
+      ~IdentityTransformation.hshift
       ~IdentityTransformation.negate
       ~IdentityTransformation.to_botorch_objective
       ~IdentityTransformation.to_botorch_posterior_transform
       ~IdentityTransformation.to_dict
       ~IdentityTransformation.to_json
+      ~IdentityTransformation.vshift
    
    
 

@@ -15,6 +15,7 @@ GaussianProcessSurrogate
    .. autosummary::
    
       ~GaussianProcessSurrogate.__init__
+      ~GaussianProcessSurrogate.augment_measurements
       ~GaussianProcessSurrogate.fit
       ~GaussianProcessSurrogate.from_dict
       ~GaussianProcessSurrogate.from_json
@@ -37,5 +38,6 @@ GaussianProcessSurrogate
       ~GaussianProcessSurrogate.kernel_factory
       ~GaussianProcessSurrogate.supports_multi_output
       ~GaussianProcessSurrogate.supports_transfer_learning
+      ~GaussianProcessSurrogate.symmetries
    
    

@@ -27,11 +27,13 @@ baybe.utils.validation
       finite_float
       non_inf_float
       non_nan_float
+      validate_is_finite
       validate_not_nan
       validate_object_names
       validate_objective_input
       validate_parameter_input
       validate_target_input
+      validate_unique_values
    
    
 

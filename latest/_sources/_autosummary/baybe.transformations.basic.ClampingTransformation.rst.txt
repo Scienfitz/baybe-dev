@@ -25,10 +25,12 @@ ClampingTransformation
       ~ClampingTransformation.hold_output_left_from
       ~ClampingTransformation.hold_output_outside
       ~ClampingTransformation.hold_output_right_from
+      ~ClampingTransformation.hshift
       ~ClampingTransformation.negate
       ~ClampingTransformation.to_botorch_objective
       ~ClampingTransformation.to_dict
       ~ClampingTransformation.to_json
+      ~ClampingTransformation.vshift
    
    
 
