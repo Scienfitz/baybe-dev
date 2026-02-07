@@ -140,8 +140,8 @@ print(recommendation)
 ```
 
     Recommendation from campaign:
-        Granularity  Pressure[bar]  Temperature[degree_C]    Solvent
-    328      medium           10.0             122.222222  Solvent A
+       Granularity  Pressure[bar]  Temperature[degree_C]    Solvent
+    63      coarse            5.0             155.555556  Solvent D
 
 
 
