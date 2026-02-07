@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx_paramlinks.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5a0cd752" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=259b2e4a" />
     
     
 
@@ -1202,16 +1202,16 @@ random points from the search space:</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>       Base1      Base2  PhaseAgent1  PhaseAgent2   Solvent1   Solvent2
-0   9.329885   6.745306     0.786972     0.522433  41.904716  40.710687
-1  18.406022   5.478840     1.601680     3.105343  34.787323  36.620791
-2   9.867722  12.794079     0.200252     1.901326  35.629306  39.607316
-3   9.456874   7.394605     0.651904     2.306107  77.210651   2.979859
-4   6.689530  10.296601     0.554696     0.483586  77.728296   4.247291
-5  19.070848   8.333231     1.885038     2.542056  45.240127  22.928700
-6   7.401563  15.705065     0.195220     3.579656  20.490364  52.628134
-7   8.313818   8.413532     1.100687     1.660030  45.640593  34.871340
-8   8.835832  10.439456     1.645344     0.543185  30.974690  47.561492
-9   5.830659   9.888689     1.545685     0.550216   8.694516  73.490236
+0  11.873739  12.829446     0.175571     0.632107  58.827481  15.661657
+1  19.163214   3.950212     2.281066     0.421542  63.642664  10.541302
+2   8.618173  11.603243     1.399541     1.634151  19.410399  57.334492
+3   7.716581   9.132073     0.864662     0.774148  43.281444  38.231092
+4  10.454446   4.577025     1.821913     0.680375  70.429741  12.036501
+5  12.759687   8.130996     0.274182     4.155557  27.559255  47.120323
+6   9.585457   1.094306     3.093676     1.264362  13.597054  71.365145
+7   3.783750  19.959330     0.510137     0.597818  61.572331  13.576635
+8   8.450302  13.256568     0.224726     4.017241  14.480638  59.570524
+9   9.211161   4.518917     0.256249     2.436903  71.601919  11.974852
 </pre></div>
 </div>
 <p>Computing the respective row sums reveals the expected result:</p>
@@ -1226,16 +1226,16 @@ random points from the search space:</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>   Total  Total_Bases  Total_Phase_Agents
-0  100.0    16.075191            1.309405
-1  100.0    23.884862            4.707024
-2  100.0    22.661801            2.101578
-3  100.0    16.851480            2.958011
-4  100.0    16.986131            1.038281
-5  100.0    27.404079            4.427094
-6  100.0    23.106627            3.774875
-7  100.0    16.727350            2.760717
-8  100.0    19.275288            2.188529
-9  100.0    15.719347            2.095901
+0  100.0    24.703185            0.807678
+1  100.0    23.113427            2.702608
+2  100.0    20.221416            3.033692
+3  100.0    16.848654            1.638810
+4  100.0    15.031471            2.502287
+5  100.0    20.890683            4.429739
+6  100.0    10.679763            4.358037
+7  100.0    23.743080            1.107954
+8  100.0    21.706870            4.241967
+9  100.0    13.730078            2.693151
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;Total&quot;</span><span class="p">],</span> <span class="mi">100</span><span class="p">)</span>
