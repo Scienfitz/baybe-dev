@@ -15,6 +15,9 @@ a.sidebar-brand {
 
 /*Reduce left and right margins*/
 
+/* The following width overrides were causing issues with long titles in the sidebar.
+   Removing them allows the theme to handle responsiveness correctly.
+   See https://github.com/emdgroup/baybe/issues/727
 .sidebar-drawer {
     width: calc(10%);
 }
@@ -22,6 +25,7 @@ a.sidebar-brand {
 .content {
     width: calc(90%);
 }
+*/
 
 /*The color of the "Search" placeholder in the sidebar*/
 .sidebar-search::placeholder {
