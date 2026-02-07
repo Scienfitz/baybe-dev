@@ -235,7 +235,6 @@ chemical encodings compared to one-hot and a random baseline:
 ![Substance Encoding Example](./examples/Backtesting/full_lookup_light.svg)
 
 <a id="installation"></a>
-(installation)=
 ## 💻 Installation
 ### From Package Index
 The easiest way to install BayBE is via PyPI:
