@@ -53,11 +53,11 @@
 
    serialization
 
+   settings
+
    simulation
 
    surrogates
-
-   symmetries
 
    targets
 

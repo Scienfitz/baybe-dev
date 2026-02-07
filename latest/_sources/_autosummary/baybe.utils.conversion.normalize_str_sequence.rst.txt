@@ -1,6 +1,0 @@
-baybe.utils.conversion.normalize\_str\_sequence
-===============================================
-
-.. currentmodule:: baybe.utils.conversion
-
-.. autofunction:: normalize_str_sequence

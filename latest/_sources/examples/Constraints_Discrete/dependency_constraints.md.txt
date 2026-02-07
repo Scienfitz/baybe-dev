@@ -168,9 +168,10 @@ NaN
           Recommender
              BotorchRecommender
                 Surrogate
-                   GaussianProcessSurrogate
-                      Supports Transfer Learning: True
-                      Kernel factory: DefaultKernelFactory()
+                   CompositeSurrogate(surrogates=_ReplicationMapping(template=GaussianPr
+ocessSurrogate(_searchspace=None, _objective=None, _measurements_hash=None,
+_input_scaler=None, _output_scaler=None, kernel_factory=DefaultKernelFactory(),
+_model=None), _data={}), _modeled_quantity_names=None)
                 Acquisition function: None
                 Compatibility: SearchSpaceType.HYBRID
                 Sequential continuous: True
@@ -237,6 +238,8 @@ for kIter in range(N_ITERATIONS):
     Number entries with Switch1 off (expected 4):        4
     Number entries with Switch2 off (expected 6):       6
     Number entries with both switches off (expected 1):  1
+
+
     
     #### ITERATION 2 ####
     ## ASSERTS ##

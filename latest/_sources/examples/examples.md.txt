@@ -11,7 +11,6 @@ Multi Target<Multi_Target/Multi_Target>
 Serialization<Serialization/Serialization>
 Custom Surrogates<Custom_Surrogates/Custom_Surrogates>
 Backtesting<Backtesting/Backtesting>
-Symmetries<Symmetries/Symmetries>
 Multi Armed Bandit<Multi_Armed_Bandit/Multi_Armed_Bandit>
 Transfer Learning<Transfer_Learning/Transfer_Learning>
 Transformations<Transformations/Transformations>

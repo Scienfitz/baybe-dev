@@ -15,7 +15,6 @@ RandomForestSurrogate
    .. autosummary::
    
       ~RandomForestSurrogate.__init__
-      ~RandomForestSurrogate.augment_measurements
       ~RandomForestSurrogate.fit
       ~RandomForestSurrogate.from_dict
       ~RandomForestSurrogate.from_json
@@ -35,8 +34,8 @@ RandomForestSurrogate
    .. autosummary::
    
       ~RandomForestSurrogate.model_params
+      ~RandomForestSurrogate.is_available
       ~RandomForestSurrogate.supports_multi_output
       ~RandomForestSurrogate.supports_transfer_learning
-      ~RandomForestSurrogate.symmetries
    
    
