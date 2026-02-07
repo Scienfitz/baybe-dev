@@ -13,6 +13,7 @@ a.sidebar-brand {
     padding: 0;
 }
 
+/*Reduce left and right margins*/
 
 /*The color of the "Search" placeholder in the sidebar*/
 .sidebar-search::placeholder {
