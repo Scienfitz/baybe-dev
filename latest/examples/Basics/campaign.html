@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx_paramlinks.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=259b2e4a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5a0cd752" />
     
     
 
@@ -1187,9 +1187,13 @@ objective.</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Recommended measurements with batch_size = 2: 
-           Solvent                Base     Ligand  Temperature  Concentration
-97     Butyl Ester  Potassium pivalate  BrettPhos        120.0          0.100
-173  Butyornitrile   Potassium acetate  BrettPhos         90.0          0.153
+           Solvent                Base         Ligand  Temperature  \
+380       p-Xylene   Potassium acetate  (t-Bu)PhCPhos         90.0   
+203  Butyornitrile  Potassium pivalate      BrettPhos        105.0   
+
+     Concentration  
+380          0.153  
+203          0.153  
 </pre></div>
 </div>
 <p>Adding target values is done by creating a new column in the <code class="docutils literal notranslate"><span class="pre">recommendation</span></code>
@@ -1202,13 +1206,13 @@ We then update the campaign by adding the measurements.</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Recommended experiments with fake measured values: 
-           Solvent                Base     Ligand  Temperature  Concentration  \
-97     Butyl Ester  Potassium pivalate  BrettPhos        120.0          0.100   
-173  Butyornitrile   Potassium acetate  BrettPhos         90.0          0.153   
+           Solvent                Base         Ligand  Temperature  \
+380       p-Xylene   Potassium acetate  (t-Bu)PhCPhos         90.0   
+203  Butyornitrile  Potassium pivalate      BrettPhos        105.0   
 
-         yield  
-97   34.168430  
-173  49.980127  
+     Concentration      yield  
+380          0.153  93.345909  
+203          0.153 -90.600155  
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">campaign</span><span class="o">.</span><span class="n">add_measurements</span><span class="p">(</span><span class="n">recommendation</span><span class="p">)</span>
