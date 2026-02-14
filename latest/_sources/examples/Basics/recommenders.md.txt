@@ -247,15 +247,15 @@ print(recommendation)
     
     
     Recommended experiments: 
-             Solvent                Base                        Ligand  \
-    4    Butyl Ester      Cesium acetate                 (t-Bu)PhCPhos   
-    323         DMAc  Potassium pivalate  Di-tert-butylphenylphosphine   
-    79   Butyl Ester   Potassium acetate  Di-tert-butylphenylphosphine   
+               Solvent                Base                        Ligand  \
+    177  Butyornitrile   Potassium acetate                     BrettPhos   
+    102    Butyl Ester  Potassium pivalate  Di-tert-butylphenylphosphine   
+    399       p-Xylene   Potassium acetate  Di-tert-butylphenylphosphine   
     
          Temperature  Concentration  
-    4          105.0          0.100  
-    323        120.0          0.153  
-    79         120.0          0.100  
+    177        120.0          0.057  
+    102        105.0          0.057  
+    399        105.0          0.057  
 
 
 
@@ -268,15 +268,15 @@ print(recommendation)
     
     
     Recommended experiments with fake measured values: 
-             Solvent                Base                        Ligand  \
-    4    Butyl Ester      Cesium acetate                 (t-Bu)PhCPhos   
-    323         DMAc  Potassium pivalate  Di-tert-butylphenylphosphine   
-    79   Butyl Ester   Potassium acetate  Di-tert-butylphenylphosphine   
+               Solvent                Base                        Ligand  \
+    177  Butyornitrile   Potassium acetate                     BrettPhos   
+    102    Butyl Ester  Potassium pivalate  Di-tert-butylphenylphosphine   
+    399       p-Xylene   Potassium acetate  Di-tert-butylphenylphosphine   
     
          Temperature  Concentration      yield  
-    4          105.0          0.100 -87.968335  
-    323        120.0          0.153   6.323254  
-    79         120.0          0.100 -50.976486  
+    177        120.0          0.057  79.347487  
+    102        105.0          0.057  49.153821  
+    399        105.0          0.057 -45.536449  
 
 
 
