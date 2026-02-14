@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Settings option for random seed control
 - `identify_non_dominated_configurations` method to `Campaign` and `Objective`
   for determining the Pareto front
+- Interpoint constraints for continuous search spaces
+
+### Breaking Changes
+- `ContinuousLinearConstraint.to_botorch` now returns a collection of constraint tuples
+  instead of a single tuple (needed for interpoint constraints)
 
 ### Removed
 - `parallel_runs` argument from `simulate_scenarios`, since parallelization
@@ -30,6 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The environment variable `BAYBE_PARALLEL_SIMULATION_RUNS` has been replaced with
   `BAYBE_PARALLELIZE_SIMULATION_RUNS` linked to the `parallelize_simulation_runs`
   attribute of the new `Settings` class
+
+## [0.14.3] - 2026-02-10
+### Fixed
+- Deserialization of `NumericalTarget` objects using the optional `constructor` field
+- Broken cache validation for certain `Campaign.recommend` cases
 
 ## [0.14.2] - 2026-01-14
 ### Added
