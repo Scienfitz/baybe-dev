@@ -256,18 +256,17 @@ class DiscreteDependenciesConstraint(DiscreteConstraint):
         other_params = (
             data.columns.drop(all_affected_params).drop(self.parameters).tolist()
         )
-        df_eval = pd.concat(
-            [
-                censored_data[other_params],
-                censored_data[all_affected_params].apply(
-                    cast(Callable, frozenset)
-                    if self.permutation_invariant
-                    else cast(Callable, tuple),
-                    axis=1,
-                ),
-            ],
+        invariant_indicator = censored_data[all_affected_params].apply(
+            cast(Callable, frozenset)
+            if self.permutation_invariant
+            else cast(Callable, tuple),
             axis=1,
         )
+        # Only include the other_params DataFrame if it is non-empty to avoid
+        # pandas FutureWarning about concatenation with empty entries
+        parts = [censored_data[other_params]] if other_params else []
+        parts.append(invariant_indicator)
+        df_eval = pd.concat(parts, axis=1)
         inds_bad = data.index[df_eval.duplicated(keep="first")]
 
         return inds_bad
