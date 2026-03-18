@@ -145,4 +145,6 @@ def test_simulate_scenarios_structure(
     assert set(result["Random_Seed"].unique()) == set(expected_seed_values)
 
     groupby_cols = ["Scenario", "Random_Seed", "Initial_Data"]
-    result.groupby(groupby_cols).apply(_validate_target_data, targets=campaign.targets)
+    result.groupby(groupby_cols).apply(
+        _validate_target_data, targets=campaign.targets, include_groups=False
+    )
