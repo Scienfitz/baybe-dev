@@ -17,6 +17,7 @@ ContinuousParameter
       ~ContinuousParameter.__init__
       ~ContinuousParameter.from_dict
       ~ContinuousParameter.from_json
+      ~ContinuousParameter.is_equivalent
       ~ContinuousParameter.is_in_range
       ~ContinuousParameter.summary
       ~ContinuousParameter.to_dict

@@ -146,9 +146,10 @@ Temperature[degr
              BotorchRecommender
                 Surrogate
                    CompositeSurrogate(surrogates=_ReplicationMapping(template=GaussianPr
-ocessSurrogate(_searchspace=None, _objective=None, _measurements_hash=None,
-_input_scaler=None, _output_scaler=None, kernel_factory=DefaultKernelFactory(),
-_model=None), _data={}), _modeled_quantity_names=None)
+ocessSurrogate(symmetries=(), _searchspace=None, _objective=None,
+_measurements_hash=None, _input_scaler=None, _output_scaler=None,
+kernel_factory=DefaultKernelFactory(), _model=None), _data={}),
+_modeled_quantity_names=None)
                 Acquisition function: None
                 Compatibility: SearchSpaceType.HYBRID
                 Sequential continuous: True
@@ -250,9 +251,10 @@ Temperature[degr
              BotorchRecommender
                 Surrogate
                    CompositeSurrogate(surrogates=_ReplicationMapping(template=GaussianPr
-ocessSurrogate(_searchspace=None, _objective=None, _measurements_hash=None,
-_input_scaler=None, _output_scaler=None, kernel_factory=DefaultKernelFactory(),
-_model=None), _data={}), _modeled_quantity_names=None)
+ocessSurrogate(symmetries=(), _searchspace=None, _objective=None,
+_measurements_hash=None, _input_scaler=None, _output_scaler=None,
+kernel_factory=DefaultKernelFactory(), _model=None), _data={}),
+_modeled_quantity_names=None)
                 Acquisition function: None
                 Compatibility: SearchSpaceType.HYBRID
                 Sequential continuous: True
@@ -307,6 +309,6 @@ print(recommendation_recreate)
 
     Recommendation from recreated object:
        Granularity  Pressure[bar]  Temperature[degree_C]
-    18      coarse            5.0             188.888889
-    80      medium           10.0             100.000000
+    56        fine           10.0             166.666667
+    60      medium            1.0             100.000000
 

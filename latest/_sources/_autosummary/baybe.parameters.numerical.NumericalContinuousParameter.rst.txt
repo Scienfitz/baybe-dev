@@ -17,6 +17,7 @@ NumericalContinuousParameter
       ~NumericalContinuousParameter.__init__
       ~NumericalContinuousParameter.from_dict
       ~NumericalContinuousParameter.from_json
+      ~NumericalContinuousParameter.is_equivalent
       ~NumericalContinuousParameter.is_in_range
       ~NumericalContinuousParameter.summary
       ~NumericalContinuousParameter.to_dict

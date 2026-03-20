@@ -16,6 +16,7 @@ baybe.utils.conversion
    
       fraction_to_float
       nonstring_to_tuple
+      normalize_convertible2str_sequence
       to_string
    
    

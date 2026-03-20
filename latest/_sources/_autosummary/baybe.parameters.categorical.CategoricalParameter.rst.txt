@@ -17,6 +17,7 @@ CategoricalParameter
       ~CategoricalParameter.__init__
       ~CategoricalParameter.from_dict
       ~CategoricalParameter.from_json
+      ~CategoricalParameter.is_equivalent
       ~CategoricalParameter.is_in_range
       ~CategoricalParameter.summary
       ~CategoricalParameter.to_dict

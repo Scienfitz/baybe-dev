@@ -17,6 +17,7 @@ CustomDiscreteParameter
       ~CustomDiscreteParameter.__init__
       ~CustomDiscreteParameter.from_dict
       ~CustomDiscreteParameter.from_json
+      ~CustomDiscreteParameter.is_equivalent
       ~CustomDiscreteParameter.is_in_range
       ~CustomDiscreteParameter.summary
       ~CustomDiscreteParameter.to_dict

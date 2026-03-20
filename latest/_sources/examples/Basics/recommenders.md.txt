@@ -150,7 +150,7 @@ print(recommender)
           BotorchRecommender
              Surrogate
                 CompositeSurrogate(surrogates=_ReplicationMapping(template=GaussianProce
-ssSurrogate(_searchspace=None, _objective=None, _measurements_hash=None,
+ssSurrogate(symmetries=(), _searchspace=None, _objective=None, _measurements_hash=None,
 _input_scaler=None, _output_scaler=None, kernel_factory=DefaultKernelFactory(),
 _model=None), _data={}), _modeled_quantity_names=None)
              Acquisition function: qLogExpectedImprovement()
@@ -248,14 +248,14 @@ print(recommendation)
     
     Recommended experiments: 
                Solvent                Base                        Ligand  \
-    177  Butyornitrile   Potassium acetate                     BrettPhos   
-    102    Butyl Ester  Potassium pivalate  Di-tert-butylphenylphosphine   
-    399       p-Xylene   Potassium acetate  Di-tert-butylphenylphosphine   
+    317           DMAc  Potassium pivalate  Di-tert-butylphenylphosphine   
+    44     Butyl Ester     Cesium pivalate                     BrettPhos   
+    148  Butyornitrile     Cesium pivalate                     BrettPhos   
     
          Temperature  Concentration  
-    177        120.0          0.057  
-    102        105.0          0.057  
-    399        105.0          0.057  
+    317         90.0          0.153  
+    44         120.0          0.153  
+    148        105.0          0.100  
 
 
 
@@ -269,14 +269,14 @@ print(recommendation)
     
     Recommended experiments with fake measured values: 
                Solvent                Base                        Ligand  \
-    177  Butyornitrile   Potassium acetate                     BrettPhos   
-    102    Butyl Ester  Potassium pivalate  Di-tert-butylphenylphosphine   
-    399       p-Xylene   Potassium acetate  Di-tert-butylphenylphosphine   
+    317           DMAc  Potassium pivalate  Di-tert-butylphenylphosphine   
+    44     Butyl Ester     Cesium pivalate                     BrettPhos   
+    148  Butyornitrile     Cesium pivalate                     BrettPhos   
     
          Temperature  Concentration      yield  
-    177        120.0          0.057  79.347487  
-    102        105.0          0.057  49.153821  
-    399        105.0          0.057 -45.536449  
+    317         90.0          0.153  26.318887  
+    44         120.0          0.153 -84.658833  
+    148        105.0          0.100 -30.967932  
 
 
 

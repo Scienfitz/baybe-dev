@@ -15,6 +15,7 @@ IndependentGaussianSurrogate
    .. autosummary::
    
       ~IndependentGaussianSurrogate.__init__
+      ~IndependentGaussianSurrogate.augment_measurements
       ~IndependentGaussianSurrogate.fit
       ~IndependentGaussianSurrogate.from_dict
       ~IndependentGaussianSurrogate.from_json
@@ -35,6 +36,7 @@ IndependentGaussianSurrogate
    
       ~IndependentGaussianSurrogate.is_available
       ~IndependentGaussianSurrogate.supports_multi_output
+      ~IndependentGaussianSurrogate.symmetries
       ~IndependentGaussianSurrogate.supports_transfer_learning
    
    

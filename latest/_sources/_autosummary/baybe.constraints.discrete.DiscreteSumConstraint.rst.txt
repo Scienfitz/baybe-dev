@@ -33,7 +33,6 @@ DiscreteSumConstraint
    .. autosummary::
    
       ~DiscreteSumConstraint.condition
-      ~DiscreteSumConstraint.eval_during_augmentation
       ~DiscreteSumConstraint.eval_during_creation
       ~DiscreteSumConstraint.eval_during_modeling
       ~DiscreteSumConstraint.is_continuous

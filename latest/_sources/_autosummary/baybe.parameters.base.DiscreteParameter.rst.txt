@@ -17,6 +17,7 @@ DiscreteParameter
       ~DiscreteParameter.__init__
       ~DiscreteParameter.from_dict
       ~DiscreteParameter.from_json
+      ~DiscreteParameter.is_equivalent
       ~DiscreteParameter.is_in_range
       ~DiscreteParameter.summary
       ~DiscreteParameter.to_dict

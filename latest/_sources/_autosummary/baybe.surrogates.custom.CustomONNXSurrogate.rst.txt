@@ -15,6 +15,7 @@ CustomONNXSurrogate
    .. autosummary::
    
       ~CustomONNXSurrogate.__init__
+      ~CustomONNXSurrogate.augment_measurements
       ~CustomONNXSurrogate.fit
       ~CustomONNXSurrogate.from_dict
       ~CustomONNXSurrogate.from_json
@@ -39,5 +40,6 @@ CustomONNXSurrogate
       ~CustomONNXSurrogate.is_available
       ~CustomONNXSurrogate.supports_multi_output
       ~CustomONNXSurrogate.supports_transfer_learning
+      ~CustomONNXSurrogate.symmetries
    
    

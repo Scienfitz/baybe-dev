@@ -122,7 +122,8 @@ print(surrogate_model.to_json(), end="\n" * 3)
 ```
 
     The model object in json format:
-    {"type": "NGBoostSurrogate", "model_params": {"n_estimators": 50, "verbose": true}}
+    {"type": "NGBoostSurrogate", "symmetries": [], "model_params": {"n_estimators": 50,
+"verbose": true}}
     
     
 
@@ -141,7 +142,7 @@ print(recommendation)
 
     Recommendation from campaign:
         Granularity  Pressure[bar]  Temperature[degree_C]    Solvent
-    328      medium           10.0             122.222222  Solvent A
+    213        fine           10.0             133.333333  Solvent B
 
 
 

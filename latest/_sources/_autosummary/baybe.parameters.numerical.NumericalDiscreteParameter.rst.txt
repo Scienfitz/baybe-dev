@@ -17,6 +17,7 @@ NumericalDiscreteParameter
       ~NumericalDiscreteParameter.__init__
       ~NumericalDiscreteParameter.from_dict
       ~NumericalDiscreteParameter.from_json
+      ~NumericalDiscreteParameter.is_equivalent
       ~NumericalDiscreteParameter.is_in_range
       ~NumericalDiscreteParameter.summary
       ~NumericalDiscreteParameter.to_dict
