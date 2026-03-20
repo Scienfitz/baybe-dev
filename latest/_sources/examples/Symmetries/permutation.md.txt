@@ -166,7 +166,7 @@ print(f"{'With Constraint:':<35} {len(searchspace_constrained.discrete.exp_rep)}
 
     Number of Points in the Searchspace
     Without Constraint:                 2601
-    With Constraint:                    1275
+    With Constraint:                    1326
 
 
 We can see that the unconstrained searchspace has roughly twice as many points

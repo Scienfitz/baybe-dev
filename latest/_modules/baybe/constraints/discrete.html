@@ -1472,9 +1472,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Constraint class for declaring that a set of parameters is permutation invariant.</span>
 
 <span class="sd">    More precisely, this means that, ``(val_from_param1, val_from_param2)`` is</span>
-<span class="sd">    equivalent to ``(val_from_param2, val_from_param1)``. Since it does not make sense</span>
-<span class="sd">    to have this constraint with duplicated labels, this implementation also internally</span>
-<span class="sd">    applies the :class:`baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint`.</span>
+<span class="sd">    equivalent to ``(val_from_param2, val_from_param1)``.</span>
 
 <span class="sd">    *Note:* This constraint is evaluated during creation. In the future it might also be</span>
 <span class="sd">    evaluated during modeling to make use of the invariance.</span>
@@ -1488,15 +1486,6 @@
 <a class="viewcode-back" href="../../../_autosummary/baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.html#baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.get_invalid">[docs]</a>
     <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">:</span>
-        <span class="c1"># Get indices of entries with duplicate label entries. These will also be</span>
-        <span class="c1"># dropped by this constraint.</span>
-        <span class="n">mask_duplicate_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-        <span class="n">mask_duplicate_labels</span><span class="p">[</span>
-            <span class="n">DiscreteNoLabelDuplicatesConstraint</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span><span class="o">.</span><span class="n">get_invalid</span><span class="p">(</span>
-                <span class="n">data</span>
-            <span class="p">)</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-
         <span class="c1"># Merge a permutation invariant representation of all affected parameters with</span>
         <span class="c1"># the other parameters and indicate duplicates. This ensures that variation in</span>
         <span class="c1"># other parameters is also accounted for.</span>
@@ -1507,20 +1496,14 @@
                 <span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">Callable</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
             <span class="p">],</span>
             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-            <span class="o">~</span><span class="n">mask_duplicate_labels</span>  <span class="c1"># only consider label-duplicate-free part</span>
-        <span class="p">]</span>
+        <span class="p">)</span>
         <span class="n">mask_duplicate_permutations</span> <span class="o">=</span> <span class="n">df_eval</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Indices of entries with label-duplicates</span>
-        <span class="n">inds_duplicate_labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">mask_duplicate_labels</span><span class="p">]</span>
-
-        <span class="c1"># Indices of duplicate permutations in the (already label-duplicate-free) data</span>
-        <span class="n">inds_duplicate_permutations</span> <span class="o">=</span> <span class="n">df_eval</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">mask_duplicate_permutations</span><span class="p">]</span>
+        <span class="c1"># Indices of duplicate permutations</span>
+        <span class="n">inds_invalid</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">mask_duplicate_permutations</span><span class="p">]</span>
 
         <span class="c1"># If there are dependencies connected to the invariant parameters evaluate them</span>
         <span class="c1"># here and remove resulting duplicates with a DependenciesConstraint</span>
-        <span class="n">inds_invalid</span> <span class="o">=</span> <span class="n">inds_duplicate_labels</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">inds_duplicate_permutations</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dependencies</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dependencies</span><span class="o">.</span><span class="n">permutation_invariant</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">inds_duplicate_independency_adjusted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dependencies</span><span class="o">.</span><span class="n">get_invalid</span><span class="p">(</span>

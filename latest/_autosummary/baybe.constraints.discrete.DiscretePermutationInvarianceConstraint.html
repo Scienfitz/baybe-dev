@@ -1133,9 +1133,7 @@
 <dd><p>Bases: <a class="reference internal" href="baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint" title="baybe.constraints.base.DiscreteConstraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscreteConstraint</span></code></a></p>
 <p>Constraint class for declaring that a set of parameters is permutation invariant.</p>
 <p>More precisely, this means that, <code class="docutils literal notranslate"><span class="pre">(val_from_param1,</span> <span class="pre">val_from_param2)</span></code> is
-equivalent to <code class="docutils literal notranslate"><span class="pre">(val_from_param2,</span> <span class="pre">val_from_param1)</span></code>. Since it does not make sense
-to have this constraint with duplicated labels, this implementation also internally
-applies the <a class="reference internal" href="baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint.html#baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint" title="baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint</span></code></a>.</p>
+equivalent to <code class="docutils literal notranslate"><span class="pre">(val_from_param2,</span> <span class="pre">val_from_param1)</span></code>.</p>
 <p><em>Note:</em> This constraint is evaluated during creation. In the future it might also be
 evaluated during modeling to make use of the invariance.</p>
 <p class="rubric">Public methods</p>
