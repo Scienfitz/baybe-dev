@@ -6,7 +6,6 @@ import random
 import subprocess
 import sys
 import textwrap
-import warnings
 from copy import deepcopy
 from enum import Enum
 from pathlib import Path
@@ -20,7 +19,7 @@ from attrs import Attribute
 
 from baybe import Settings, active_settings
 from baybe.campaign import Campaign
-from baybe.exceptions import NotAllowedError, UnusedObjectWarning
+from baybe.exceptions import NotAllowedError
 from baybe.recommenders.pure.nonpredictive.sampling import RandomRecommender
 from baybe.settings import _RANDOM_SEED_ATTRIBUTE_NAME
 from baybe.utils.basic import cache_to_disk
@@ -487,13 +486,12 @@ def test_settings_are_sorted_alphabetically():
 
 
 @pytest.mark.parametrize("cache", [True, False], ids=["cache", "no_cache"])
+@pytest.mark.filterwarnings("ignore::baybe.exceptions.UnusedObjectWarning")
 def test_recommendation_caching(campaign: Campaign, cache: bool):
     """Recommendations are (not) cached according to the settings."""
     campaign.allow_recommending_already_recommended = True
     campaign.recommender = Mock(wraps=RandomRecommender())
-    with warnings.catch_warnings(), Settings(cache_campaign_recommendations=cache):
-        # Suppress UnusedObjectWarning (non-predictive recommender ignores objectives)
-        warnings.simplefilter("ignore", UnusedObjectWarning)
+    with Settings(cache_campaign_recommendations=cache):
         df1 = campaign.recommend(2)
         assert campaign.recommender.recommend.call_count == 1
         df2 = campaign.recommend(2)

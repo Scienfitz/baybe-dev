@@ -1,11 +1,8 @@
 """Validation tests for Campaign."""
 
-import warnings
-
 import pytest
 
 from baybe import Campaign
-from baybe.exceptions import UnusedObjectWarning
 from baybe.objectives import ParetoObjective
 from baybe.parameters import NumericalDiscreteParameter
 from baybe.recommenders import FPSRecommender, TwoPhaseMetaRecommender
@@ -44,7 +41,13 @@ def test_overlapping_target_parameter_names_campaign():
             TwoPhaseMetaRecommender(initial_recommender=BayesianRecommender()),
             id="meta_predictive",
         ),
-        pytest.param(FPSRecommender(), id="pure_non-predictive"),
+        pytest.param(
+            FPSRecommender(),
+            id="pure_non-predictive",
+            marks=pytest.mark.filterwarnings(
+                "ignore::baybe.exceptions.UnusedObjectWarning"
+            ),
+        ),
         pytest.param(
             TwoPhaseMetaRecommender(initial_recommender=FPSRecommender()),
             id="meta_non-predictive",
@@ -53,10 +56,7 @@ def test_overlapping_target_parameter_names_campaign():
 )
 def test_overlapping_target_parameter_names_stateless(recommender):
     """Overlapping names between parameters and targets are not allowed."""
-    with warnings.catch_warnings():
-        # Suppress UnusedObjectWarning (non-predictive recommender ignores objectives)
-        warnings.simplefilter("ignore", UnusedObjectWarning)
-        with _context:
-            recommender.recommend(
-                2, searchspace=_searchspace, objective=_objective, measurements=None
-            )
+    with _context:
+        recommender.recommend(
+            2, searchspace=_searchspace, objective=_objective, measurements=None
+        )
