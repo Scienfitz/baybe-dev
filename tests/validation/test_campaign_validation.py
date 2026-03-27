@@ -14,9 +14,9 @@ from baybe.searchspace import SearchSpace
 from baybe.targets import NumericalTarget
 
 _targets = (
-    NumericalTarget("n1", "MAX"),
-    NumericalTarget("n2", "MAX"),
-    NumericalTarget("n3", "MAX"),
+    NumericalTarget("n1"),
+    NumericalTarget("n2", minimize=True),
+    NumericalTarget.match_absolute("n3", 0.0),
 )
 _parameters = (
     NumericalDiscreteParameter("n1", (1, 2, 3)),
