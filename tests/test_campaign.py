@@ -26,7 +26,7 @@ from baybe.recommenders.pure.nonpredictive.sampling import (
     FPSRecommender,
     RandomRecommender,
 )
-from baybe.searchspace.core import SearchSpaceType
+from baybe.searchspace.core import SearchSpace, SearchSpaceType
 from baybe.searchspace.discrete import SubspaceDiscrete
 from baybe.surrogates import (
     BetaBernoulliMultiArmedBanditSurrogate,
@@ -127,28 +127,34 @@ def test_candidate_toggling(constraints, exclude, complement):
     ids=["already_measured", "already_recommended", "pending_experiments"],
 )
 @pytest.mark.parametrize(
-    "space_type",
-    [SearchSpaceType.DISCRETE, SearchSpaceType.CONTINUOUS, SearchSpaceType.HYBRID],
-    ids=lambda x: x.name,
+    "searchspace",
+    [
+        NumericalDiscreteParameter("p", [0, 1]).to_searchspace(),
+        NumericalContinuousParameter("p", [0, 1]).to_searchspace(),
+        SearchSpace.from_product(
+            [
+                NumericalDiscreteParameter("p_disc", [0, 1]),
+                NumericalContinuousParameter("p_cont", [0, 1]),
+            ]
+        ),
+    ],
+    ids=["discrete", "continuous", "hybrid"],
 )
 @pytest.mark.parametrize("value", [True, False, "auto"])
-def test_setting_allow_flags(flag, space_type, value, discrete_value):
+def test_setting_allow_flags(flag, searchspace, value, discrete_value):
     """Passed allow_* flags are rejected if incompatible with the search space type
     but otherwise properly resolved into Booleans."""  # noqa
-    expect_error = (space_type is not SearchSpaceType.DISCRETE) and (value is False)
-
-    if space_type is SearchSpaceType.DISCRETE:
-        parameter = NumericalDiscreteParameter("p", [0, 1])
-    else:
-        parameter = NumericalContinuousParameter("p", [0, 1])
+    expect_error = (searchspace.type is not SearchSpaceType.DISCRETE) and (
+        value is False
+    )
 
     with pytest.raises(IncompatibilityError) if expect_error else nullcontext():
-        campaign = Campaign(parameter, **{flag: value})
+        campaign = Campaign(searchspace, **{flag: value})
 
     if expect_error:
         return
 
-    fallback = discrete_value if space_type is SearchSpaceType.DISCRETE else True
+    fallback = discrete_value if searchspace.type is SearchSpaceType.DISCRETE else True
     resolved = value if isinstance(value, bool) else fallback
     assert getattr(campaign, flag) == resolved
 
