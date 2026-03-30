@@ -28,7 +28,7 @@ def validate_gpytorch_kernel_components(obj: Any, mapped: Any, **kwargs) -> None
     # Assert that the kernel kwargs are correctly mapped
     if isinstance(obj, BasicKernel):
         for k, v in kwargs.items():
-            assert torch.tensor(getattr(mapped, k)).equal(torch.tensor(v))
+            assert torch.as_tensor(getattr(mapped, k)).equal(torch.as_tensor(v))
 
     # Compare attribute by attribute
     for name, component in asdict(obj, recurse=False).items():

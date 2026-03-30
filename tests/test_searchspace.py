@@ -12,7 +12,11 @@ from baybe.constraints import (
     DiscreteSumConstraint,
     ThresholdCondition,
 )
-from baybe.exceptions import EmptySearchSpaceError, IncompatibilityError
+from baybe.exceptions import (
+    EmptySearchSpaceError,
+    IncompatibilityError,
+    InputDataTypeWarning,
+)
 from baybe.parameters import (
     CategoricalParameter,
     NumericalContinuousParameter,
@@ -107,7 +111,8 @@ def test_discrete_from_dataframe_dtype_consistency():
             "C": [int(1), 2.2, True],  # Valid but inconsistent dtypes
         }
     )
-    subspace = SubspaceDiscrete.from_dataframe(df)
+    with pytest.warns(InputDataTypeWarning, match=r"unexpected data types: \['C'\]"):
+        subspace = SubspaceDiscrete.from_dataframe(df)
 
     assert isinstance(
         next(p for p in subspace.parameters if p.name == "C"),
