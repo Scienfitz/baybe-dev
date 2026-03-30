@@ -75,7 +75,7 @@ chem = [
 
 onnx = [
     "onnx>=1.16.0", # see AUDIT NOTE, required by skl2onnx
-    "onnxruntime>=1.15.1",
+    "onnxruntime>=1.15.1,<1.24",
     "skl2onnx>=1.19.1",
 ]
 
