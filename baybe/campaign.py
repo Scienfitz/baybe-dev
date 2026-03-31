@@ -252,6 +252,11 @@ class Campaign(SerialMixin):
             return True
         return bool(self._allow_recommending_already_measured)
 
+    @allow_recommending_already_measured.setter
+    def allow_recommending_already_measured(self, value: bool) -> None:
+        """Set candidate flag for already measured experiments."""
+        self._allow_recommending_already_measured = value
+
     @property
     def allow_recommending_already_recommended(self) -> bool:
         """Allow recommending experiments that have already been recommended."""
@@ -259,12 +264,22 @@ class Campaign(SerialMixin):
             return self.searchspace.type is not SearchSpaceType.DISCRETE
         return bool(self._allow_recommending_already_recommended)
 
+    @allow_recommending_already_recommended.setter
+    def allow_recommending_already_recommended(self, value: bool) -> None:
+        """Set candidate flag for already recommended experiments."""
+        self._allow_recommending_already_recommended = value
+
     @property
     def allow_recommending_pending_experiments(self) -> bool:
         """Allow recommending pending experiments."""
         if self._allow_recommending_pending_experiments is AutoBool.AUTO:
             return self.searchspace.type is not SearchSpaceType.DISCRETE
         return bool(self._allow_recommending_pending_experiments)
+
+    @allow_recommending_pending_experiments.setter
+    def allow_recommending_pending_experiments(self, value: bool) -> None:
+        """Set candidate flag for pending experiments."""
+        self._allow_recommending_pending_experiments = value
 
     @classmethod
     def from_config(cls, config_json: str) -> Campaign:
