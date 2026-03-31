@@ -138,7 +138,7 @@ class Campaign(SerialMixin):
     _allow_recommending_already_measured: AutoBool = field(
         alias="allow_recommending_already_measured",
         default=AutoBool.AUTO,
-        converter=AutoBool.from_unstructured,
+        converter=AutoBool.from_unstructured,  # type: ignore[misc]
         validator=_validate_allow_flag,
         on_setattr=_set_with_cache_cleared,
         kw_only=True,
@@ -148,7 +148,7 @@ class Campaign(SerialMixin):
     _allow_recommending_already_recommended: AutoBool = field(
         alias="allow_recommending_already_recommended",
         default=AutoBool.AUTO,
-        converter=AutoBool.from_unstructured,
+        converter=AutoBool.from_unstructured,  # type: ignore[misc]
         validator=_validate_allow_flag,
         on_setattr=_set_with_cache_cleared,
         kw_only=True,
@@ -158,7 +158,7 @@ class Campaign(SerialMixin):
     _allow_recommending_pending_experiments: AutoBool = field(
         alias="allow_recommending_pending_experiments",
         default=AutoBool.AUTO,
-        converter=AutoBool.from_unstructured,
+        converter=AutoBool.from_unstructured,  # type: ignore[misc]
         validator=_validate_allow_flag,
         on_setattr=_set_with_cache_cleared,
         kw_only=True,
