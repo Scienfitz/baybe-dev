@@ -139,7 +139,7 @@ value is resolved based on the type of the configured search space:
 
 :::
 
-```{admonition} Non-discrete search spaces
+```{admonition} Non-Discrete Search Spaces
 :class: note
 
 For search spaces that involve a continuous subspace (i.e., continuous or hybrid),
