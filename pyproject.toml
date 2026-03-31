@@ -73,7 +73,7 @@ chem = [
     "scikit-fingerprints>=1.13.1",
 ]
 
-# NOTE: There is an error in the metadata of onnxruntim version 1.24.1 to 1.24.3.
+# NOTE: There is an error in the metadata of onnxruntime version 1.24.1 to 1.24.3.
 # The metadata claims that these versions are compatible with Python 3.10.
 # However, Python 3.10 is not actually supported by versions >=1.24.
 # As this causes issues with dependency resolving, we explicitly set the upper bound
