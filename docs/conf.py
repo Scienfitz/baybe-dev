@@ -86,7 +86,10 @@ extensions = [
     "sphinx_design",  # For dropdowns etc
 ]
 bibtex_bibfiles = ["references.bib"]
-myst_enable_extensions = ["dollarmath"]  # Enables Latex-like math in markdown files
+myst_enable_extensions = [
+    "dollarmath",  # Enables Latex-like math in markdown files
+    "colon_fence",  # Enables ::: syntax for directives
+]
 autosectionlabel_prefix_document = True  # Make sure autosectionlabels are unique
 myst_heading_anchors = 4
 
