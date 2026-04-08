@@ -74,6 +74,12 @@ def _set_with_cache_cleared(instance: Campaign, attribute: Attribute, value: _T)
     return value
 
 
+_convert_validate_and_clear_cache = setters.pipe(
+    setters.convert, setters.validate, _set_with_cache_cleared
+)
+"""Attrs on_setattr hook that converts, validates, and clears the cache on changes."""
+
+
 def _validate_allow_flag(
     campaign: Campaign, attribute: Attribute, value: AutoBool
 ) -> None:
@@ -131,9 +137,7 @@ class Campaign(SerialMixin):
     recommender: RecommenderProtocol = field(
         factory=TwoPhaseMetaRecommender,
         validator=instance_of(RecommenderProtocol),
-        on_setattr=setters.pipe(
-            setters.convert, setters.validate, _set_with_cache_cleared
-        ),
+        on_setattr=_convert_validate_and_clear_cache,
     )
     """The employed recommender"""
 
@@ -142,9 +146,7 @@ class Campaign(SerialMixin):
         default=AutoBool.AUTO,
         converter=AutoBool.from_unstructured,  # type: ignore[misc]
         validator=_validate_allow_flag,
-        on_setattr=setters.pipe(
-            setters.convert, setters.validate, _set_with_cache_cleared
-        ),
+        on_setattr=_convert_validate_and_clear_cache,
         kw_only=True,
     )
     """Allow recommending experiments that have already been measured."""
@@ -154,9 +156,7 @@ class Campaign(SerialMixin):
         default=AutoBool.AUTO,
         converter=AutoBool.from_unstructured,  # type: ignore[misc]
         validator=_validate_allow_flag,
-        on_setattr=setters.pipe(
-            setters.convert, setters.validate, _set_with_cache_cleared
-        ),
+        on_setattr=_convert_validate_and_clear_cache,
         kw_only=True,
     )
     """Allow recommending experiments that have already been recommended."""
@@ -166,9 +166,7 @@ class Campaign(SerialMixin):
         default=AutoBool.AUTO,
         converter=AutoBool.from_unstructured,  # type: ignore[misc]
         validator=_validate_allow_flag,
-        on_setattr=setters.pipe(
-            setters.convert, setters.validate, _set_with_cache_cleared
-        ),
+        on_setattr=_convert_validate_and_clear_cache,
         kw_only=True,
     )
     """Allow recommending pending experiments."""
