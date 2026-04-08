@@ -430,14 +430,16 @@ def test_task_parameter_active_values_validation():
     [
         (
             ["InterConstraint_3"],
-            lambda samples: samples["Conti_finite1"].sum()
-            + 2 * samples["Conti_finite2"].sum(),
+            lambda samples: (
+                samples["Conti_finite1"].sum() + 2 * samples["Conti_finite2"].sum()
+            ),
             lambda result: np.isclose(result, 0.3, atol=1e-6),
         ),
         (
             ["InterConstraint_4"],
-            lambda samples: 2 * samples["Conti_finite1"].sum()
-            - samples["Conti_finite2"].sum(),
+            lambda samples: (
+                2 * samples["Conti_finite1"].sum() - samples["Conti_finite2"].sum()
+            ),
             lambda result: result >= 0.3 - 1e-6,
         ),
     ],
