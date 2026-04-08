@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Any, TypeVar
 import cattrs
 import numpy as np
 import pandas as pd
-from attrs import Attribute, define, evolve, field, fields
+from attrs import Attribute, define, evolve, field, fields, setters
 from attrs.converters import optional
 from attrs.validators import instance_of
 from typing_extensions import override
@@ -131,7 +131,9 @@ class Campaign(SerialMixin):
     recommender: RecommenderProtocol = field(
         factory=TwoPhaseMetaRecommender,
         validator=instance_of(RecommenderProtocol),
-        on_setattr=_set_with_cache_cleared,
+        on_setattr=setters.pipe(
+            setters.convert, setters.validate, _set_with_cache_cleared
+        ),
     )
     """The employed recommender"""
 
@@ -140,7 +142,9 @@ class Campaign(SerialMixin):
         default=AutoBool.AUTO,
         converter=AutoBool.from_unstructured,  # type: ignore[misc]
         validator=_validate_allow_flag,
-        on_setattr=_set_with_cache_cleared,
+        on_setattr=setters.pipe(
+            setters.convert, setters.validate, _set_with_cache_cleared
+        ),
         kw_only=True,
     )
     """Allow recommending experiments that have already been measured."""
@@ -150,7 +154,9 @@ class Campaign(SerialMixin):
         default=AutoBool.AUTO,
         converter=AutoBool.from_unstructured,  # type: ignore[misc]
         validator=_validate_allow_flag,
-        on_setattr=_set_with_cache_cleared,
+        on_setattr=setters.pipe(
+            setters.convert, setters.validate, _set_with_cache_cleared
+        ),
         kw_only=True,
     )
     """Allow recommending experiments that have already been recommended."""
@@ -160,7 +166,9 @@ class Campaign(SerialMixin):
         default=AutoBool.AUTO,
         converter=AutoBool.from_unstructured,  # type: ignore[misc]
         validator=_validate_allow_flag,
-        on_setattr=_set_with_cache_cleared,
+        on_setattr=setters.pipe(
+            setters.convert, setters.validate, _set_with_cache_cleared
+        ),
         kw_only=True,
     )
     """Allow recommending pending experiments."""
@@ -255,7 +263,8 @@ class Campaign(SerialMixin):
     @allow_recommending_already_measured.setter
     def allow_recommending_already_measured(self, value: bool) -> None:
         """Set candidate flag for already measured experiments."""
-        self._allow_recommending_already_measured = value
+        # Note: uses attrs converter
+        self._allow_recommending_already_measured = value  # type: ignore[assignment]
 
     @property
     def allow_recommending_already_recommended(self) -> bool:
@@ -267,7 +276,8 @@ class Campaign(SerialMixin):
     @allow_recommending_already_recommended.setter
     def allow_recommending_already_recommended(self, value: bool) -> None:
         """Set candidate flag for already recommended experiments."""
-        self._allow_recommending_already_recommended = value
+        # Note: uses attrs converter
+        self._allow_recommending_already_recommended = value  # type: ignore[assignment]
 
     @property
     def allow_recommending_pending_experiments(self) -> bool:
@@ -279,7 +289,8 @@ class Campaign(SerialMixin):
     @allow_recommending_pending_experiments.setter
     def allow_recommending_pending_experiments(self, value: bool) -> None:
         """Set candidate flag for pending experiments."""
-        self._allow_recommending_pending_experiments = value
+        # Note: uses attrs converter
+        self._allow_recommending_pending_experiments = value  # type: ignore[assignment]
 
     @classmethod
     def from_config(cls, config_json: str) -> Campaign:
