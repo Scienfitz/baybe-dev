@@ -185,3 +185,6 @@ fallback_version = "0.0+unknown"
 
 [tool.setuptools]
 packages = ["baybe"]
+
+[tool.uv]
+exclude-newer = "7 days"
