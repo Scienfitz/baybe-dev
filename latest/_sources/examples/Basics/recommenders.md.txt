@@ -247,15 +247,15 @@ print(recommendation)
     
     
     Recommended experiments: 
-               Solvent                Base                        Ligand  \
-    346       p-Xylene      Cesium acetate  Di-tert-butylphenylphosphine   
-    398       p-Xylene   Potassium acetate  Di-tert-butylphenylphosphine   
-    199  Butyornitrile  Potassium pivalate                     BrettPhos   
+             Solvent            Base                        Ligand  Temperature  \
+    13   Butyl Ester  Cesium acetate                     BrettPhos        105.0   
+    18   Butyl Ester  Cesium acetate  Di-tert-butylphenylphosphine         90.0   
+    241         DMAc  Cesium acetate  Di-tert-butylphenylphosphine        120.0   
     
-         Temperature  Concentration  
-    346        105.0          0.100  
-    398         90.0          0.153  
-    199         90.0          0.100  
+         Concentration  
+    13           0.100  
+    18           0.057  
+    241          0.100  
 
 
 
@@ -268,15 +268,15 @@ print(recommendation)
     
     
     Recommended experiments with fake measured values: 
-               Solvent                Base                        Ligand  \
-    346       p-Xylene      Cesium acetate  Di-tert-butylphenylphosphine   
-    398       p-Xylene   Potassium acetate  Di-tert-butylphenylphosphine   
-    199  Butyornitrile  Potassium pivalate                     BrettPhos   
+             Solvent            Base                        Ligand  Temperature  \
+    13   Butyl Ester  Cesium acetate                     BrettPhos        105.0   
+    18   Butyl Ester  Cesium acetate  Di-tert-butylphenylphosphine         90.0   
+    241         DMAc  Cesium acetate  Di-tert-butylphenylphosphine        120.0   
     
-         Temperature  Concentration      yield  
-    346        105.0          0.100  95.922831  
-    398         90.0          0.153  79.568222  
-    199         90.0          0.100 -58.775416  
+         Concentration      yield  
+    13           0.100  45.807369  
+    18           0.057 -40.819333  
+    241          0.100 -86.090799  
 
 
 
