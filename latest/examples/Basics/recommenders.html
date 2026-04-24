@@ -1335,15 +1335,15 @@ as follows.</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Recommended experiments: 
-         Solvent            Base                        Ligand  Temperature  \
-13   Butyl Ester  Cesium acetate                     BrettPhos        105.0   
-18   Butyl Ester  Cesium acetate  Di-tert-butylphenylphosphine         90.0   
-241         DMAc  Cesium acetate  Di-tert-butylphenylphosphine        120.0   
+           Solvent                Base                        Ligand  \
+213  Butyornitrile  Potassium pivalate  Di-tert-butylphenylphosphine   
+16     Butyl Ester      Cesium acetate                     BrettPhos   
+283           DMAc   Potassium acetate                     BrettPhos   
 
-     Concentration  
-13           0.100  
-18           0.057  
-241          0.100  
+     Temperature  Concentration  
+213        120.0          0.057  
+16         120.0          0.100  
+283        105.0          0.100  
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_fake_measurements</span><span class="p">(</span><span class="n">recommendation</span><span class="p">,</span> <span class="n">campaign</span><span class="o">.</span><span class="n">targets</span><span class="p">)</span>
@@ -1352,15 +1352,15 @@ as follows.</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Recommended experiments with fake measured values: 
-         Solvent            Base                        Ligand  Temperature  \
-13   Butyl Ester  Cesium acetate                     BrettPhos        105.0   
-18   Butyl Ester  Cesium acetate  Di-tert-butylphenylphosphine         90.0   
-241         DMAc  Cesium acetate  Di-tert-butylphenylphosphine        120.0   
+           Solvent                Base                        Ligand  \
+213  Butyornitrile  Potassium pivalate  Di-tert-butylphenylphosphine   
+16     Butyl Ester      Cesium acetate                     BrettPhos   
+283           DMAc   Potassium acetate                     BrettPhos   
 
-     Concentration      yield  
-13           0.100  45.807369  
-18           0.057 -40.819333  
-241          0.100 -86.090799  
+     Temperature  Concentration      yield  
+213        120.0          0.057  39.352369  
+16         120.0          0.100 -71.487250  
+283        105.0          0.100 -58.619379  
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">campaign</span><span class="o">.</span><span class="n">add_measurements</span><span class="p">(</span><span class="n">recommendation</span><span class="p">)</span>

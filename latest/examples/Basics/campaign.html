@@ -1218,13 +1218,9 @@ objective.</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Recommended measurements with batch_size = 2: 
-         Solvent                Base                        Ligand  \
-101  Butyl Ester  Potassium pivalate  Di-tert-butylphenylphosphine   
-231         DMAc      Cesium acetate                     BrettPhos   
-
-     Temperature  Concentration  
-101         90.0          0.153  
-231        120.0          0.057  
+      Solvent               Base     Ligand  Temperature  Concentration
+387  p-Xylene  Potassium acetate  BrettPhos         90.0          0.057
+389  p-Xylene  Potassium acetate  BrettPhos         90.0          0.153
 </pre></div>
 </div>
 <p>Adding target values is done by creating a new column in the <code class="docutils literal notranslate"><span class="pre">recommendation</span></code>
@@ -1237,13 +1233,13 @@ We then update the campaign by adding the measurements.</p>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Recommended experiments with fake measured values: 
-         Solvent                Base                        Ligand  \
-101  Butyl Ester  Potassium pivalate  Di-tert-butylphenylphosphine   
-231         DMAc      Cesium acetate                     BrettPhos   
+      Solvent               Base     Ligand  Temperature  Concentration  \
+387  p-Xylene  Potassium acetate  BrettPhos         90.0          0.057   
+389  p-Xylene  Potassium acetate  BrettPhos         90.0          0.153   
 
-     Temperature  Concentration      yield  
-101         90.0          0.153 -88.101100  
-231        120.0          0.057  86.587787  
+         yield  
+387 -77.083393  
+389 -88.334021  
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">campaign</span><span class="o">.</span><span class="n">add_measurements</span><span class="p">(</span><span class="n">recommendation</span><span class="p">)</span>
