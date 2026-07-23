@@ -5,6 +5,7 @@ RQKernel
 
 .. autoclass:: RQKernel
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,12 +16,19 @@ RQKernel
    .. autosummary::
    
       ~RQKernel.__init__
+   
       ~RQKernel.from_dict
+   
       ~RQKernel.from_json
+   
       ~RQKernel.to_dict
+   
       ~RQKernel.to_factory
+   
       ~RQKernel.to_gpytorch
+   
       ~RQKernel.to_json
+   
    
    
 
@@ -32,5 +40,6 @@ RQKernel
    
       ~RQKernel.lengthscale_prior
       ~RQKernel.lengthscale_initial_value
+      ~RQKernel.parameter_names
    
    

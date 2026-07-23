@@ -5,6 +5,7 @@ DiscreteExcludeConstraint
 
 .. autoclass:: DiscreteExcludeConstraint
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,14 +16,23 @@ DiscreteExcludeConstraint
    .. autosummary::
    
       ~DiscreteExcludeConstraint.__init__
+   
       ~DiscreteExcludeConstraint.from_dict
+   
       ~DiscreteExcludeConstraint.from_json
+   
       ~DiscreteExcludeConstraint.get_invalid
+   
       ~DiscreteExcludeConstraint.get_invalid_polars
+   
       ~DiscreteExcludeConstraint.get_valid
+   
       ~DiscreteExcludeConstraint.summary
+   
       ~DiscreteExcludeConstraint.to_dict
+   
       ~DiscreteExcludeConstraint.to_json
+   
    
    
 
@@ -36,6 +46,7 @@ DiscreteExcludeConstraint
       ~DiscreteExcludeConstraint.combiner
       ~DiscreteExcludeConstraint.eval_during_creation
       ~DiscreteExcludeConstraint.eval_during_modeling
+      ~DiscreteExcludeConstraint.has_polars_implementation
       ~DiscreteExcludeConstraint.is_continuous
       ~DiscreteExcludeConstraint.is_discrete
       ~DiscreteExcludeConstraint.numerical_only

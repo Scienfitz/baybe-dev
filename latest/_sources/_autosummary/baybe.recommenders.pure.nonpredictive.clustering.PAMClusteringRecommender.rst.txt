@@ -5,6 +5,7 @@ PAMClusteringRecommender
 
 .. autoclass:: PAMClusteringRecommender
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,7 +16,9 @@ PAMClusteringRecommender
    .. autosummary::
    
       ~PAMClusteringRecommender.__init__
+   
       ~PAMClusteringRecommender.recommend
+   
    
    
 
@@ -31,5 +34,6 @@ PAMClusteringRecommender
       ~PAMClusteringRecommender.compatibility
       ~PAMClusteringRecommender.model_cluster_num_parameter_name
       ~PAMClusteringRecommender.model_params
+      ~PAMClusteringRecommender.supports_discrete_subset_generating_constraints
    
    

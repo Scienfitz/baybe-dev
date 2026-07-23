@@ -5,6 +5,7 @@ PureRecommender
 
 .. autoclass:: PureRecommender
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,7 +16,9 @@ PureRecommender
    .. autosummary::
    
       ~PureRecommender.__init__
+   
       ~PureRecommender.recommend
+   
    
    
 
@@ -28,6 +31,7 @@ PureRecommender
       ~PureRecommender.allow_recommending_already_measured
       ~PureRecommender.allow_recommending_pending_experiments
       ~PureRecommender.allow_repeated_recommendations
+      ~PureRecommender.supports_discrete_subset_generating_constraints
       ~PureRecommender.compatibility
    
    

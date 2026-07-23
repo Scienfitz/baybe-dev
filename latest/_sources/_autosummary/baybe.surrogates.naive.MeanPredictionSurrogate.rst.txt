@@ -5,6 +5,7 @@ MeanPredictionSurrogate
 
 .. autoclass:: MeanPredictionSurrogate
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,16 +16,25 @@ MeanPredictionSurrogate
    .. autosummary::
    
       ~MeanPredictionSurrogate.__init__
-      ~MeanPredictionSurrogate.augment_measurements
+   
       ~MeanPredictionSurrogate.fit
+   
       ~MeanPredictionSurrogate.from_dict
+   
       ~MeanPredictionSurrogate.from_json
+   
       ~MeanPredictionSurrogate.posterior
+   
       ~MeanPredictionSurrogate.posterior_stats
+   
       ~MeanPredictionSurrogate.replicate
+   
       ~MeanPredictionSurrogate.to_botorch
+   
       ~MeanPredictionSurrogate.to_dict
+   
       ~MeanPredictionSurrogate.to_json
+   
    
    
 
@@ -37,6 +47,5 @@ MeanPredictionSurrogate
       ~MeanPredictionSurrogate.is_available
       ~MeanPredictionSurrogate.supports_multi_output
       ~MeanPredictionSurrogate.supports_transfer_learning
-      ~MeanPredictionSurrogate.symmetries
    
    

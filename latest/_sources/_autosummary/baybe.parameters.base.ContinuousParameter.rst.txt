@@ -5,6 +5,7 @@ ContinuousParameter
 
 .. autoclass:: ContinuousParameter
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,15 +16,25 @@ ContinuousParameter
    .. autosummary::
    
       ~ContinuousParameter.__init__
+   
       ~ContinuousParameter.from_dict
+   
       ~ContinuousParameter.from_json
+   
       ~ContinuousParameter.is_equivalent
+   
       ~ContinuousParameter.is_in_range
+   
       ~ContinuousParameter.summary
+   
       ~ContinuousParameter.to_dict
+   
       ~ContinuousParameter.to_json
+   
       ~ContinuousParameter.to_searchspace
+   
       ~ContinuousParameter.to_subspace
+   
    
    
 

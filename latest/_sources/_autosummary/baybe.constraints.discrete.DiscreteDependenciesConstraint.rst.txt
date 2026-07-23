@@ -5,6 +5,7 @@ DiscreteDependenciesConstraint
 
 .. autoclass:: DiscreteDependenciesConstraint
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,15 +16,25 @@ DiscreteDependenciesConstraint
    .. autosummary::
    
       ~DiscreteDependenciesConstraint.__init__
+   
       ~DiscreteDependenciesConstraint.from_dict
+   
       ~DiscreteDependenciesConstraint.from_json
+   
       ~DiscreteDependenciesConstraint.get_invalid
+   
       ~DiscreteDependenciesConstraint.get_invalid_polars
+   
       ~DiscreteDependenciesConstraint.get_valid
+   
       ~DiscreteDependenciesConstraint.summary
+   
       ~DiscreteDependenciesConstraint.to_dict
+   
       ~DiscreteDependenciesConstraint.to_json
+   
       ~DiscreteDependenciesConstraint.to_symmetries
+   
    
    
 
@@ -38,6 +49,7 @@ DiscreteDependenciesConstraint
       ~DiscreteDependenciesConstraint.permutation_invariant
       ~DiscreteDependenciesConstraint.eval_during_creation
       ~DiscreteDependenciesConstraint.eval_during_modeling
+      ~DiscreteDependenciesConstraint.has_polars_implementation
       ~DiscreteDependenciesConstraint.is_continuous
       ~DiscreteDependenciesConstraint.is_discrete
       ~DiscreteDependenciesConstraint.numerical_only

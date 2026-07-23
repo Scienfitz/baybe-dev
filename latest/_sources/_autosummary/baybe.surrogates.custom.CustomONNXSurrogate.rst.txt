@@ -5,6 +5,7 @@ CustomONNXSurrogate
 
 .. autoclass:: CustomONNXSurrogate
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,17 +16,27 @@ CustomONNXSurrogate
    .. autosummary::
    
       ~CustomONNXSurrogate.__init__
-      ~CustomONNXSurrogate.augment_measurements
+   
       ~CustomONNXSurrogate.fit
+   
       ~CustomONNXSurrogate.from_dict
+   
       ~CustomONNXSurrogate.from_json
+   
       ~CustomONNXSurrogate.posterior
+   
       ~CustomONNXSurrogate.posterior_stats
+   
       ~CustomONNXSurrogate.replicate
+   
       ~CustomONNXSurrogate.to_botorch
+   
       ~CustomONNXSurrogate.to_dict
+   
       ~CustomONNXSurrogate.to_json
+   
       ~CustomONNXSurrogate.validate_compatibility
+   
    
    
 
@@ -40,6 +51,5 @@ CustomONNXSurrogate
       ~CustomONNXSurrogate.is_available
       ~CustomONNXSurrogate.supports_multi_output
       ~CustomONNXSurrogate.supports_transfer_learning
-      ~CustomONNXSurrogate.symmetries
    
    

@@ -5,6 +5,7 @@ KMeansClusteringRecommender
 
 .. autoclass:: KMeansClusteringRecommender
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,7 +16,9 @@ KMeansClusteringRecommender
    .. autosummary::
    
       ~KMeansClusteringRecommender.__init__
+   
       ~KMeansClusteringRecommender.recommend
+   
    
    
 
@@ -31,5 +34,6 @@ KMeansClusteringRecommender
       ~KMeansClusteringRecommender.compatibility
       ~KMeansClusteringRecommender.model_cluster_num_parameter_name
       ~KMeansClusteringRecommender.model_params
+      ~KMeansClusteringRecommender.supports_discrete_subset_generating_constraints
    
    

@@ -5,6 +5,7 @@ DiscreteNoLabelDuplicatesConstraint
 
 .. autoclass:: DiscreteNoLabelDuplicatesConstraint
    :members:                              
+   :special-members: __call__
    :show-inheritance:                 
    :inherited-members:
 
@@ -15,14 +16,23 @@ DiscreteNoLabelDuplicatesConstraint
    .. autosummary::
    
       ~DiscreteNoLabelDuplicatesConstraint.__init__
+   
       ~DiscreteNoLabelDuplicatesConstraint.from_dict
+   
       ~DiscreteNoLabelDuplicatesConstraint.from_json
+   
       ~DiscreteNoLabelDuplicatesConstraint.get_invalid
+   
       ~DiscreteNoLabelDuplicatesConstraint.get_invalid_polars
+   
       ~DiscreteNoLabelDuplicatesConstraint.get_valid
+   
       ~DiscreteNoLabelDuplicatesConstraint.summary
+   
       ~DiscreteNoLabelDuplicatesConstraint.to_dict
+   
       ~DiscreteNoLabelDuplicatesConstraint.to_json
+   
    
    
 
@@ -34,6 +44,7 @@ DiscreteNoLabelDuplicatesConstraint
    
       ~DiscreteNoLabelDuplicatesConstraint.eval_during_creation
       ~DiscreteNoLabelDuplicatesConstraint.eval_during_modeling
+      ~DiscreteNoLabelDuplicatesConstraint.has_polars_implementation
       ~DiscreteNoLabelDuplicatesConstraint.is_continuous
       ~DiscreteNoLabelDuplicatesConstraint.is_discrete
       ~DiscreteNoLabelDuplicatesConstraint.numerical_only
