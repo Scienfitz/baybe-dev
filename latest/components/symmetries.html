@@ -1222,12 +1222,15 @@
 <h1>Symmetry<a class="headerlink" href="#symmetry" title="Link to this heading">¶</a></h1>
 <p><a class="reference internal" href="../_autosummary/baybe.symmetries.base.Symmetry.html#baybe.symmetries.base.Symmetry" title="baybe.symmetries.base.Symmetry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Symmetry</span></code></a> is a concept tied to the structure of the searchspace.
 It is thus closely related to a <a class="reference internal" href="../_autosummary/baybe.constraints.base.Constraint.html#baybe.constraints.base.Constraint" title="baybe.constraints.base.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a>, but has a
-different purpose in BayBE. If the searchspace is symmetric in any sense, you can
-exclude the degenerate parts via a constraint. But this would not change the modeling
-process. The role of a <a class="reference internal" href="../_autosummary/baybe.symmetries.base.Symmetry.html#baybe.symmetries.base.Symmetry" title="baybe.symmetries.base.Symmetry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Symmetry</span></code></a> is exactly this: Influence how
-the surrogate model is constructed to include the knowledge about the symmetry. This
-can be applied independently of constraints. For an example of the influence of
-symmetries and constraints on the optimization of a permutation invariant function,
+different purpose in BayBE:</p>
+<ul class="simple">
+<li><p><strong>Constraint</strong>: Excludes parts of the searchspace from recommendation. If a problem
+shows invariance, you can use constraints to exclude redundant regions from the search.</p></li>
+<li><p><strong>Symmetry</strong>: Influences the way the problem is modeled, for example by applying
+symmetry-aware data augmentation. This can be applied independently of constraints.</p></li>
+</ul>
+<p>For an example of the influence of constraints and/or data augmentation via symmetries
+on the optimization of a permutation invariant function,
 <a class="reference internal" href="../examples/Symmetries/permutation.html"><span class="doc std std-doc">see here</span></a>.</p>
 <section id="definitions">
 <h2>Definitions<a class="headerlink" href="#definitions" title="Link to this heading">¶</a></h2>

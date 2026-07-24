@@ -1322,13 +1322,14 @@ of the searchspace. This is exactly what
 <a class="reference internal" href="../../_autosummary/baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.html#baybe.constraints.discrete.DiscretePermutationInvarianceConstraint" title="baybe.constraints.discrete.DiscretePermutationInvarianceConstraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscretePermutationInvarianceConstraint</span></code></a> does:
 Remove entries that are “duplicated” in the sense of already being represented by
 another invariant point.</p>
-<p>If the recommender is additionally configured with <code class="docutils literal notranslate"><span class="pre">symmetries</span></code>, the model will be
-fit with an extended set of points, including augmented ones. So as a user, you don’t
-have to generate permutations and add them manually. Depending on the surrogate model,
-this might have different impacts. For example, we can expect a strong effect for
-tree-based models because their splits are always parallel to the parameter axes.
-Thus, without augmented measurements, it is easy to fall into suboptimal splits and
-overfit. We illustrate this by using the
+<p>If a compatible recommender is additionally configured with
+<a class="reference internal" href="../../_autosummary/baybe.recommenders.pure.bayesian.base.BayesianRecommender.html#baybe.recommenders.pure.bayesian.base.BayesianRecommender.symmetries" title="baybe.recommenders.pure.bayesian.base.BayesianRecommender.symmetries"><code class="xref py py-attr docutils literal notranslate"><span class="pre">symmetries</span></code></a>, the
+model will be fit with an extended set of points, including augmented ones. So as a
+user, you don’t have to generate permutations and add them manually. Depending on the
+surrogate model, this might have different impacts. For example, we can expect a
+strong effect for tree-based models because their splits are always parallel to the
+parameter axes. Thus, without augmented measurements, it is easy to fall into
+suboptimal splits and overfit. We illustrate this by using the
 <a class="reference internal" href="../../_autosummary/baybe.surrogates.ngboost.NGBoostSurrogate.html#baybe.surrogates.ngboost.NGBoostSurrogate" title="baybe.surrogates.ngboost.NGBoostSurrogate"><code class="xref py py-class docutils literal notranslate"><span class="pre">NGBoostSurrogate</span></code></a>.</p>
 </section>
 <section id="the-optimization-problem">
@@ -1365,7 +1366,7 @@ Specifically, the recommender has a
 <a class="reference internal" href="../../_autosummary/baybe.recommenders.pure.bayesian.base.BayesianRecommender.html#baybe.recommenders.pure.bayesian.base.BayesianRecommender.symmetries" title="baybe.recommenders.pure.bayesian.base.BayesianRecommender.symmetries"><code class="xref py py-attr docutils literal notranslate"><span class="pre">symmetries</span></code></a>
 attribute. When symmetries are present, BayBE will automatically augment
 measurements internally before performing the model fit. To construct symmetries
-quickly, we use the <code class="docutils literal notranslate"><span class="pre">to_symmetry</span></code> method of the constraint.</p>
+conveniently, we use the <code class="docutils literal notranslate"><span class="pre">to_symmetry</span></code> method of the constraint.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">symmetry</span> <span class="o">=</span> <span class="n">constraint</span><span class="o">.</span><span class="n">to_symmetry</span><span class="p">()</span>
 <span class="n">recommender_plain</span> <span class="o">=</span> <span class="n">TwoPhaseMetaRecommender</span><span class="p">(</span>
     <span class="n">recommender</span><span class="o">=</span><span class="n">BotorchRecommender</span><span class="p">(</span><span class="n">surrogate_model</span><span class="o">=</span><span class="n">NGBoostSurrogate</span><span class="p">())</span>
@@ -1423,6 +1424,8 @@ campaigns:</p>
     <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Constrained&quot;</span><span class="p">,</span>
     <span class="n">style</span><span class="o">=</span><span class="s2">&quot;Augmented&quot;</span><span class="p">,</span>
     <span class="n">markers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">markevery</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">dashes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
 <span class="p">)</span>
@@ -1434,15 +1437,9 @@ campaigns:</p>
 </pre></div>
 </div>
 <p>We find that the campaigns utilizing the permutation invariance constraint
-perform better than the ones without. This can be attributed simply to the reduced
-number of searchspace points they operate on. However, this effect is rather minor
-compared to the effect of augmentation.</p>
-<p>Furthermore, there is a strong impact on whether data augmentation is used or not,
-the effect we expected for a tree-based surrogate model. Indeed, the campaign with
-constraint but without augmentation is barely better than the campaign not utilizing
-the constraint at all. Conversely, the data-augmented campaign has a clearly superior
-performance. The best result is achieved by using both constraints and data
-augmentation.</p>
+perform similar to the ones without. However, the much stronger impact comes from
+whether data augmentation is used or not, the effect we expected for a tree-based
+surrogate model.</p>
 <img alt="../../_images/permutation.svg" class="align-center" src="../../_images/permutation.svg" />
 </section>
 </section>
