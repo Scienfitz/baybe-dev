@@ -43,12 +43,11 @@ DiscreteProductConstraint
    .. autosummary::
    
       ~DiscreteProductConstraint.condition
-      ~DiscreteProductConstraint.eval_during_creation
-      ~DiscreteProductConstraint.eval_during_modeling
       ~DiscreteProductConstraint.has_polars_implementation
       ~DiscreteProductConstraint.is_continuous
       ~DiscreteProductConstraint.is_discrete
       ~DiscreteProductConstraint.numerical_only
       ~DiscreteProductConstraint.parameters
+      ~DiscreteProductConstraint.exclude
    
    

@@ -47,12 +47,11 @@ DiscreteDependenciesConstraint
       ~DiscreteDependenciesConstraint.conditions
       ~DiscreteDependenciesConstraint.affected_parameters
       ~DiscreteDependenciesConstraint.permutation_invariant
-      ~DiscreteDependenciesConstraint.eval_during_creation
-      ~DiscreteDependenciesConstraint.eval_during_modeling
       ~DiscreteDependenciesConstraint.has_polars_implementation
       ~DiscreteDependenciesConstraint.is_continuous
       ~DiscreteDependenciesConstraint.is_discrete
       ~DiscreteDependenciesConstraint.numerical_only
       ~DiscreteDependenciesConstraint.parameters
+      ~DiscreteDependenciesConstraint.exclude
    
    

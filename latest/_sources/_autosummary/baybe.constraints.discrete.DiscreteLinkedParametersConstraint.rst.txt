@@ -42,12 +42,11 @@ DiscreteLinkedParametersConstraint
 
    .. autosummary::
    
-      ~DiscreteLinkedParametersConstraint.eval_during_creation
-      ~DiscreteLinkedParametersConstraint.eval_during_modeling
       ~DiscreteLinkedParametersConstraint.has_polars_implementation
       ~DiscreteLinkedParametersConstraint.is_continuous
       ~DiscreteLinkedParametersConstraint.is_discrete
       ~DiscreteLinkedParametersConstraint.numerical_only
       ~DiscreteLinkedParametersConstraint.parameters
+      ~DiscreteLinkedParametersConstraint.exclude
    
    

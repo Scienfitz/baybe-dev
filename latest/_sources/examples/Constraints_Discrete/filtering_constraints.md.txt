@@ -1,7 +1,6 @@
-# Example for using exclusion constraints in discrete searchspaces
+# Example for using filtering constraints in discrete searchspaces
 
-This examples shows how an exclusion constraint can be created for a discrete
-searchspace.
+This example shows how a filtering constraint can be created for a discrete searchspace.
 This can be used if some parameter values are incompatible with values of another
 parameter.
 
@@ -19,7 +18,7 @@ import numpy as np
 ```python
 from baybe import Campaign
 from baybe.constraints import (
-    DiscreteExcludeConstraint,
+    DiscreteFilteringConstraint,
     SubSelectionCondition,
     ThresholdCondition,
 )
@@ -76,13 +75,14 @@ compatible with temperatures larger than 151 and should thus be excluded.
 
 
 ```python
-constraint_1 = DiscreteExcludeConstraint(
+constraint_1 = DiscreteFilteringConstraint(
     parameters=["Temp", "Solv"],
     combiner="AND",
     conditions=[
         ThresholdCondition(threshold=151, operator=">"),
         SubSelectionCondition(selection=["C4", "C2"]),
     ],
+    exclude=True,
 )
 ```
 
@@ -91,13 +91,14 @@ compatible with pressures larger than 5 and should thus be excluded.
 
 
 ```python
-constraint_2 = DiscreteExcludeConstraint(
+constraint_2 = DiscreteFilteringConstraint(
     parameters=["Pressure", "Solv"],
     combiner="AND",
     conditions=[
         ThresholdCondition(threshold=5, operator=">"),
         SubSelectionCondition(selection=["C5", "C6"]),
     ],
+    exclude=True,
 )
 ```
 
@@ -106,13 +107,14 @@ combined with temperatures above 120.
 
 
 ```python
-constraint_3 = DiscreteExcludeConstraint(
+constraint_3 = DiscreteFilteringConstraint(
     parameters=["Pressure", "Temp"],
     combiner="AND",
     conditions=[
         ThresholdCondition(threshold=3.0, operator="<"),
         ThresholdCondition(threshold=120.0, operator=">"),
     ],
+    exclude=True,
 )
 ```
 
@@ -182,9 +184,9 @@ NaN
                 [1150 rows x 4 columns]
              Constraints
                               Type Affected_Paramet
-                0  DiscreteExcl...     [Temp, Solv]
-                1  DiscreteExcl...  [Pressure, S...
-                2  DiscreteExcl...  [Pressure, T...
+                0  DiscreteFilt...     [Temp, Solv]
+                1  DiscreteFilt...  [Pressure, S...
+                2  DiscreteFilt...  [Pressure, T...
              Computational Representation
                       Pressure  Solv_RDKIT2DDESC  ...  Speed   Temp
                 0          1.0              0.0   ...    0.0  100.0
@@ -210,11 +212,9 @@ NaN
                 Surrogate
                    CompositeSurrogate(surrogates=_ReplicationMapping(template=GaussianPr
 ocessSurrogate(_searchspace=None, _objective=None, _measurements=None,
-_measurements_hash=None, _input_scaler=None, _output_scaler=None,
-kernel_factory=BayBEKernelFactory(parameter_selector=None),
-mean_factory=BayBEMeanFactory(), likelihood_factory=BayBELikelihoodFactory(),
-fit_criterion_factory=BayBEFitCriterionFactory(), _symmetries=(), _model=None),
-_data={}), _modeled_quantity_names=None)
+_measurements_hash=None, _input_scaler=None, _output_scaler=None, kernel_factory=None,
+mean_factory=None, likelihood_factory=None, fit_criterion_factory=None, _symmetries=(),
+_model=None), _data={}), _modeled_quantity_names=None)
                 Acquisition function: None
                 Compatibility: SearchSpaceType.HYBRID
                 Sequential continuous: True

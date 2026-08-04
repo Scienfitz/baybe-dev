@@ -305,7 +305,7 @@
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="examples/Constraints_Discrete/Constraints_Discrete.html">Constraints Discrete</a><input aria-label="Toggle navigation of Constraints Discrete" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="examples/Constraints_Discrete/exclusion_constraints.html">Exclusion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/Constraints_Discrete/filtering_constraints.html">Filtering</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples/Constraints_Discrete/dependency_constraints.html">Dependency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples/Constraints_Discrete/custom_constraints.html">Custom</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples/Constraints_Discrete/prodsum_constraints.html">Product/Sum</a></li>
@@ -423,6 +423,7 @@
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.base.ContinuousConstraint.html">ContinuousConstraint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.base.ContinuousNonlinearConstraint.html">ContinuousNonlinearConstraint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.base.DiscreteConstraint.html">DiscreteConstraint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html">DiscretePruningConstraint</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/baybe.constraints.conditions.html">baybe.constraints.conditions</a><input aria-label="Toggle navigation of baybe.constraints.conditions" class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
@@ -437,11 +438,12 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.html">baybe.constraints.discrete</a><input aria-label="Toggle navigation of baybe.constraints.discrete" class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html">baybe.constraints.discrete.DiscreteExcludeConstraint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html">DiscreteBatchConstraint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html">DiscreteCardinalityConstraint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscreteCustomConstraint.html">DiscreteCustomConstraint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html">DiscreteDependenciesConstraint</a></li>
-<li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html">DiscreteExcludeConstraint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html">DiscreteFilteringConstraint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html">DiscreteLinkedParametersConstraint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint.html">DiscreteNoLabelDuplicatesConstraint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.html">DiscretePermutationInvarianceConstraint</a></li>
@@ -1280,6 +1282,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.to_json.params.**kwargs">(baybe.constraints.base.DiscreteConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.to_json.params.**kwargs">[1]</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.to_json.params.**kwargs">(baybe.constraints.base.DiscretePruningConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.to_json.params.**kwargs">[1]</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.to_json.params.**kwargs">(baybe.constraints.conditions.Condition.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.to_json.params.**kwargs">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.to_json.params.**kwargs">(baybe.constraints.conditions.SubSelectionCondition.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.to_json.params.**kwargs">[1]</a>
@@ -1298,7 +1302,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json.params.**kwargs">(baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json.params.**kwargs">[1]</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.to_json.params.**kwargs">(baybe.constraints.discrete.DiscreteExcludeConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.to_json.params.**kwargs">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.to_json.params.**kwargs">(baybe.constraints.discrete.DiscreteFilteringConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.to_json.params.**kwargs">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json.params.**kwargs">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json.params.**kwargs">[1]</a>
 </li>
@@ -1670,6 +1674,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.__init__">(baybe.constraints.base.DiscreteConstraint method)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.__init__">(baybe.constraints.base.DiscretePruningConstraint method)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.__init__">(baybe.constraints.conditions.SubSelectionCondition method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.ThresholdCondition.html#baybe.constraints.conditions.ThresholdCondition.__init__">(baybe.constraints.conditions.ThresholdCondition method)</a>
@@ -1686,7 +1692,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.__init__">(baybe.constraints.discrete.DiscreteDependenciesConstraint method)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.__init__">(baybe.constraints.discrete.DiscreteExcludeConstraint method)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.__init__">(baybe.constraints.discrete.DiscreteFilteringConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.__init__">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint method)</a>
 </li>
@@ -2279,14 +2285,10 @@
           <li><a href="_autosummary/baybe.utils.dataframe.get_transform_objects.html#baybe.utils.dataframe.get_transform_objects.params.allow_extra">(baybe.utils.dataframe.get_transform_objects parameter)</a>, <a href="_autosummary/baybe.utils.dataframe.html#baybe.utils.dataframe.get_transform_objects.params.allow_extra">[1]</a>
 </li>
         </ul></li>
-        <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_invalid.params.allow_missing">allow_missing (baybe.constraints.base.DiscreteConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_invalid.params.allow_missing">[1]</a>
+        <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_invalid.params.allow_missing">allow_missing (baybe.constraints.base.DiscretePruningConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_invalid.params.allow_missing">[1]</a>
 
         <ul>
-          <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_valid.params.allow_missing">(baybe.constraints.base.DiscreteConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_valid.params.allow_missing">[1]</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_invalid.params.allow_missing">(baybe.constraints.discrete.DiscreteBatchConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_invalid.params.allow_missing">[1]</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_valid.params.allow_missing">(baybe.constraints.discrete.DiscreteBatchConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_valid.params.allow_missing">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_valid.params.allow_missing">(baybe.constraints.base.DiscretePruningConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_valid.params.allow_missing">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.get_invalid.params.allow_missing">(baybe.constraints.discrete.DiscreteCardinalityConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.get_invalid.params.allow_missing">[1]</a>
 </li>
@@ -2300,9 +2302,9 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.get_valid.params.allow_missing">(baybe.constraints.discrete.DiscreteDependenciesConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.get_valid.params.allow_missing">[1]</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_invalid.params.allow_missing">(baybe.constraints.discrete.DiscreteExcludeConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_invalid.params.allow_missing">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_invalid.params.allow_missing">(baybe.constraints.discrete.DiscreteFilteringConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_invalid.params.allow_missing">[1]</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_valid.params.allow_missing">(baybe.constraints.discrete.DiscreteExcludeConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_valid.params.allow_missing">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_valid.params.allow_missing">(baybe.constraints.discrete.DiscreteFilteringConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_valid.params.allow_missing">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.get_invalid.params.allow_missing">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.get_invalid.params.allow_missing">[1]</a>
 </li>
@@ -3913,7 +3915,7 @@
 </li>
         <li><a href="_autosummary/baybe.targets.utils.combine_numerical_targets.html#baybe.targets.utils.combine_numerical_targets">combine_numerical_targets() (in module baybe.targets.utils)</a>
 </li>
-        <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.combiner">combiner (baybe.constraints.discrete.DiscreteExcludeConstraint attribute)</a>
+        <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.combiner">combiner (baybe.constraints.discrete.DiscreteFilteringConstraint attribute)</a>
 </li>
         <li><a href="_autosummary/baybe.parameters.base.DiscreteParameter.html#baybe.parameters.base.DiscreteParameter.comp_df">comp_df (baybe.parameters.base.DiscreteParameter property)</a>
 
@@ -4042,7 +4044,7 @@
         <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.conditions">conditions (baybe.constraints.discrete.DiscreteDependenciesConstraint attribute)</a>
 
         <ul>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.conditions">(baybe.constraints.discrete.DiscreteExcludeConstraint attribute)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.conditions">(baybe.constraints.discrete.DiscreteFilteringConstraint attribute)</a>
 </li>
         </ul></li>
         <li><a href="_autosummary/baybe.campaign.Campaign.html#baybe.campaign.Campaign.from_config.params.config_json">config_json (baybe.campaign.Campaign.from_config parameter)</a>, <a href="_autosummary/baybe.campaign.Campaign.html#baybe.campaign.Campaign.from_config.params.config_json">[1]</a>
@@ -4291,14 +4293,10 @@
           <li><a href="_autosummary/baybe.objectives.botorch.ChainedMCObjective.html#baybe.objectives.botorch.ChainedMCObjective.xpu.params.device">(baybe.objectives.botorch.ChainedMCObjective.xpu parameter)</a>, <a href="_autosummary/baybe.objectives.botorch.ChainedMCObjective.html#baybe.objectives.botorch.ChainedMCObjective.xpu.params.device">[1]</a>
 </li>
         </ul></li>
-        <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_invalid.params.df">df (baybe.constraints.base.DiscreteConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_invalid.params.df">[1]</a>
+        <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_invalid.params.df">df (baybe.constraints.base.DiscretePruningConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_invalid.params.df">[1]</a>
 
         <ul>
-          <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_valid.params.df">(baybe.constraints.base.DiscreteConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_valid.params.df">[1]</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_invalid.params.df">(baybe.constraints.discrete.DiscreteBatchConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_invalid.params.df">[1]</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_valid.params.df">(baybe.constraints.discrete.DiscreteBatchConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_valid.params.df">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_valid.params.df">(baybe.constraints.base.DiscretePruningConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_valid.params.df">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.get_invalid.params.df">(baybe.constraints.discrete.DiscreteCardinalityConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.get_invalid.params.df">[1]</a>
 </li>
@@ -4312,9 +4310,9 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.get_valid.params.df">(baybe.constraints.discrete.DiscreteDependenciesConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.get_valid.params.df">[1]</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_invalid.params.df">(baybe.constraints.discrete.DiscreteExcludeConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_invalid.params.df">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_invalid.params.df">(baybe.constraints.discrete.DiscreteFilteringConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_invalid.params.df">[1]</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_valid.params.df">(baybe.constraints.discrete.DiscreteExcludeConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_valid.params.df">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_valid.params.df">(baybe.constraints.discrete.DiscreteFilteringConstraint.get_valid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_valid.params.df">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.get_invalid.params.df">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint.get_invalid parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.get_invalid.params.df">[1]</a>
 </li>
@@ -4456,6 +4454,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.from_dict.params.dictionary">(baybe.constraints.base.DiscreteConstraint.from_dict parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.from_dict.params.dictionary">[1]</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.from_dict.params.dictionary">(baybe.constraints.base.DiscretePruningConstraint.from_dict parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.from_dict.params.dictionary">[1]</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.from_dict.params.dictionary">(baybe.constraints.conditions.Condition.from_dict parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.from_dict.params.dictionary">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.from_dict.params.dictionary">(baybe.constraints.conditions.SubSelectionCondition.from_dict parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.from_dict.params.dictionary">[1]</a>
@@ -4474,7 +4474,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.from_dict.params.dictionary">(baybe.constraints.discrete.DiscreteDependenciesConstraint.from_dict parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.from_dict.params.dictionary">[1]</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.from_dict.params.dictionary">(baybe.constraints.discrete.DiscreteExcludeConstraint.from_dict parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.from_dict.params.dictionary">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.from_dict.params.dictionary">(baybe.constraints.discrete.DiscreteFilteringConstraint.from_dict parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.from_dict.params.dictionary">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.from_dict.params.dictionary">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint.from_dict parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.from_dict.params.dictionary">[1]</a>
 </li>
@@ -4687,7 +4687,9 @@
 </li>
         <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint">DiscreteDependenciesConstraint (class in baybe.constraints.discrete)</a>
 </li>
-        <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint">DiscreteExcludeConstraint (class in baybe.constraints.discrete)</a>
+        <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint">DiscreteExcludeConstraint() (in module baybe.constraints.discrete)</a>
+</li>
+        <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint">DiscreteFilteringConstraint (class in baybe.constraints.discrete)</a>
 </li>
         <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint">DiscreteLinkedParametersConstraint (class in baybe.constraints.discrete)</a>
 </li>
@@ -4698,6 +4700,8 @@
         <li><a href="_autosummary/baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.html#baybe.constraints.discrete.DiscretePermutationInvarianceConstraint">DiscretePermutationInvarianceConstraint (class in baybe.constraints.discrete)</a>
 </li>
         <li><a href="_autosummary/baybe.constraints.discrete.DiscreteProductConstraint.html#baybe.constraints.discrete.DiscreteProductConstraint">DiscreteProductConstraint (class in baybe.constraints.discrete)</a>
+</li>
+        <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint">DiscretePruningConstraint (class in baybe.constraints.base)</a>
 </li>
         <li><a href="_autosummary/baybe.utils.sampling_algorithms.DiscreteSamplingMethod.html#baybe.utils.sampling_algorithms.DiscreteSamplingMethod">DiscreteSamplingMethod (class in baybe.utils.sampling_algorithms)</a>
 </li>
@@ -4795,80 +4799,6 @@
         </ul></li>
         <li><a href="_autosummary/baybe.objectives.botorch.ChainedMCObjective.html#baybe.objectives.botorch.ChainedMCObjective.eval">eval() (baybe.objectives.botorch.ChainedMCObjective method)</a>
 </li>
-        <li><a href="_autosummary/baybe.constraints.base.CardinalityConstraint.html#baybe.constraints.base.CardinalityConstraint.eval_during_creation">eval_during_creation (baybe.constraints.base.CardinalityConstraint attribute)</a>
-
-        <ul>
-          <li><a href="_autosummary/baybe.constraints.base.Constraint.html#baybe.constraints.base.Constraint.eval_during_creation">(baybe.constraints.base.Constraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.base.ContinuousConstraint.html#baybe.constraints.base.ContinuousConstraint.eval_during_creation">(baybe.constraints.base.ContinuousConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.base.ContinuousNonlinearConstraint.html#baybe.constraints.base.ContinuousNonlinearConstraint.eval_during_creation">(baybe.constraints.base.ContinuousNonlinearConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.eval_during_creation">(baybe.constraints.base.DiscreteConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.continuous.ContinuousCardinalityConstraint.html#baybe.constraints.continuous.ContinuousCardinalityConstraint.eval_during_creation">(baybe.constraints.continuous.ContinuousCardinalityConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.continuous.ContinuousLinearConstraint.html#baybe.constraints.continuous.ContinuousLinearConstraint.eval_during_creation">(baybe.constraints.continuous.ContinuousLinearConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.eval_during_creation">(baybe.constraints.discrete.DiscreteBatchConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.eval_during_creation">(baybe.constraints.discrete.DiscreteCardinalityConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCustomConstraint.html#baybe.constraints.discrete.DiscreteCustomConstraint.eval_during_creation">(baybe.constraints.discrete.DiscreteCustomConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.eval_during_creation">(baybe.constraints.discrete.DiscreteDependenciesConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.eval_during_creation">(baybe.constraints.discrete.DiscreteExcludeConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.eval_during_creation">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint.html#baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint.eval_during_creation">(baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.html#baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.eval_during_creation">(baybe.constraints.discrete.DiscretePermutationInvarianceConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteProductConstraint.html#baybe.constraints.discrete.DiscreteProductConstraint.eval_during_creation">(baybe.constraints.discrete.DiscreteProductConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteSumConstraint.html#baybe.constraints.discrete.DiscreteSumConstraint.eval_during_creation">(baybe.constraints.discrete.DiscreteSumConstraint attribute)</a>
-</li>
-        </ul></li>
-        <li><a href="_autosummary/baybe.constraints.base.CardinalityConstraint.html#baybe.constraints.base.CardinalityConstraint.eval_during_modeling">eval_during_modeling (baybe.constraints.base.CardinalityConstraint attribute)</a>
-
-        <ul>
-          <li><a href="_autosummary/baybe.constraints.base.Constraint.html#baybe.constraints.base.Constraint.eval_during_modeling">(baybe.constraints.base.Constraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.base.ContinuousConstraint.html#baybe.constraints.base.ContinuousConstraint.eval_during_modeling">(baybe.constraints.base.ContinuousConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.base.ContinuousNonlinearConstraint.html#baybe.constraints.base.ContinuousNonlinearConstraint.eval_during_modeling">(baybe.constraints.base.ContinuousNonlinearConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.eval_during_modeling">(baybe.constraints.base.DiscreteConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.continuous.ContinuousCardinalityConstraint.html#baybe.constraints.continuous.ContinuousCardinalityConstraint.eval_during_modeling">(baybe.constraints.continuous.ContinuousCardinalityConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.continuous.ContinuousLinearConstraint.html#baybe.constraints.continuous.ContinuousLinearConstraint.eval_during_modeling">(baybe.constraints.continuous.ContinuousLinearConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscreteBatchConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscreteCardinalityConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCustomConstraint.html#baybe.constraints.discrete.DiscreteCustomConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscreteCustomConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscreteDependenciesConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscreteExcludeConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint.html#baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.html#baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscretePermutationInvarianceConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteProductConstraint.html#baybe.constraints.discrete.DiscreteProductConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscreteProductConstraint attribute)</a>
-</li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteSumConstraint.html#baybe.constraints.discrete.DiscreteSumConstraint.eval_during_modeling">(baybe.constraints.discrete.DiscreteSumConstraint attribute)</a>
-</li>
-        </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/baybe.acquisition.acqfs.ExpectedImprovement.html#baybe.acquisition.acqfs.ExpectedImprovement.evaluate">evaluate() (baybe.acquisition.acqfs.ExpectedImprovement method)</a>
 
         <ul>
@@ -4925,9 +4855,31 @@
           <li><a href="_autosummary/baybe.utils.boolean.AutoBool.html#baybe.utils.boolean.AutoBool.evaluate">(baybe.utils.boolean.AutoBool method)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/baybe.campaign.Campaign.html#baybe.campaign.Campaign.toggle_discrete_candidates.params.exclude">exclude (baybe.campaign.Campaign.toggle_discrete_candidates parameter)</a>, <a href="_autosummary/baybe.campaign.Campaign.html#baybe.campaign.Campaign.toggle_discrete_candidates.params.exclude">[1]</a>
 
         <ul>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.exclude">(baybe.constraints.base.DiscretePruningConstraint attribute)</a>
+</li>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.exclude">(baybe.constraints.discrete.DiscreteCardinalityConstraint attribute)</a>
+</li>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCustomConstraint.html#baybe.constraints.discrete.DiscreteCustomConstraint.exclude">(baybe.constraints.discrete.DiscreteCustomConstraint attribute)</a>
+</li>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.exclude">(baybe.constraints.discrete.DiscreteDependenciesConstraint attribute)</a>
+</li>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.exclude">(baybe.constraints.discrete.DiscreteFilteringConstraint attribute)</a>
+</li>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.exclude">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint attribute)</a>
+</li>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint.html#baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint.exclude">(baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint attribute)</a>
+</li>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.html#baybe.constraints.discrete.DiscretePermutationInvarianceConstraint.exclude">(baybe.constraints.discrete.DiscretePermutationInvarianceConstraint attribute)</a>
+</li>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteProductConstraint.html#baybe.constraints.discrete.DiscreteProductConstraint.exclude">(baybe.constraints.discrete.DiscreteProductConstraint attribute)</a>
+</li>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteSumConstraint.html#baybe.constraints.discrete.DiscreteSumConstraint.exclude">(baybe.constraints.discrete.DiscreteSumConstraint attribute)</a>
+</li>
           <li><a href="_autosummary/baybe.parameters.selectors.NameSelector.html#baybe.parameters.selectors.NameSelector.exclude">(baybe.parameters.selectors.NameSelector attribute)</a>
 </li>
           <li><a href="_autosummary/baybe.parameters.selectors.ParameterSelector.html#baybe.parameters.selectors.ParameterSelector.exclude">(baybe.parameters.selectors.ParameterSelector attribute)</a>
@@ -5057,6 +5009,8 @@
         </ul></li>
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.fit_criterion_factory">fit_criterion_factory (baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate attribute)</a>
 </li>
+        <li><a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.fit_criterion_or_factory">fit_criterion_or_factory (baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset parameter)</a>, <a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.fit_criterion_or_factory">[1]</a>
+</li>
         <li><a href="_autosummary/baybe.utils.clustering_algorithms.third_party.kmedoids.KMedoids.html#baybe.utils.clustering_algorithms.third_party.kmedoids.KMedoids.fit_predict">fit_predict() (baybe.utils.clustering_algorithms.third_party.kmedoids.KMedoids method)</a>
 </li>
         <li><a href="_autosummary/baybe.utils.clustering_algorithms.third_party.kmedoids.KMedoids.html#baybe.utils.clustering_algorithms.third_party.kmedoids.KMedoids.fit_transform">fit_transform() (baybe.utils.clustering_algorithms.third_party.kmedoids.KMedoids method)</a>
@@ -5162,6 +5116,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.from_dict">(baybe.constraints.base.DiscreteConstraint class method)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.from_dict">(baybe.constraints.base.DiscretePruningConstraint class method)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.from_dict">(baybe.constraints.conditions.Condition class method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.from_dict">(baybe.constraints.conditions.SubSelectionCondition class method)</a>
@@ -5180,7 +5136,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.from_dict">(baybe.constraints.discrete.DiscreteDependenciesConstraint class method)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.from_dict">(baybe.constraints.discrete.DiscreteExcludeConstraint class method)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.from_dict">(baybe.constraints.discrete.DiscreteFilteringConstraint class method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.from_dict">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint class method)</a>
 </li>
@@ -5436,6 +5392,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.from_json">(baybe.constraints.base.DiscreteConstraint class method)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.from_json">(baybe.constraints.base.DiscretePruningConstraint class method)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.from_json">(baybe.constraints.conditions.Condition class method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.from_json">(baybe.constraints.conditions.SubSelectionCondition class method)</a>
@@ -5454,7 +5412,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.from_json">(baybe.constraints.discrete.DiscreteDependenciesConstraint class method)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.from_json">(baybe.constraints.discrete.DiscreteExcludeConstraint class method)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.from_json">(baybe.constraints.discrete.DiscreteFilteringConstraint class method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.from_json">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint class method)</a>
 </li>
@@ -5829,18 +5787,16 @@
         </ul></li>
         <li><a href="_autosummary/baybe.acquisition.acqfs.qNegIntegratedPosteriorVariance.html#baybe.acquisition.acqfs.qNegIntegratedPosteriorVariance.get_integration_points">get_integration_points() (baybe.acquisition.acqfs.qNegIntegratedPosteriorVariance method)</a>
 </li>
-        <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_invalid">get_invalid() (baybe.constraints.base.DiscreteConstraint method)</a>
+        <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_invalid">get_invalid() (baybe.constraints.base.DiscretePruningConstraint method)</a>
 
         <ul>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_invalid">(baybe.constraints.discrete.DiscreteBatchConstraint method)</a>
-</li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.get_invalid">(baybe.constraints.discrete.DiscreteCardinalityConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCustomConstraint.html#baybe.constraints.discrete.DiscreteCustomConstraint.get_invalid">(baybe.constraints.discrete.DiscreteCustomConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.get_invalid">(baybe.constraints.discrete.DiscreteDependenciesConstraint method)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_invalid">(baybe.constraints.discrete.DiscreteExcludeConstraint method)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_invalid">(baybe.constraints.discrete.DiscreteFilteringConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.get_invalid">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint method)</a>
 </li>
@@ -5855,18 +5811,16 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_invalid_polars">get_invalid_polars() (baybe.constraints.base.DiscreteConstraint method)</a>
+        <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_invalid_polars">get_invalid_polars() (baybe.constraints.base.DiscretePruningConstraint method)</a>
 
         <ul>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_invalid_polars">(baybe.constraints.discrete.DiscreteBatchConstraint method)</a>
-</li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.get_invalid_polars">(baybe.constraints.discrete.DiscreteCardinalityConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCustomConstraint.html#baybe.constraints.discrete.DiscreteCustomConstraint.get_invalid_polars">(baybe.constraints.discrete.DiscreteCustomConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.get_invalid_polars">(baybe.constraints.discrete.DiscreteDependenciesConstraint method)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_invalid_polars">(baybe.constraints.discrete.DiscreteExcludeConstraint method)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_invalid_polars">(baybe.constraints.discrete.DiscreteFilteringConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.get_invalid_polars">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint method)</a>
 </li>
@@ -5951,18 +5905,16 @@
 </li>
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.components.generic.GPComponentType.html#baybe.surrogates.gaussian_process.components.generic.GPComponentType.get_types">get_types() (baybe.surrogates.gaussian_process.components.generic.GPComponentType method)</a>
 </li>
-        <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.get_valid">get_valid() (baybe.constraints.base.DiscreteConstraint method)</a>
+        <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.get_valid">get_valid() (baybe.constraints.base.DiscretePruningConstraint method)</a>
 
         <ul>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteBatchConstraint.html#baybe.constraints.discrete.DiscreteBatchConstraint.get_valid">(baybe.constraints.discrete.DiscreteBatchConstraint method)</a>
-</li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCardinalityConstraint.html#baybe.constraints.discrete.DiscreteCardinalityConstraint.get_valid">(baybe.constraints.discrete.DiscreteCardinalityConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteCustomConstraint.html#baybe.constraints.discrete.DiscreteCustomConstraint.get_valid">(baybe.constraints.discrete.DiscreteCustomConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.get_valid">(baybe.constraints.discrete.DiscreteDependenciesConstraint method)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.get_valid">(baybe.constraints.discrete.DiscreteExcludeConstraint method)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.get_valid">(baybe.constraints.discrete.DiscreteFilteringConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.get_valid">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint method)</a>
 </li>
@@ -6332,6 +6284,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.is_continuous">(baybe.constraints.base.DiscreteConstraint property)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.is_continuous">(baybe.constraints.base.DiscretePruningConstraint property)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousCardinalityConstraint.html#baybe.constraints.continuous.ContinuousCardinalityConstraint.is_continuous">(baybe.constraints.continuous.ContinuousCardinalityConstraint property)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousLinearConstraint.html#baybe.constraints.continuous.ContinuousLinearConstraint.is_continuous">(baybe.constraints.continuous.ContinuousLinearConstraint property)</a>
@@ -6344,7 +6298,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.is_continuous">(baybe.constraints.discrete.DiscreteDependenciesConstraint property)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.is_continuous">(baybe.constraints.discrete.DiscreteExcludeConstraint property)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.is_continuous">(baybe.constraints.discrete.DiscreteFilteringConstraint property)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.is_continuous">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint property)</a>
 </li>
@@ -6388,6 +6342,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.is_discrete">(baybe.constraints.base.DiscreteConstraint property)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.is_discrete">(baybe.constraints.base.DiscretePruningConstraint property)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousCardinalityConstraint.html#baybe.constraints.continuous.ContinuousCardinalityConstraint.is_discrete">(baybe.constraints.continuous.ContinuousCardinalityConstraint property)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousLinearConstraint.html#baybe.constraints.continuous.ContinuousLinearConstraint.is_discrete">(baybe.constraints.continuous.ContinuousLinearConstraint property)</a>
@@ -6400,7 +6356,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.is_discrete">(baybe.constraints.discrete.DiscreteDependenciesConstraint property)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.is_discrete">(baybe.constraints.discrete.DiscreteExcludeConstraint property)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.is_discrete">(baybe.constraints.discrete.DiscreteFilteringConstraint property)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.is_discrete">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint property)</a>
 </li>
@@ -6665,12 +6621,14 @@
 </li>
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.kernel_factory">kernel_factory (baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate attribute)</a>
 </li>
-        <li><a href="_autosummary/baybe.surrogates.gaussian_process.components.kernel.KernelFactoryProtocol.html#baybe.surrogates.gaussian_process.components.kernel.KernelFactoryProtocol">KernelFactoryProtocol (in module baybe.surrogates.gaussian_process.components.kernel)</a>
+        <li><a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.kernel_or_factory">kernel_or_factory (baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset parameter)</a>, <a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.kernel_or_factory">[1]</a>
 </li>
-        <li><a href="_autosummary/baybe.parameters.enum.SubstanceEncoding.html#baybe.parameters.enum.SubstanceEncoding.KLEKOTAROTH">KLEKOTAROTH (baybe.parameters.enum.SubstanceEncoding attribute)</a>
+        <li><a href="_autosummary/baybe.surrogates.gaussian_process.components.kernel.KernelFactoryProtocol.html#baybe.surrogates.gaussian_process.components.kernel.KernelFactoryProtocol">KernelFactoryProtocol (in module baybe.surrogates.gaussian_process.components.kernel)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/baybe.parameters.enum.SubstanceEncoding.html#baybe.parameters.enum.SubstanceEncoding.KLEKOTAROTH">KLEKOTAROTH (baybe.parameters.enum.SubstanceEncoding attribute)</a>
+</li>
         <li><a href="_autosummary/baybe.recommenders.pure.nonpredictive.clustering.KMeansClusteringRecommender.html#baybe.recommenders.pure.nonpredictive.clustering.KMeansClusteringRecommender">KMeansClusteringRecommender (class in baybe.recommenders.pure.nonpredictive.clustering)</a>
 </li>
         <li><a href="_autosummary/baybe.utils.clustering_algorithms.third_party.kmedoids.KMedoids.html#baybe.utils.clustering_algorithms.third_party.kmedoids.KMedoids">KMedoids (class in baybe.utils.clustering_algorithms.third_party.kmedoids)</a>
@@ -6744,6 +6702,8 @@
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.components.generic.GPComponentType.html#baybe.surrogates.gaussian_process.components.generic.GPComponentType.LIKELIHOOD">LIKELIHOOD (baybe.surrogates.gaussian_process.components.generic.GPComponentType attribute)</a>
 </li>
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.likelihood_factory">likelihood_factory (baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate attribute)</a>
+</li>
+        <li><a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.likelihood_or_factory">likelihood_or_factory (baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset parameter)</a>, <a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.likelihood_or_factory">[1]</a>
 </li>
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.components.likelihood.LikelihoodFactoryProtocol.html#baybe.surrogates.gaussian_process.components.likelihood.LikelihoodFactoryProtocol">LikelihoodFactoryProtocol (in module baybe.surrogates.gaussian_process.components.likelihood)</a>
 </li>
@@ -6906,6 +6866,8 @@
 </li>
         </ul></li>
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.mean_factory">mean_factory (baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate attribute)</a>
+</li>
+        <li><a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.mean_or_factory">mean_or_factory (baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset parameter)</a>, <a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.mean_or_factory">[1]</a>
 </li>
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.components.mean.MeanFactoryProtocol.html#baybe.surrogates.gaussian_process.components.mean.MeanFactoryProtocol">MeanFactoryProtocol (in module baybe.surrogates.gaussian_process.components.mean)</a>
 </li>
@@ -7825,6 +7787,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.numerical_only">(baybe.constraints.base.DiscreteConstraint attribute)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.numerical_only">(baybe.constraints.base.DiscretePruningConstraint attribute)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousCardinalityConstraint.html#baybe.constraints.continuous.ContinuousCardinalityConstraint.numerical_only">(baybe.constraints.continuous.ContinuousCardinalityConstraint attribute)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousLinearConstraint.html#baybe.constraints.continuous.ContinuousLinearConstraint.numerical_only">(baybe.constraints.continuous.ContinuousLinearConstraint attribute)</a>
@@ -7837,7 +7801,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.numerical_only">(baybe.constraints.discrete.DiscreteDependenciesConstraint attribute)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.numerical_only">(baybe.constraints.discrete.DiscreteExcludeConstraint attribute)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.numerical_only">(baybe.constraints.discrete.DiscreteFilteringConstraint attribute)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.numerical_only">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint attribute)</a>
 </li>
@@ -8131,6 +8095,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.to_json.params.overwrite">(baybe.constraints.base.DiscreteConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.to_json.params.overwrite">[1]</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.to_json.params.overwrite">(baybe.constraints.base.DiscretePruningConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.to_json.params.overwrite">[1]</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.to_json.params.overwrite">(baybe.constraints.conditions.Condition.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.to_json.params.overwrite">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.to_json.params.overwrite">(baybe.constraints.conditions.SubSelectionCondition.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.to_json.params.overwrite">[1]</a>
@@ -8149,7 +8115,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json.params.overwrite">(baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json.params.overwrite">[1]</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.to_json.params.overwrite">(baybe.constraints.discrete.DiscreteExcludeConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.to_json.params.overwrite">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.to_json.params.overwrite">(baybe.constraints.discrete.DiscreteFilteringConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.to_json.params.overwrite">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json.params.overwrite">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json.params.overwrite">[1]</a>
 </li>
@@ -8447,6 +8413,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.parameters">(baybe.constraints.base.DiscreteConstraint attribute)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.parameters">(baybe.constraints.base.DiscretePruningConstraint attribute)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousCardinalityConstraint.html#baybe.constraints.continuous.ContinuousCardinalityConstraint.parameters">(baybe.constraints.continuous.ContinuousCardinalityConstraint attribute)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousLinearConstraint.html#baybe.constraints.continuous.ContinuousLinearConstraint.parameters">(baybe.constraints.continuous.ContinuousLinearConstraint attribute)</a>
@@ -8461,7 +8429,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.parameters">(baybe.constraints.discrete.DiscreteDependenciesConstraint attribute)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.parameters">(baybe.constraints.discrete.DiscreteExcludeConstraint attribute)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.parameters">(baybe.constraints.discrete.DiscreteFilteringConstraint attribute)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.parameters">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint attribute)</a>
 </li>
@@ -8765,6 +8733,8 @@
         <li><a href="_autosummary/baybe.utils.validation.preprocess_dataframe.html#baybe.utils.validation.preprocess_dataframe">preprocess_dataframe() (in module baybe.utils.validation)</a>
 </li>
         <li><a href="_autosummary/baybe.settings.Settings.html#baybe.settings.Settings.preprocess_dataframes">preprocess_dataframes (baybe.settings.Settings attribute)</a>
+</li>
+        <li><a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.preset">preset (baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset parameter)</a>, <a href="_autosummary/baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.html#baybe.surrogates.gaussian_process.core.GaussianProcessSurrogate.from_preset.params.preset">[1]</a>
 </li>
         <li><a href="_autosummary/baybe.utils.dataframe.pretty_print_df.html#baybe.utils.dataframe.pretty_print_df">pretty_print_df() (in module baybe.utils.dataframe)</a>
 </li>
@@ -9465,6 +9435,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.to_json.params.sink">(baybe.constraints.base.DiscreteConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.to_json.params.sink">[1]</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.to_json.params.sink">(baybe.constraints.base.DiscretePruningConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.to_json.params.sink">[1]</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.to_json.params.sink">(baybe.constraints.conditions.Condition.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.to_json.params.sink">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.to_json.params.sink">(baybe.constraints.conditions.SubSelectionCondition.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.to_json.params.sink">[1]</a>
@@ -9483,7 +9455,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json.params.sink">(baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json.params.sink">[1]</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.to_json.params.sink">(baybe.constraints.discrete.DiscreteExcludeConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.to_json.params.sink">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.to_json.params.sink">(baybe.constraints.discrete.DiscreteFilteringConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.to_json.params.sink">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json.params.sink">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json.params.sink">[1]</a>
 </li>
@@ -9694,10 +9666,10 @@
 </li>
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.presets.edbo_smoothed.SmoothedEDBOLikelihoodFactory.html#baybe.surrogates.gaussian_process.presets.edbo_smoothed.SmoothedEDBOLikelihoodFactory">SmoothedEDBOLikelihoodFactory (class in baybe.surrogates.gaussian_process.presets.edbo_smoothed)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/baybe.surrogates.gaussian_process.presets.edbo_smoothed.SmoothedEDBOMeanFactory.html#baybe.surrogates.gaussian_process.presets.edbo_smoothed.SmoothedEDBOMeanFactory">SmoothedEDBOMeanFactory (class in baybe.surrogates.gaussian_process.presets.edbo_smoothed)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/baybe.parameters.utils.sort_parameters.html#baybe.parameters.utils.sort_parameters">sort_parameters() (in module baybe.parameters.utils)</a>
 </li>
         <li><a href="_autosummary/baybe.utils.conversion.sort_tuple.html#baybe.utils.conversion.sort_tuple">sort_tuple() (in module baybe.utils.conversion)</a>
@@ -9761,6 +9733,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.from_json.params.source">(baybe.constraints.base.DiscreteConstraint.from_json parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.from_json.params.source">[1]</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.from_json.params.source">(baybe.constraints.base.DiscretePruningConstraint.from_json parameter)</a>, <a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.from_json.params.source">[1]</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.from_json.params.source">(baybe.constraints.conditions.Condition.from_json parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.from_json.params.source">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.from_json.params.source">(baybe.constraints.conditions.SubSelectionCondition.from_json parameter)</a>, <a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.from_json.params.source">[1]</a>
@@ -9779,7 +9753,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.from_json.params.source">(baybe.constraints.discrete.DiscreteDependenciesConstraint.from_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.from_json.params.source">[1]</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.from_json.params.source">(baybe.constraints.discrete.DiscreteExcludeConstraint.from_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.from_json.params.source">[1]</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.from_json.params.source">(baybe.constraints.discrete.DiscreteFilteringConstraint.from_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.from_json.params.source">[1]</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.from_json.params.source">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint.from_json parameter)</a>, <a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.from_json.params.source">[1]</a>
 </li>
@@ -10065,6 +10039,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.summary">(baybe.constraints.base.DiscreteConstraint method)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.summary">(baybe.constraints.base.DiscretePruningConstraint method)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousCardinalityConstraint.html#baybe.constraints.continuous.ContinuousCardinalityConstraint.summary">(baybe.constraints.continuous.ContinuousCardinalityConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.continuous.ContinuousLinearConstraint.html#baybe.constraints.continuous.ContinuousLinearConstraint.summary">(baybe.constraints.continuous.ContinuousLinearConstraint method)</a>
@@ -10077,7 +10053,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.summary">(baybe.constraints.discrete.DiscreteDependenciesConstraint method)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.summary">(baybe.constraints.discrete.DiscreteExcludeConstraint method)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.summary">(baybe.constraints.discrete.DiscreteFilteringConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.summary">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint method)</a>
 </li>
@@ -10583,6 +10559,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.to_dict">(baybe.constraints.base.DiscreteConstraint method)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.to_dict">(baybe.constraints.base.DiscretePruningConstraint method)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.to_dict">(baybe.constraints.conditions.Condition method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.to_dict">(baybe.constraints.conditions.SubSelectionCondition method)</a>
@@ -10601,7 +10579,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.to_dict">(baybe.constraints.discrete.DiscreteDependenciesConstraint method)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.to_dict">(baybe.constraints.discrete.DiscreteExcludeConstraint method)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.to_dict">(baybe.constraints.discrete.DiscreteFilteringConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_dict">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint method)</a>
 </li>
@@ -10943,6 +10921,8 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.base.DiscreteConstraint.html#baybe.constraints.base.DiscreteConstraint.to_json">(baybe.constraints.base.DiscreteConstraint method)</a>
 </li>
+          <li><a href="_autosummary/baybe.constraints.base.DiscretePruningConstraint.html#baybe.constraints.base.DiscretePruningConstraint.to_json">(baybe.constraints.base.DiscretePruningConstraint method)</a>
+</li>
           <li><a href="_autosummary/baybe.constraints.conditions.Condition.html#baybe.constraints.conditions.Condition.to_json">(baybe.constraints.conditions.Condition method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.conditions.SubSelectionCondition.html#baybe.constraints.conditions.SubSelectionCondition.to_json">(baybe.constraints.conditions.SubSelectionCondition method)</a>
@@ -10961,7 +10941,7 @@
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteDependenciesConstraint.html#baybe.constraints.discrete.DiscreteDependenciesConstraint.to_json">(baybe.constraints.discrete.DiscreteDependenciesConstraint method)</a>
 </li>
-          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteExcludeConstraint.html#baybe.constraints.discrete.DiscreteExcludeConstraint.to_json">(baybe.constraints.discrete.DiscreteExcludeConstraint method)</a>
+          <li><a href="_autosummary/baybe.constraints.discrete.DiscreteFilteringConstraint.html#baybe.constraints.discrete.DiscreteFilteringConstraint.to_json">(baybe.constraints.discrete.DiscreteFilteringConstraint method)</a>
 </li>
           <li><a href="_autosummary/baybe.constraints.discrete.DiscreteLinkedParametersConstraint.html#baybe.constraints.discrete.DiscreteLinkedParametersConstraint.to_json">(baybe.constraints.discrete.DiscreteLinkedParametersConstraint method)</a>
 </li>
