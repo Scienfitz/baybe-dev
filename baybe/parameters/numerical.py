@@ -13,9 +13,9 @@ from typing_extensions import override
 
 from baybe.exceptions import NumericalUnderflowError
 from baybe.parameters.base import ContinuousParameter, DiscreteParameter
-from baybe.parameters.validation import validate_is_finite, validate_unique_values
 from baybe.settings import active_settings
 from baybe.utils.interval import InfiniteIntervalError, Interval
+from baybe.utils.validation import validate_is_finite, validate_unique_values
 
 
 @define(frozen=True, slots=False)
@@ -35,7 +35,7 @@ class NumericalDiscreteParameter(DiscreteParameter):
         # FIXME[typing]: https://github.com/python-attrs/attrs/issues/1197
         validator=[
             min_len(2),
-            validate_unique_values,  # type: ignore
+            validate_unique_values,
             validate_is_finite,
         ],
     )
@@ -65,14 +65,19 @@ class NumericalDiscreteParameter(DiscreteParameter):
         if tolerance == 0.0:
             return
 
-        min_dist = np.diff(self._values).min()
+        with np.errstate(over="ignore"):
+            min_dist = np.diff(self._values).min()
         if min_dist == (eps := np.nextafter(0, 1)):
             raise NumericalUnderflowError(
                 f"The distance between any two parameter values must be at least "
                 f"twice the size of the used floating point resolution of {eps}."
             )
 
-        if tolerance >= (max_tol := min_dist / 2.0):
+        if np.isfinite(min_dist):
+            max_tol = min_dist / 2.0
+        else:
+            max_tol = np.finfo(np.float64).max
+        if tolerance >= max_tol:
             raise ValueError(
                 f"Parameter '{self.name}' is initialized with tolerance {tolerance} "
                 f"but due to the given parameter values {self.values}, the specified "
@@ -155,7 +160,7 @@ class NumericalContinuousParameter(ContinuousParameter):
 class _FixedNumericalContinuousParameter(ContinuousParameter):
     """Parameter class for fixed numerical parameters."""
 
-    is_numeric: ClassVar[bool] = True
+    is_numerical: ClassVar[bool] = True
     # See base class.
 
     value: float = field(converter=float)

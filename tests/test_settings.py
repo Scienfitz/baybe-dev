@@ -21,6 +21,7 @@ from baybe import Settings, active_settings
 from baybe.campaign import Campaign
 from baybe.exceptions import NotAllowedError
 from baybe.recommenders.pure.nonpredictive.sampling import RandomRecommender
+from baybe.searchspace.core import SearchSpace
 from baybe.settings import _RANDOM_SEED_ATTRIBUTE_NAME
 from baybe.utils.basic import cache_to_disk
 from baybe.utils.random import _RandomState
@@ -167,7 +168,7 @@ def test_sequential_setting_via_activation(original_values):
     # The growing collection of all modified attributes
     modified: dict[str, Any] = {}
 
-    # We iterate over the random seed last because changing it does not propagete to
+    # We iterate over the random seed last because changing it does not propagate to
     # the subsequent settings objects
     attrs = sorted(
         Settings._settings_attributes,
@@ -353,7 +354,7 @@ def test_random_seed_control():
 
     # Restoring previous settings also restores the corresponding stored seed attribute
     # value. However, the random state is only restored if the overwriting settings
-    # object expliciltly requested a specific seed value. The reasoning is:
+    # object explicitly requested a specific seed value. The reasoning is:
     # * When a user provides a seed argument, they expect that the RNG is affected
     # * BUT: When they only provide arguments for other settings, they do not have
     #   random number generation in focus hence they would not expect that activation or
@@ -486,10 +487,14 @@ def test_settings_are_sorted_alphabetically():
 
 
 @pytest.mark.parametrize("cache", [True, False], ids=["cache", "no_cache"])
-def test_recommendation_caching(campaign: Campaign, cache: bool):
+def test_recommendation_caching(searchspace: SearchSpace, cache: bool):
     """Recommendations are (not) cached according to the settings."""
-    campaign.allow_recommending_already_recommended = True
-    campaign.recommender = Mock(wraps=RandomRecommender())
+    campaign = Campaign(
+        searchspace,
+        recommender=Mock(wraps=RandomRecommender(), spec=RandomRecommender),
+        allow_recommending_already_recommended=True,
+    )
+
     with Settings(cache_campaign_recommendations=cache):
         df1 = campaign.recommend(2)
         assert campaign.recommender.recommend.call_count == 1
@@ -504,7 +509,7 @@ def test_recommendation_caching(campaign: Campaign, cache: bool):
 def test_cache_directory(tmp_path: Path):
     """The cache directory is used to store cached results."""
     mock = Mock(return_value=0)
-    f = cache_to_disk(lambda: mock())
+    f = cache_to_disk(lambda: mock())  # noqa: PLW0108
 
     for path in [tmp_path / "a", tmp_path / "b", None]:
         mock.reset_mock()

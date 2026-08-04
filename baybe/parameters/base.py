@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, ClassVar
 
+import attrs
 import pandas as pd
 from attrs import define, field
 from attrs.converters import optional as optional_c
@@ -21,6 +22,7 @@ from baybe.utils.basic import to_tuple
 from baybe.utils.metadata import MeasurableMetadata, to_metadata
 
 if TYPE_CHECKING:
+    from baybe.parameters.enum import _ParameterKind
     from baybe.searchspace.continuous import SubspaceContinuous
     from baybe.searchspace.core import SearchSpace
     from baybe.searchspace.discrete import SubspaceDiscrete
@@ -78,6 +80,13 @@ class Parameter(ABC, SerialMixin):
         return isinstance(self, DiscreteParameter)
 
     @property
+    def _kind(self) -> _ParameterKind:
+        """The kind of the parameter."""
+        from baybe.parameters.enum import _ParameterKind
+
+        return _ParameterKind.from_parameter(self)
+
+    @property
     @abstractmethod
     def comp_rep_columns(self) -> tuple[str, ...]:
         """The columns spanning the computational representation."""
@@ -87,6 +96,22 @@ class Parameter(ABC, SerialMixin):
         from baybe.searchspace.core import SearchSpace
 
         return SearchSpace.from_parameter(self)
+
+    def is_equivalent(self, other: Parameter) -> bool:
+        """Check if this parameter is equivalent to another, ignoring the name.
+
+        Two parameters are considered equivalent if they have the same type and
+        all attributes are equal except for the name.
+
+        Args:
+            other: The parameter to compare against.
+
+        Returns:
+            ``True`` if the parameters are equivalent, ``False`` otherwise.
+        """
+        if type(self) is not type(other):
+            return False
+        return attrs.evolve(self, name=other.name) == other
 
     @abstractmethod
     def summary(self) -> dict:

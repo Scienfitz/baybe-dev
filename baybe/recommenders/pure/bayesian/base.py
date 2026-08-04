@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import gc
-import warnings
 from abc import ABC
 from typing import TYPE_CHECKING
 
 import pandas as pd
-from attrs import define, field, fields
+from attrs import define, field
 from attrs.converters import optional
+from attrs.validators import deep_iterable, instance_of
 from typing_extensions import override
 
 from baybe.acquisition import qLogEI, qLogNEHVI
@@ -27,6 +27,7 @@ from baybe.surrogates.base import (
     Surrogate,
     SurrogateProtocol,
 )
+from baybe.symmetries.base import Symmetry
 from baybe.utils.validation import preprocess_dataframe, validate_object_names
 
 if TYPE_CHECKING:
@@ -56,6 +57,14 @@ class BayesianRecommender(PureRecommender, ABC):
     )
     """The acquisition function. When omitted, a default is used."""
 
+    symmetries: tuple[Symmetry, ...] = field(
+        factory=tuple,
+        converter=tuple,
+        validator=deep_iterable(member_validator=instance_of(Symmetry)),
+        kw_only=True,
+    )
+    """Symmetries triggering data augmentation during model fitting."""
+
     # TODO: The objective is currently only required for validating the recommendation
     #   context. Once multi-target support is complete, we might want to refactor
     #   the validation mechanism, e.g. by
@@ -67,18 +76,6 @@ class BayesianRecommender(PureRecommender, ABC):
 
     _botorch_acqf = field(default=None, init=False, eq=False)
     """The induced BoTorch acquisition function."""
-
-    @property
-    def surrogate_model(self) -> SurrogateProtocol:
-        """Deprecated!"""
-        warnings.warn(
-            f"Accessing the surrogate model via 'surrogate_model' has been "
-            f"deprecated. Use '{self.get_surrogate.__name__}' instead to get the "
-            f"trained model instance (or "
-            f"'{fields(type(self))._surrogate_model.name}' to access the raw object).",
-            DeprecationWarning,
-        )
-        return self._surrogate_model
 
     def _get_acquisition_function(self, objective: Objective) -> AcquisitionFunction:
         """Select the appropriate default acquisition function for the given context."""
@@ -113,6 +110,10 @@ class BayesianRecommender(PureRecommender, ABC):
                 f"You attempted to use a single-output acquisition function in a "
                 f"{len(objective.targets)}-target multi-output context."
             )
+
+        # Perform data augmentation
+        for s in self.symmetries:
+            measurements = s.augment_measurements(measurements, searchspace)
 
         surrogate = self.get_surrogate(searchspace, objective, measurements)
         self._botorch_acqf = acqf.to_botorch(
@@ -156,6 +157,7 @@ class BayesianRecommender(PureRecommender, ABC):
 
         validate_object_names(searchspace.parameters + objective.targets)
 
+        # Experimental input validation
         if (measurements is None) or measurements.empty:
             raise NotImplementedError(
                 f"Recommenders of type '{BayesianRecommender.__name__}' do not support "

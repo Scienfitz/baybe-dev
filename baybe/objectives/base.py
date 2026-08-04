@@ -266,7 +266,7 @@ class Objective(ABC, SerialMixin):
             Non-dominated configurations can be computed for any objective type, not
             just for :class:`~baybe.objectives.pareto.ParetoObjective`.
             For more details, have a look at the corresponding
-            :ref:`user guide section <userguide/objectives:Identifying Non-Dominated
+            :ref:`user guide section <components/objectives:Identifying Non-Dominated
             Configurations>`.
 
         Args:
@@ -280,7 +280,7 @@ class Objective(ABC, SerialMixin):
 
         validate_target_input(configurations, self.targets)
 
-        targets = self.transform(configurations)
+        targets = self.transform(configurations, allow_extra=True)
         non_dominated = is_non_dominated(Y=to_tensor(targets), deduplicate=False)
 
         return pd.Series(non_dominated.numpy(), name="is_non_dominated")

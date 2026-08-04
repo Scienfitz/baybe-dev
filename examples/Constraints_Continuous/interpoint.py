@@ -4,7 +4,7 @@
 # apply restrictions on plates (batches) of experiments rather than on individual
 # experiments.
 # For more details on interpoint constraints, we refer to the {ref}`constraints user
-# guide <userguide/constraints:Interpoint Constraints>`.
+# guide <components/constraints:Interpoint Constraints>`.
 
 # ## The Scenario
 
@@ -27,7 +27,7 @@ import os
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from baybe import Campaign
+from baybe import Campaign, active_settings
 from baybe.constraints import ContinuousLinearConstraint
 from baybe.parameters import NumericalContinuousParameter
 from baybe.recommenders import BotorchRecommender
@@ -35,15 +35,13 @@ from baybe.recommenders.meta.sequential import TwoPhaseMetaRecommender
 from baybe.searchspace import SearchSpace
 from baybe.targets import NumericalTarget
 from baybe.utils.dataframe import add_fake_measurements
-from baybe.utils.random import set_random_seed
 
 SMOKE_TEST = "SMOKE_TEST" in os.environ
 BATCH_SIZE = 4
 N_ITERATIONS = 2 if SMOKE_TEST else 15
 TOLERANCE = 0.01
 
-
-set_random_seed(1337)
+active_settings.random_seed = 1337
 
 # ## Problem Definition
 
@@ -174,7 +172,7 @@ for it in range(N_ITERATIONS):
 # * The total solvent used for any individual plate never exceeds the given budget of
 # 1.2 mL, even though the exact amount varies across plates and distributes differently
 # among individual experiments.
-# * By constrast, the total catalyst amount per plate is always
+# * By contrast, the total catalyst amount per plate is always
 # exactly 8 µmol, even though individual experiments have varying amounts.
 
 # fmt: off

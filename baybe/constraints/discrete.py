@@ -3,13 +3,16 @@
 from __future__ import annotations
 
 import gc
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from functools import reduce
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
+import cattrs
+import numpy as np
+import numpy.typing as npt
 import pandas as pd
 from attrs import define, field
-from attrs.validators import in_, min_len
+from attrs.validators import deep_iterable, in_, min_len
 from typing_extensions import override
 
 from baybe.constraints.base import CardinalityConstraint, DiscreteConstraint
@@ -24,10 +27,13 @@ from baybe.serialization import (
     block_serialization_hook,
     converter,
 )
-from baybe.utils.basic import Dummy
+from baybe.utils.validation import finite_float
 
 if TYPE_CHECKING:
     import polars as pl
+
+    from baybe.symmetries.dependency import DependencySymmetry
+    from baybe.symmetries.permutation import PermutationSymmetry
 
 
 @define
@@ -42,13 +48,24 @@ class DiscreteExcludeConstraint(DiscreteConstraint):
     """Operator encoding how to combine the individual conditions."""
 
     @override
-    def get_invalid(self, data: pd.DataFrame) -> pd.Index:
-        satisfied = [
-            cond.evaluate(data[self.parameters[k]])
-            for k, cond in enumerate(self.conditions)
-        ]
+    def _can_evaluate(self, available: set[str], /) -> bool:
+        # The OR combiner supports incremental filtering (a single true
+        # condition suffices to mark a row as invalid), so at least one
+        # parameter is enough. Other combiners need all parameters.
+        present = available & set(self.parameters)
+        if not present:
+            return False
+        if self.combiner != "OR" and present != set(self.parameters):
+            return False
+        return True
+
+    @override
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        pairs = [(p, c) for p, c in zip(self.parameters, self.conditions) if p in df]
+        satisfied = [cond.evaluate(df[p]) for p, cond in pairs]
         res = reduce(_valid_logic_combiners[self.combiner], satisfied)
-        return data.index[res]
+
+        return df.index[res]
 
     @override
     def get_invalid_polars(self) -> pl.Expr:
@@ -65,9 +82,18 @@ class DiscreteExcludeConstraint(DiscreteConstraint):
 
 @define
 class DiscreteSumConstraint(DiscreteConstraint):
-    """Class for modelling sum constraints."""
+    """Class for modelling sum constraints.
+
+    The constraint evaluates whether the (optionally weighted) sum of the specified
+    parameters satisfies the given threshold condition.
+    """
 
     # IMPROVE: refactor `SumConstraint` and `ProdConstraint` to avoid code copying
+
+    # IMPROVE: Look-ahead filtering would be possible if parameter
+    # value ranges (min/max) were available to the constraint, allowing
+    # bound-based pruning of partial sums before all parameters are
+    # present. This could be expressed via a _can_evaluate override.
 
     # class variables
     numerical_only: ClassVar[bool] = True
@@ -77,18 +103,55 @@ class DiscreteSumConstraint(DiscreteConstraint):
     condition: ThresholdCondition = field()
     """The condition modeled by this constraint."""
 
-    @override
-    def get_invalid(self, data: pd.DataFrame) -> pd.Index:
-        evaluate_data = data[self.parameters].sum(axis=1)
-        mask_bad = ~self.condition.evaluate(evaluate_data)
+    coefficients: tuple[float, ...] = field(
+        converter=lambda x: cattrs.structure(x, tuple[float, ...]),
+        validator=deep_iterable(member_validator=finite_float),
+    )
+    """The coefficients for the weighted sum, one per entry in ``parameters``.
 
-        return data.index[mask_bad]
+    Defaults to all-ones, i.e. an unweighted sum."""
+
+    @coefficients.default
+    def _default_coefficients(self) -> tuple[float, ...]:
+        """Return equal weight coefficients as default."""
+        return (1.0,) * len(self.parameters)
+
+    @coefficients.validator
+    def _validate_coefficients(  # noqa: DOC101, DOC103
+        self, _: Any, coefficients: Sequence[float]
+    ) -> None:
+        """Validate the coefficients.
+
+        Raises:
+            ValueError: If the number of coefficients does not match the number of
+                parameters.
+        """
+        if len(self.parameters) != len(coefficients):
+            raise ValueError(
+                "The given 'coefficients' list must have one floating point entry for "
+                "each entry in 'parameters'."
+            )
+        if any(c == 0.0 for c in coefficients):
+            raise ValueError("All entries in 'coefficients' must be non-zero.")
+
+    @override
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        evaluate_df = pd.Series(
+            sum(
+                df[p].to_numpy() * c for p, c in zip(self.parameters, self.coefficients)
+            ),
+            index=df.index,
+        )
+        mask_bad = ~self.condition.evaluate(evaluate_df)
+
+        return df.index[mask_bad]
 
     @override
     def get_invalid_polars(self) -> pl.Expr:
         from baybe._optional.polars import polars as pl
 
-        return self.condition.to_polars(pl.sum_horizontal(self.parameters)).not_()
+        weighted = [pl.col(p) * c for p, c in zip(self.parameters, self.coefficients)]
+        return self.condition.to_polars(pl.sum_horizontal(weighted)).not_()
 
 
 @define
@@ -105,12 +168,17 @@ class DiscreteProductConstraint(DiscreteConstraint):
     condition: ThresholdCondition = field()
     """The condition that is used for this constraint."""
 
-    @override
-    def get_invalid(self, data: pd.DataFrame) -> pd.Index:
-        evaluate_data = data[self.parameters].prod(axis=1)
-        mask_bad = ~self.condition.evaluate(evaluate_data)
+    # IMPROVE: Look-ahead filtering would be possible if parameter
+    # value ranges (min/max) were available to the constraint, allowing
+    # bound-based pruning of partial products before all parameters are
+    # present. This could be expressed via a _can_evaluate override.
 
-        return data.index[mask_bad]
+    @override
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        evaluate_df = df[self.parameters].prod(axis=1)
+        mask_bad = ~self.condition.evaluate(evaluate_df)
+
+        return df.index[mask_bad]
 
     @override
     def get_invalid_polars(self) -> pl.Expr:
@@ -140,24 +208,31 @@ class DiscreteNoLabelDuplicatesConstraint(DiscreteConstraint):
     """
 
     @override
-    def get_invalid(self, data: pd.DataFrame) -> pd.Index:
-        mask_bad = data[self.parameters].nunique(axis=1) != len(self.parameters)
+    def _can_evaluate(self, available: set[str], /) -> bool:
+        # Duplicate detection is meaningful as soon as at least two of the
+        # constraint's parameters are available: duplicates in a subset
+        # will also be duplicates in the full set.
+        return len(available & set(self.parameters)) >= 2
 
-        return data.index[mask_bad]
+    @override
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        params = [p for p in self.parameters if p in df]
+        mask_bad = df[params].nunique(axis=1) != len(params)
+
+        return df.index[mask_bad]
 
     @override
     def get_invalid_polars(self) -> pl.Expr:
         from baybe._optional.polars import polars as pl
 
-        expr = (
-            pl.concat_list(pl.col(self.parameters))
-            .list.eval(pl.element().n_unique())
-            .explode()
-        ) != len(self.parameters)
+        expr = pl.concat_list(pl.col(self.parameters)).list.n_unique() != len(
+            self.parameters
+        )
 
         return expr
 
 
+@define
 class DiscreteLinkedParametersConstraint(DiscreteConstraint):
     """Constraint class for linking the values of parameters.
 
@@ -168,20 +243,24 @@ class DiscreteLinkedParametersConstraint(DiscreteConstraint):
     """
 
     @override
-    def get_invalid(self, data: pd.DataFrame) -> pd.Index:
-        mask_bad = data[self.parameters].nunique(axis=1) != 1
+    def _can_evaluate(self, available: set[str], /) -> bool:
+        # Linked-parameter checking is meaningful as soon as at least two of
+        # the constraint's parameters are available: if values differ in a
+        # subset, they will also differ in the full set.
+        return len(available & set(self.parameters)) >= 2
 
-        return data.index[mask_bad]
+    @override
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        params = [p for p in self.parameters if p in set(df.columns)]
+        mask_bad = df[params].nunique(axis=1) != 1
+
+        return df.index[mask_bad]
 
     @override
     def get_invalid_polars(self) -> pl.Expr:
         from baybe._optional.polars import polars as pl
 
-        expr = (
-            pl.concat_list(pl.col(self.parameters))
-            .list.eval(pl.element().n_unique())
-            .explode()
-        ) != 1
+        expr = pl.concat_list(pl.col(self.parameters)).list.n_unique() != 1
 
         return expr
 
@@ -194,10 +273,6 @@ class DiscreteDependenciesConstraint(DiscreteConstraint):
     certain value (e.g. parameter switch is 'on'). All dependencies must be declared in
     a single constraint.
     """
-
-    # class variables
-    eval_during_augmentation: ClassVar[bool] = True
-    # See base class
 
     # object variables
     conditions: list[Condition] = field()
@@ -228,49 +303,77 @@ class DiscreteDependenciesConstraint(DiscreteConstraint):
                 f"the conditions list."
             )
 
+    @property
     @override
-    def get_invalid(self, data: pd.DataFrame) -> pd.Index:
-        # Create data copy and mark entries where the dependency conditions are negative
-        # with a dummy value to cause degeneracy.
-        censored_data = data.copy()
-        for k, _ in enumerate(self.parameters):
-            # .loc assignments are not supported by mypy + pandas-stubs yet
-            # See https://github.com/pandas-dev/pandas-stubs/issues/572
-            censored_data.loc[  # type: ignore[call-overload]
-                ~self.conditions[k].evaluate(data[self.parameters[k]]),
-                self.affected_parameters[k],
-            ] = Dummy()
+    def _required_parameters(self) -> set[str]:
+        """See base class."""
+        params = set(self.parameters)
+        for group in self.affected_parameters:
+            params.update(group)
+        return params
 
-        # Create an invariant indicator: pair each value of an affected parameter with
-        # the corresponding value of the parameter it depends on. These indicators
-        # will become invariant when frozenset is applied to them.
+    @override
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        # Build an invariant indicator for each affected parameter: pair each value
+        # with the value of the parameter it depends on. For rows where the dependency
+        # condition is not met, use None as a sentinel so that all such rows with the
+        # same dependency value appear identical, causing them to be detected as
+        # duplicates. The indicator tuples are constructed directly without storing
+        # any intermediate sentinel in the typed columns.
+        censored_df = df.copy()
         for k, param in enumerate(self.parameters):
+            invalid = ~self.conditions[k].evaluate(df[self.parameters[k]])
             for affected_param in self.affected_parameters[k]:
-                censored_data[affected_param] = list(
-                    zip(censored_data[affected_param], censored_data[param])
-                )
+                censored_df[affected_param] = [
+                    (None if inv else val, dep)
+                    for val, dep, inv in zip(
+                        censored_df[affected_param], censored_df[param], invalid
+                    )
+                ]
 
         # Merge the invariant indicator with all other parameters (i.e. neither the
         # affected nor the dependency-causing ones) and detect duplicates in that space.
         all_affected_params = [col for cols in self.affected_parameters for col in cols]
         other_params = (
-            data.columns.drop(all_affected_params).drop(self.parameters).tolist()
+            df.columns.drop(all_affected_params).drop(self.parameters).tolist()
         )
-        df_eval = pd.concat(
-            [
-                censored_data[other_params],
-                censored_data[all_affected_params].apply(
-                    cast(Callable, frozenset)
-                    if self.permutation_invariant
-                    else cast(Callable, tuple),
-                    axis=1,
-                ),
-            ],
+        invariant_indicator = censored_df[all_affected_params].apply(
+            cast(Callable, frozenset)
+            if self.permutation_invariant
+            else cast(Callable, tuple),
             axis=1,
         )
-        inds_bad = data.index[df_eval.duplicated(keep="first")]
+        # Only include the other_params DataFrame if it is non-empty to avoid
+        # pandas FutureWarning about concatenation with empty entries
+        parts = [censored_df[other_params]] if other_params else []
+        parts.append(invariant_indicator)
+        df_eval = pd.concat(parts, axis=1)
+        inds_bad = df.index[df_eval.duplicated(keep="first")]
 
         return inds_bad
+
+    def to_symmetries(self) -> tuple[DependencySymmetry, ...]:
+        """Convert to :class:`~baybe.symmetries.dependency.DependencySymmetry` objects.
+
+        Create one symmetry object per dependency relationship, i.e., per
+        (parameter, condition, affected_parameters) triple.
+
+        Returns:
+            A tuple of dependency symmetries, one for each dependency in the
+            constraint.
+        """
+        from baybe.symmetries.dependency import DependencySymmetry
+
+        return tuple(
+            DependencySymmetry(
+                parameter_name=p,
+                condition=c,
+                affected_parameter_names=aps,
+            )
+            for p, c, aps in zip(
+                self.parameters, self.conditions, self.affected_parameters, strict=True
+            )
+        )
 
 
 @define
@@ -278,65 +381,84 @@ class DiscretePermutationInvarianceConstraint(DiscreteConstraint):
     """Constraint class for declaring that a set of parameters is permutation invariant.
 
     More precisely, this means that, ``(val_from_param1, val_from_param2)`` is
-    equivalent to ``(val_from_param2, val_from_param1)``. Since it does not make sense
-    to have this constraint with duplicated labels, this implementation also internally
-    applies the :class:`baybe.constraints.discrete.DiscreteNoLabelDuplicatesConstraint`.
+    equivalent to ``(val_from_param2, val_from_param1)``.
 
     *Note:* This constraint is evaluated during creation. In the future it might also be
     evaluated during modeling to make use of the invariance.
     """
 
-    # class variables
-    eval_during_augmentation: ClassVar[bool] = True
-    # See base class
-
     # object variables
     dependencies: DiscreteDependenciesConstraint | None = field(default=None)
     """Dependencies connected with the invariant parameters."""
 
+    @property
     @override
-    def get_invalid(self, data: pd.DataFrame) -> pd.Index:
-        # Get indices of entries with duplicate label entries. These will also be
-        # dropped by this constraint.
-        mask_duplicate_labels = pd.Series(False, index=data.index)
-        mask_duplicate_labels[
-            DiscreteNoLabelDuplicatesConstraint(parameters=self.parameters).get_invalid(
-                data
-            )
-        ] = True
+    def _required_parameters(self) -> set[str]:
+        """See base class."""
+        params = set(self.parameters)
+        if self.dependencies:
+            params.update(self.dependencies._required_parameters)
+        return params
+
+    @override
+    def _can_evaluate(self, available: set[str], /) -> bool:
+        # When dependencies are present, partial permutation dedup is unsafe:
+        # the dependency logic changes which rows are permutation-equivalent
+        # (inactive parameters become irrelevant), so removing permutation
+        # duplicates before the dependency columns are available can discard
+        # configurations that should have been kept as canonical representatives.
+        if self.dependencies:
+            return self._required_parameters <= available
+        # Without dependencies, permutation dedup on a partial set is safe
+        # during incremental construction: since new columns are added via
+        # cross-product, rows that are permutation-equivalent on the available
+        # subset will produce identical expansions.
+        return len(available & set(self.parameters)) >= 2
+
+    @override
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        cols = set(df.columns)
+        params = [p for p in self.parameters if p in cols]
 
         # Merge a permutation invariant representation of all affected parameters with
         # the other parameters and indicate duplicates. This ensures that variation in
         # other parameters is also accounted for.
-        other_params = data.columns.drop(self.parameters).tolist()
-        df_eval = pd.concat(
-            [
-                data[other_params].copy(),
-                data[self.parameters].apply(cast(Callable, frozenset), axis=1),
-            ],
-            axis=1,
-        ).loc[
-            ~mask_duplicate_labels  # only consider label-duplicate-free part
-        ]
+        other_params = df.columns.drop(params).tolist()
+        frozen = df[params].apply(cast(Callable, frozenset), axis=1)
+        parts = [df[other_params].copy(), frozen] if other_params else [frozen]
+        df_eval = pd.concat(parts, axis=1)
         mask_duplicate_permutations = df_eval.duplicated(keep="first")
 
-        # Indices of entries with label-duplicates
-        inds_duplicate_labels = data.index[mask_duplicate_labels]
-
-        # Indices of duplicate permutations in the (already label-duplicate-free) data
-        inds_duplicate_permutations = df_eval.index[mask_duplicate_permutations]
+        # Indices of duplicate permutations
+        inds_invalid = df_eval.index[mask_duplicate_permutations]
 
         # If there are dependencies connected to the invariant parameters evaluate them
         # here and remove resulting duplicates with a DependenciesConstraint
-        inds_invalid = inds_duplicate_labels.union(inds_duplicate_permutations)
-        if self.dependencies:
+        if self.dependencies and self.dependencies._can_evaluate(set(df.columns)):
             self.dependencies.permutation_invariant = True
             inds_duplicate_independency_adjusted = self.dependencies.get_invalid(
-                data.drop(index=inds_invalid)
+                df.drop(index=inds_invalid)
             )
             inds_invalid = inds_invalid.union(inds_duplicate_independency_adjusted)
 
         return inds_invalid
+
+    def to_symmetry(self) -> PermutationSymmetry:
+        """Convert to a :class:`~baybe.symmetries.permutation.PermutationSymmetry`.
+
+        The constraint's parameters form the primary permutation group. If
+        dependencies are attached, their parameters are added as an additional
+        group that is permuted in lockstep.
+
+        Returns:
+            The corresponding permutation symmetry.
+        """
+        from baybe.symmetries.permutation import PermutationSymmetry
+
+        groups = [self.parameters]
+        if self.dependencies:
+            groups.append(list(self.dependencies.parameters))
+        return PermutationSymmetry(permutation_groups=groups)
 
 
 @define
@@ -350,10 +472,76 @@ class DiscreteCustomConstraint(DiscreteConstraint):
     you want to keep/remove."""
 
     @override
-    def get_invalid(self, data: pd.DataFrame) -> pd.Index:
-        mask_bad = ~self.validator(data[self.parameters])
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        mask_bad = ~self.validator(df[self.parameters])
 
-        return data.index[mask_bad]
+        return df.index[mask_bad]
+
+
+@define
+class DiscreteBatchConstraint(DiscreteConstraint):
+    """Constraint ensuring recommendations in a batch share certain parameter values.
+
+    When this constraint is active, the recommender internally subsets the
+    candidate set (one subset for each unique value of the constrained
+    parameter), obtains a full batch recommendation from each subset, and
+    returns the batch with the highest joint acquisition value.
+
+    This constraint is not supported by all recommenders. It is not applied during
+    search space creation (all parameter values remain in the search space).
+
+    Example:
+        If parameter ``Temperature`` has values ``[50, 100, 150]`` and a batch of
+        10 is requested, the recommender will generate three candidate batches
+        (one all-50, one all-100, one all-150) and return the best one.
+
+    Notes:
+        This constraint can lead to overhead in the computation since optimization
+        results in individual optimizations over several subsets. If there are
+        multiple subset-generating constraints active, this can drastically increase
+        the computational cost due to the combinatorial explosion.
+    """
+
+    # Class variables
+    eval_during_creation: ClassVar[bool] = False
+    eval_during_modeling: ClassVar[bool] = True
+    numerical_only: ClassVar[bool] = False
+
+    def __attrs_post_init__(self):
+        """Validate that exactly one parameter is specified."""
+        if len(self.parameters) != 1:
+            raise ValueError(
+                f"'{self.__class__.__name__}' requires exactly one parameter, "
+                f"but {len(self.parameters)} were provided: {self.parameters}."
+            )
+
+    @override
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        # Always returns an empty index because this constraint operates at the
+        # batch level, not the row level. Individual rows are never invalid; the
+        # constraint is enforced at recommendation time by subsetting candidates
+        # into subsets.
+        return pd.Index([])
+
+    def subset_masks(
+        self, candidates_exp: pd.DataFrame, /
+    ) -> list[npt.NDArray[np.bool_]]:
+        """Return Boolean masks defining the subsets for this constraint.
+
+        Each mask selects the rows in ``candidates_exp`` that belong to one
+        subset, i.e. share the same value for the constrained parameter.
+
+        Args:
+            candidates_exp: The experimental representation of candidate points.
+
+        Returns:
+            A list of Boolean masks, one per unique value of the constrained
+            parameter.
+        """
+        param = self.parameters[0]
+        return [
+            (candidates_exp[param] == v).values for v in candidates_exp[param].unique()
+        ]
 
 
 @define
@@ -365,11 +553,25 @@ class DiscreteCardinalityConstraint(CardinalityConstraint, DiscreteConstraint):
     # See base class.
 
     @override
-    def get_invalid(self, data: pd.DataFrame) -> pd.Index:
-        non_zeros = (data[self.parameters] != 0.0).sum(axis=1)
+    def _can_evaluate(self, available: set[str], /) -> bool:
+        # The max-cardinality check is safe on any non-empty subset: the
+        # nonzero count can only increase as more parameters are added.
+        return bool(available & set(self.parameters))
+
+    @override
+    def _get_invalid(self, df: pd.DataFrame, /) -> pd.Index:
+        params = [p for p in self.parameters if p in set(df.columns)]
+        all_present = len(params) == len(self.parameters)
+
+        non_zeros = (df[params] != 0.0).sum(axis=1)
+        # The max_cardinality check is safe on a partial subset: the nonzero
+        # count can only increase as more parameters are added.
         mask_bad = non_zeros > self.max_cardinality
-        mask_bad |= non_zeros < self.min_cardinality
-        return data.index[mask_bad]
+        # The min_cardinality check can only be applied when all parameters
+        # are present, since missing parameters could still add nonzero values.
+        if all_present:
+            mask_bad |= non_zeros < self.min_cardinality
+        return df.index[mask_bad]
 
 
 # Constraints are approximately ordered according to increasing computational effort
@@ -384,6 +586,7 @@ DISCRETE_CONSTRAINTS_FILTERING_ORDER = (
     DiscreteCustomConstraint,
     DiscretePermutationInvarianceConstraint,
     DiscreteDependenciesConstraint,
+    DiscreteBatchConstraint,
 )
 
 # Prevent (de-)serialization of custom constraints

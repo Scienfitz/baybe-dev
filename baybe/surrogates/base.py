@@ -96,6 +96,9 @@ class Surrogate(ABC, SurrogateProtocol, SerialMixin):
     _objective: Objective | None = field(init=False, default=None, eq=False)
     """The objective for which the surrogate was trained. Available after fitting."""
 
+    _measurements: pd.DataFrame | None = field(init=False, default=None, eq=False)
+    """The measurements used for training. Available after fitting."""
+
     _measurements_hash: str = field(init=False, default=None, eq=False)
     """The hash of the data the surrogate was trained on."""
 
@@ -403,7 +406,7 @@ class Surrogate(ABC, SurrogateProtocol, SerialMixin):
         # TODO: consider adding a validation step for `measurements`
 
         # Validate multi-target compatibility
-        if objective.is_multi_output and not self.supports_multi_output:
+        if objective._is_multi_model and not self.supports_multi_output:
             raise IncompatibleSurrogateError(
                 f"You attempted to train a single-output surrogate in a "
                 f"{len(objective.targets)}-target multi-output context. Either use "
@@ -434,6 +437,7 @@ class Surrogate(ABC, SurrogateProtocol, SerialMixin):
         # Remember the training context
         self._searchspace = searchspace
         self._objective = objective
+        self._measurements = measurements
         self._measurements_hash = hash(measurements)
 
         # Create context-specific transformations

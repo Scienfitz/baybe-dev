@@ -163,6 +163,13 @@ def test_invalid_model_params(model_cls, params):
         model_cls(model_params=params)
 
 
+@pytest.mark.skipif(
+    os.environ.get("BAYBE_TEST_ENV") != "FULLTEST",
+    reason="Most surrogates are only available in FULLTEST environment.",
+)
+@pytest.mark.filterwarnings(
+    "ignore::botorch.exceptions.warnings.BadInitialCandidatesWarning",
+)
 @pytest.mark.parametrize(
     "target_names",
     [["Target_max"], ["Target_max_bounded", "Target_min_bounded"]],
@@ -185,7 +192,7 @@ def test_invalid_model_params(model_cls, params):
 )
 def test_continuous_incompatibility(campaign):
     """Using surrogates without gradients on continuous spaces fails expectedly."""
-    data = create_fake_input(campaign.parameters, campaign.targets)
+    data = create_fake_input(campaign.parameters, campaign.targets, n_rows=2)
     campaign.add_measurements(data)
 
     skip = False
@@ -235,3 +242,34 @@ def test_batching_incompatibility(
         match="cannot be used for joint posterior evaluation",
     ):
         surrogate.posterior(measurements, joint=True)
+
+
+@pytest.mark.parametrize(
+    "objective",
+    [
+        param(
+            DesirabilityObjective(
+                [NumericalTarget("t1"), NumericalTarget("t2")],
+                scalarizer="MEAN",
+                require_normalization=False,
+                as_pre_transformation=False,
+            ),
+            id="desirability",
+        ),
+        param(
+            ParetoObjective([NumericalTarget("t1"), NumericalTarget("t2")]),
+            id="pareto",
+        ),
+    ],
+)
+def test_multi_model_incompatibility(objective: Objective):
+    """Single-output surrogates reject multi-model objectives in fit."""
+    searchspace = NumericalDiscreteParameter("p", [0, 1]).to_searchspace()
+    measurements = create_fake_input(searchspace.parameters, objective.targets)
+    surrogate = GaussianProcessSurrogate()
+
+    with pytest.raises(
+        IncompatibleSurrogateError,
+        match="single-output surrogate",
+    ):
+        surrogate.fit(searchspace, objective, measurements)

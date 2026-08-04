@@ -1,6 +1,7 @@
 """Tests for insights subpackage."""
 
 import inspect
+import warnings
 from contextlib import nullcontext
 from unittest import mock
 
@@ -125,6 +126,9 @@ _desirabilty_targets = [
 
 
 @mark.slow
+@pytest.mark.filterwarnings(
+    "ignore::botorch.exceptions.warnings.BadInitialCandidatesWarning",
+)
 @mark.parametrize(
     "objective",
     [
@@ -191,8 +195,20 @@ def test_plots(ongoing_campaign: Campaign, use_comp_rep, plot_type):
     if use_comp_rep:
         df = ongoing_campaign.searchspace.transform(df)
 
+    has_non_numeric = any(not p.is_numerical for p in ongoing_campaign.parameters)
+
     with mock.patch("matplotlib.pyplot.show"):
-        shap_insight.plot(plot_type, df)
+        with warnings.catch_warnings():
+            # Suppress shap's internal RuntimeWarnings (e.g. divide by zero)
+            warnings.simplefilter("ignore", RuntimeWarning)
+            if plot_type in ("force", "waterfall"):
+                with pytest.warns(UserWarning, match="explanation_index"):
+                    shap_insight.plot(plot_type, df)
+            elif plot_type == "scatter" and not use_comp_rep and has_non_numeric:
+                with pytest.warns(UserWarning, match="non-numeric"):
+                    shap_insight.plot(plot_type, df)
+            else:
+                shap_insight.plot(plot_type, df)
         plt.close()
 
 

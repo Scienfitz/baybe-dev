@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import gc
-from collections.abc import Collection, Sequence
-from itertools import compress
+import random
+import warnings
+from collections.abc import Collection, Iterator, Sequence
+from itertools import islice
 from math import prod
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 from attrs import define, field
 from cattrs import IterableValidationError
@@ -16,6 +19,7 @@ from typing_extensions import override
 
 from baybe.constraints import DISCRETE_CONSTRAINTS_FILTERING_ORDER, validate_constraints
 from baybe.constraints.base import DiscreteConstraint
+from baybe.constraints.discrete import DiscreteBatchConstraint
 from baybe.exceptions import DeprecationError
 from baybe.parameters import (
     CategoricalEncoding,
@@ -24,6 +28,7 @@ from baybe.parameters import (
 )
 from baybe.parameters.base import DiscreteParameter
 from baybe.parameters.utils import get_parameters_from_dataframe, sort_parameters
+from baybe.searchspace.utils import build_constrained_product, select_via_flat_index
 from baybe.searchspace.validation import validate_parameter_names, validate_parameters
 from baybe.serialization import SerialMixin, converter, select_constructor_hook
 from baybe.settings import active_settings
@@ -38,8 +43,6 @@ from baybe.utils.dataframe import (
 from baybe.utils.memory import bytes_to_human_readable
 
 if TYPE_CHECKING:
-    import polars as pl
-
     from baybe.searchspace.core import SearchSpace
 
 
@@ -98,7 +101,13 @@ class SubspaceDiscrete(SerialMixin):
     """Flag encoding whether an empty encoding is used."""
 
     constraints: tuple[DiscreteConstraint, ...] = field(
-        converter=to_tuple, factory=tuple
+        converter=lambda x: to_tuple(
+            sorted(
+                x,
+                key=lambda c: DISCRETE_CONSTRAINTS_FILTERING_ORDER.index(c.__class__),
+            )
+        ),
+        factory=tuple,
     )
     """A list of constraints for restricting the space."""
 
@@ -181,26 +190,12 @@ class SubspaceDiscrete(SerialMixin):
         empty_encoding: bool = False,
     ) -> SubspaceDiscrete:
         """See :class:`baybe.searchspace.core.SearchSpace`."""
-        # Set defaults and order constraints
         constraints = constraints or []
-        constraints = sorted(
-            constraints,
-            key=lambda x: DISCRETE_CONSTRAINTS_FILTERING_ORDER.index(x.__class__),
-        )
 
-        if active_settings.use_polars_for_constraints:
-            lazy_df = parameter_cartesian_prod_polars(parameters)
-            lazy_df, mask_missing = _apply_constraint_filter_polars(
-                lazy_df, constraints
-            )
-            df_records = lazy_df.collect().to_dicts()
-            df = pd.DataFrame.from_records(df_records)
-        else:
-            df = parameter_cartesian_prod_pandas(parameters)
-            mask_missing = [True] * len(constraints)
+        if constraints:
+            validate_constraints(constraints, parameters)
 
-        # Gather and use constraints not yet applied
-        _apply_constraint_filter_pandas(df, list(compress(constraints, mask_missing)))
+        df = build_constrained_product(parameters, constraints)
 
         return SubspaceDiscrete(
             parameters=parameters,
@@ -274,6 +269,8 @@ class SubspaceDiscrete(SerialMixin):
         cls,
         max_sum: float,
         simplex_parameters: Sequence[NumericalDiscreteParameter],
+        *,
+        simplex_coefficients: Sequence[float] | None = None,
         product_parameters: Sequence[DiscreteParameter] | None = None,
         constraints: Sequence[DiscreteConstraint] | None = None,
         min_nonzero: int = 0,
@@ -295,8 +292,12 @@ class SubspaceDiscrete(SerialMixin):
         significantly faster construction.
 
         Args:
-            max_sum: The maximum sum of the parameter values defining the simplex size.
+            max_sum: The maximum (weighted) sum of the parameter values defining the
+                simplex size.
             simplex_parameters: The parameters to be used for the simplex construction.
+            simplex_coefficients: Optional coefficients for the weighted sum, one per
+                entry in ``simplex_parameters``. Defaults to all-ones, i.e. an
+                unweighted sum.
             product_parameters: Optional parameters that enter in form of a Cartesian
                 product.
             constraints: See :class:`baybe.searchspace.core.SearchSpace`.
@@ -309,8 +310,9 @@ class SubspaceDiscrete(SerialMixin):
             tolerance: Numerical tolerance used to validate the simplex constraint.
 
         Raises:
-            ValueError: If the passed simplex parameters are not suitable for a simplex
-                construction.
+            ValueError: If the length of ``simplex_coefficients`` does not match the
+                number of ``simplex_parameters``.
+            ValueError: If ``simplex_coefficients`` contains any zeros.
             ValueError: If the passed product parameters are not discrete.
             ValueError: If the passed simplex parameters and product parameters are
                 not disjoint.
@@ -330,6 +332,8 @@ class SubspaceDiscrete(SerialMixin):
             constraints = []
         if max_nonzero is None:
             max_nonzero = len(simplex_parameters)
+        if simplex_coefficients is None:
+            simplex_coefficients = [1.0] * len(simplex_parameters)
 
         # Validate constraints
         validate_constraints(constraints, [*simplex_parameters, *product_parameters])
@@ -348,6 +352,18 @@ class SubspaceDiscrete(SerialMixin):
                 f"must be of subclasses of '{DiscreteParameter.__name__}'."
             )
 
+        # Validate coefficients length
+        if len(simplex_coefficients) != len(simplex_parameters):
+            raise ValueError(
+                f"'simplex_coefficients' must have one entry per 'simplex_parameters' "
+                f"entry, but got {len(simplex_coefficients)} coefficient(s) for "
+                f"{len(simplex_parameters)} parameter(s)."
+            )
+
+        # Validate no zero coefficients
+        if any(c == 0.0 for c in simplex_coefficients):
+            raise ValueError("All entries in 'simplex_coefficients' must be non-zero.")
+
         # Validate no overlap between simplex parameters and product parameters
         simplex_parameters_names = {p.name for p in simplex_parameters}
         product_parameters_names = {p.name for p in product_parameters}
@@ -358,125 +374,111 @@ class SubspaceDiscrete(SerialMixin):
                 f"parameters: {overlap}."
             )
 
-        # Construct the product part of the space
-        product_space = parameter_cartesian_prod_pandas(product_parameters)
-        if not simplex_parameters:
-            return cls(parameters=product_parameters, exp_rep=product_space)
+        # Handle degenerate simplex cases
+        if len(simplex_parameters) < 2:
+            warnings.warn(
+                f"'{cls.from_simplex.__name__}' was called with less than 2 "
+                f"simplex parameters, so smart simplex construction has no effect."
+                f"Consider using '{cls.from_product.__name__}' instead.",
+                UserWarning,
+            )
+            if len(simplex_parameters) < 1:
+                return cls.from_product(product_parameters, constraints)
 
-        # Validate non-negativity
-        min_values = [min(p.values) for p in simplex_parameters]
-        max_values = [max(p.values) for p in simplex_parameters]
-        if not (min(min_values) >= 0.0):
+        # Compute per-parameter minimum weighted contributions.
+        # For a positive coefficient c the minimum contribution is c*min_raw; for a
+        # negative coefficient the ordering flips and it becomes c*max_raw. Taking
+        # min of both products handles any real coefficient correctly.
+        min_raw = [min(p.values) for p in simplex_parameters]
+        max_raw = [max(p.values) for p in simplex_parameters]
+        coeffs = np.asarray(simplex_coefficients, dtype=active_settings.DTypeFloatNumpy)
+        if not np.isfinite(coeffs).all():
             raise ValueError(
-                f"All simplex_parameters passed to '{cls.from_simplex.__name__}' "
-                f"must have non-negative values only."
+                f"All simplex_coefficients passed to '{cls.from_simplex.__name__}' "
+                f"must be finite numbers."
             )
+        min_weighted = np.array(
+            [min(c * lo, c * hi) for c, lo, hi in zip(coeffs, min_raw, max_raw)]
+        )
 
-        def drop_invalid(
-            df: pd.DataFrame,
-            max_sum: float,
-            boundary_only: bool,
-            min_nonzero: int | None = None,
-            max_nonzero: int | None = None,
-        ) -> None:
-            """Drop rows that violate the specified simplex constraint.
+        # Get the minimum weighted sum contributions to come in the upcoming joins (the
+        # first item is the minimum possible weighted sum of all parameters starting
+        # from the second parameter, the second item is the minimum possible weighted
+        # sum starting from the third parameter, and so on ...)
+        min_sum_upcoming = np.cumsum(min_weighted[:0:-1])[::-1]
 
-            Args:
-                df: The dataframe whose rows should satisfy the simplex constraint.
-                max_sum: The maximum row sum defining the simplex size.
-                boundary_only: Flag to control if the points represented by the rows
-                    may lie inside the simplex or on its boundary only.
-                min_nonzero: Minimum number of nonzero parameters required per row.
-                max_nonzero: Maximum number of nonzero parameters allowed per row.
-            """
-            # Apply sum constraints
-            row_sums = df.sum(axis=1)
-            mask_violated = row_sums > max_sum + tolerance
-            if boundary_only:
-                mask_violated |= row_sums < max_sum - tolerance
+        # Get the min/max number of nonzero values to come in the upcoming joins.
+        # Nonzero counting is based on raw parameter values, not weighted values,
+        # because the cardinality constraint counts zero/nonzero entries regardless
+        # of the coefficient signs.
+        min_nonzero_upcoming = np.cumsum((np.asarray(min_raw) > 0.0)[:0:-1])[::-1]
+        max_nonzero_upcoming = np.cumsum((np.asarray(max_raw) > 0.0)[:0:-1])[::-1]
 
-            # Apply optional nonzero constraints
-            if (min_nonzero is not None) or (max_nonzero is not None):
-                n_nonzero = (df != 0.0).sum(axis=1)
-                if min_nonzero is not None:
-                    mask_violated |= n_nonzero < min_nonzero
-                if max_nonzero is not None:
-                    mask_violated |= n_nonzero > max_nonzero
+        # Incrementally build up the space as a numpy array, dropping invalid
+        # configurations along the way. Working with raw numpy avoids pandas overhead
+        # (index management, BlockManager, merge machinery) in the hot loop.
+        #
+        # After having cross-joined a new parameter, there must be enough "room" left
+        # for the remaining parameters to fit. That is, configurations of the current
+        # parameter subset that exceed the desired total value minus the minimum
+        # contribution to come from the yet-to-be-added parameters can be already
+        # discarded, because it is already clear that the total sum will be exceeded
+        # once all joins are completed. Analogously, nonzero cardinality bounds are
+        # checked at each step.
+        #
+        # Instead of materializing the full cross-product before filtering, we use
+        # broadcasting to compute the validity mask in 2D (n_old, n_new) and only
+        # materialize the surviving combinations. This avoids allocating large
+        # intermediate arrays that are mostly discarded.
+        arr = np.empty((1, 0), dtype=active_settings.DTypeFloatNumpy)
+        partial_sums = np.zeros(1, dtype=active_settings.DTypeFloatNumpy)
+        nz_counts = np.zeros(1, dtype=np.intp)
 
-            # Remove violating rows
-            idxs_to_drop = df[mask_violated].index
-            df.drop(index=idxs_to_drop, inplace=True)
-
-        # Get the minimum sum contributions to come in the upcoming joins (the
-        # first item is the minimum possible sum of all parameters starting from the
-        # second parameter, the second item is the minimum possible sum starting from
-        # the third parameter, and so on ...)
-        min_sum_upcoming = np.cumsum(min_values[:0:-1])[::-1]
-
-        # Get the min/max number of nonzero values to come in the upcoming joins (the
-        # first item is the min/max number of nonzero parameters starting from the
-        # second parameter, the second item is the min/max number starting from
-        # the third parameter, and so on ...)
-        min_nonzero_upcoming = np.cumsum((np.asarray(min_values) > 0.0)[:0:-1])[::-1]
-        max_nonzero_upcoming = np.cumsum((np.asarray(max_values) > 0.0)[:0:-1])[::-1]
-
-        # Incrementally build up the space, dropping invalid configuration along the
-        # way. More specifically:
-        # * After having cross-joined a new parameter, there must
-        #   be enough "room" left for the remaining parameters to fit. That is,
-        #   configurations of the current parameter subset that exceed the desired
-        #   total value minus the minimum contribution to come from the yet-to-be-added
-        #   parameters can be already discarded, because it is already clear that
-        #   the total sum will be exceeded once all joins are completed.
-        # * Analogously, there must be enough "nonzero slots" left for the yet to be
-        #   joined parameters, i.e. parameter subset configurations can be discarded
-        #   where the number of nonzero parameters already exceeds the maximum number
-        #   of nonzeros minus the number of nonzeros to come, because it is already
-        #   clear that the maximum will be exceeded once all joins are completed.
-        # * Similarly, it can be verified for each parameter that there are still
-        #   enough nonzero parameters to come to even reach the minimum
-        #   desired number of nonzero after all joins.
-        for i, (
-            param,
-            min_sum_to_go,
-            min_nonzero_to_go,
-            max_nonzero_to_go,
-        ) in enumerate(
-            zip(
-                simplex_parameters,
-                np.append(min_sum_upcoming, 0),
-                np.append(min_nonzero_upcoming, 0),
-                np.append(max_nonzero_upcoming, 0),
-            )
+        for coeff, param, min_sum_to_go, min_nonzero_to_go, max_nonzero_to_go in zip(
+            coeffs,
+            simplex_parameters,
+            np.append(min_sum_upcoming, 0.0),
+            np.append(min_nonzero_upcoming, 0),
+            np.append(max_nonzero_upcoming, 0),
         ):
-            if i == 0:
-                exp_rep = pd.DataFrame({param.name: param.values})
-            else:
-                exp_rep = pd.merge(
-                    exp_rep, pd.DataFrame({param.name: param.values}), how="cross"
-                )
-            drop_invalid(
-                exp_rep,
-                max_sum=max_sum - min_sum_to_go,
-                # the maximum possible number of nonzeros to come dictates if we
-                # can achieve our minimum constraint in the end:
-                min_nonzero=min_nonzero - max_nonzero_to_go,
-                # the minimum possible number of nonzeros to come dictates if we
-                # can stay below the targeted maximum in the end:
-                max_nonzero=max_nonzero - min_nonzero_to_go,
-                boundary_only=False,
-            )
+            values = np.asarray(param.values, dtype=active_settings.DTypeFloatNumpy)
+            threshold = (max_sum - min_sum_to_go) + tolerance
+            effective_min = min_nonzero - max_nonzero_to_go
+            effective_max = max_nonzero - min_nonzero_to_go
+
+            # Compute weighted sums via broadcasting: (n_old, n_new)
+            new_contributions = values * coeff
+            total_sums = partial_sums[:, None] + new_contributions[None, :]
+
+            # Build 2D validity mask from sum constraint
+            mask_2d = total_sums <= threshold
+
+            # Cardinality check via broadcasting
+            new_nz = (values != 0.0).astype(np.intp)
+            total_nz = nz_counts[:, None] + new_nz[None, :]
+            if effective_min > 0:
+                mask_2d &= total_nz >= effective_min
+            if effective_max < len(simplex_parameters):
+                mask_2d &= total_nz <= effective_max
+
+            # Extract surviving indices and materialize only those rows
+            old_idx, new_idx = np.where(mask_2d)
+            arr = np.column_stack([arr[old_idx], values[new_idx]])
+            partial_sums = total_sums[old_idx, new_idx]
+            nz_counts = total_nz[old_idx, new_idx]
 
         # If requested, keep only the boundary values
         if boundary_only:
-            drop_invalid(exp_rep, max_sum, boundary_only=True)
+            mask = np.abs(partial_sums - max_sum) <= tolerance
+            arr = arr[mask]
 
-        # Augment the Cartesian product created from all other parameter types
-        if product_parameters:
-            exp_rep = pd.merge(exp_rep, product_space, how="cross")
+        # Wrap in DataFrame
+        exp_rep = pd.DataFrame(arr, columns=[p.name for p in simplex_parameters])
 
-        # Remove entries that violate parameter constraints:
-        _apply_constraint_filter_pandas(exp_rep, constraints)
+        # Merge product parameters and apply constraints incrementally
+        exp_rep = build_constrained_product(
+            product_parameters, constraints, initial_df=exp_rep
+        )
 
         return cls(
             parameters=[*simplex_parameters, *product_parameters],
@@ -578,6 +580,118 @@ class SubspaceDiscrete(SerialMixin):
             comp_rep_shape=(n_rows, n_cols_comp),
         )
 
+    @property
+    def constraints_batch(
+        self,
+    ) -> tuple[DiscreteBatchConstraint, ...]:
+        """The batch constraints of the subspace."""
+        return tuple(
+            c for c in self.constraints if isinstance(c, DiscreteBatchConstraint)
+        )
+
+    @property
+    def n_subsets(self) -> int:
+        """The number of possible subset configurations.
+
+        Returns 0 if no subset-generating constraints exist, indicating that
+        no decomposition is needed.
+        """
+        if not self.constraints_batch:
+            return 0
+        return prod(
+            len(self.get_parameters_by_name([c.parameters[0]])[0].active_values)
+            for c in self.constraints_batch
+        )
+
+    def subset_masks(
+        self,
+        candidates_exp: pd.DataFrame,
+        min_candidates: int | None = None,
+        mode: Literal["sequential", "shuffled", "replace"] = "shuffled",
+    ) -> Iterator[npt.NDArray[np.bool_]]:
+        """Get an iterator over all possible subset masks.
+
+        Collect masks from each subset-generating constraint, iterates the
+        Cartesian product, AND-reduces each combination, and yields feasible
+        combined masks.
+
+        Args:
+            candidates_exp: The experimental representation of candidate points.
+            min_candidates: If provided, combined masks selecting fewer rows
+                are silently skipped.
+            mode: The iteration strategy.
+
+                * ``"sequential"`` iterates all combinations in deterministic order.
+                * ``"shuffled"`` iterates all combinations exactly once in random order.
+                * ``"replace"`` samples with replacement, producing an infinite iterator
+                  where each draw is independent.
+
+        Raises:
+            ValueError: If an invalid mode is provided.
+
+        Yields:
+            A Boolean mask selecting the subset's rows.
+        """
+        if mode not in (allowed := {"sequential", "shuffled", "replace"}):
+            raise ValueError(f"Invalid {mode=}. Must be one of {allowed}.")
+
+        per_constraint: list[list[npt.NDArray[np.bool_]]]
+        if not (constraints := self.constraints_batch):
+            per_constraint = [[np.ones(len(candidates_exp), dtype=bool)]]
+        else:
+            per_constraint = [c.subset_masks(candidates_exp) for c in constraints]
+
+        total = prod(len(masks) for masks in per_constraint)
+
+        if mode == "replace":
+            candidates = list(range(total))
+            while candidates:
+                idx_pos = random.randint(0, len(candidates) - 1)
+                flat_idx = candidates[idx_pos]
+                combined = np.logical_and.reduce(
+                    select_via_flat_index(flat_idx, per_constraint)
+                )
+                if min_candidates is not None and combined.sum() < min_candidates:
+                    candidates[idx_pos] = candidates[-1]
+                    candidates.pop()
+                    continue
+                yield combined
+        else:
+            order = list(range(total))
+            if mode == "shuffled":
+                random.shuffle(order)
+            for flat_idx in order:
+                combined = np.logical_and.reduce(
+                    select_via_flat_index(flat_idx, per_constraint)
+                )
+                if min_candidates is not None and combined.sum() < min_candidates:
+                    continue
+                yield combined
+
+    def sample_subset_masks(
+        self,
+        candidates_exp: pd.DataFrame,
+        n: int,
+        min_candidates: int | None = None,
+    ) -> list[npt.NDArray[np.bool_]]:
+        """Sample subset masks (without replacement).
+
+        Args:
+            candidates_exp: The experimental representation of candidate points.
+            n: Number of masks to sample.
+            min_candidates: If provided, Subsets with fewer matching
+                candidates are skipped.
+
+        Returns:
+            A list of boolean masks.
+        """
+        return list(
+            islice(
+                self.subset_masks(candidates_exp, min_candidates),
+                n,
+            )
+        )
+
     def get_candidates(self) -> tuple[pd.DataFrame, pd.DataFrame]:
         """Return the set of candidate parameter settings that can be tested.
 
@@ -634,113 +748,6 @@ class SubspaceDiscrete(SerialMixin):
         return tuple(p for p in self.parameters if p.name in names)
 
 
-def _apply_constraint_filter_pandas(
-    df: pd.DataFrame, constraints: Collection[DiscreteConstraint]
-) -> pd.DataFrame:
-    """Remove discrete search space entries based on constraints.
-
-    The filtering is done inplace, but the modified object is still returned.
-
-    Args:
-        df: The data in experimental representation to be modified inplace.
-        constraints: List of discrete constraints.
-
-    Returns:
-        The filtered dataframe.
-    """
-    # Remove entries that violate parameter constraints:
-    for constraint in (c for c in constraints if c.eval_during_creation):
-        idxs = constraint.get_invalid(df)
-        df.drop(index=idxs, inplace=True)
-    df.reset_index(inplace=True, drop=True)
-
-    return df
-
-
-def _apply_constraint_filter_polars(
-    ldf: pl.LazyFrame,
-    constraints: Sequence[DiscreteConstraint],
-) -> tuple[pl.LazyFrame, list[bool]]:
-    """Remove discrete search space entries based on constraints.
-
-    Note:
-        This will silently skip constraints that have no Polars implementation.
-
-    Args:
-        ldf: The data in experimental representation to be filtered.
-        constraints: Collection of discrete constraints.
-
-    Returns:
-        A tuple containing
-            * The Polars lazyframe with undesired rows removed
-            * A Boolean mask indicating which constraints have **not** been applied
-    """
-    mask_missing = []
-
-    for c in constraints:
-        try:
-            to_keep = c.get_invalid_polars().not_()
-            ldf = ldf.filter(to_keep)
-            mask_missing.append(False)
-        except NotImplementedError:
-            mask_missing.append(True)
-
-    return ldf, mask_missing
-
-
-def parameter_cartesian_prod_polars(
-    parameters: Sequence[DiscreteParameter],
-) -> pl.LazyFrame:
-    """Create the Cartesian product of discrete parameter values using Polars.
-
-    Args:
-        parameters: List of discrete parameter objects.
-
-    Returns:
-        A lazy dataframe containing all possible discrete parameter value combinations.
-    """
-    from baybe._optional.polars import polars as pl
-
-    if not parameters:
-        return pl.LazyFrame()
-
-    # Convert each parameter to a lazy dataframe for cross-join operation
-    param_frames = [pl.LazyFrame({p.name: p.active_values}) for p in parameters]
-
-    # Handling edge cases
-    if len(param_frames) == 1:
-        return param_frames[0]
-
-    # Cross-join parameters
-    res = param_frames[0]
-    for frame in param_frames[1:]:
-        res = res.join(frame, how="cross", force_parallel=True)
-
-    return res
-
-
-def parameter_cartesian_prod_pandas(
-    parameters: Sequence[DiscreteParameter],
-) -> pd.DataFrame:
-    """Create the Cartesian product of discrete parameter values using Pandas.
-
-    Args:
-        parameters: List of discrete parameter objects.
-
-    Returns:
-        A dataframe containing all possible discrete parameter value combinations.
-    """
-    if not parameters:
-        return pd.DataFrame()
-
-    index = pd.MultiIndex.from_product(
-        [p.active_values for p in parameters], names=[p.name for p in parameters]
-    )
-    ret = pd.DataFrame(index=index).reset_index()
-
-    return ret
-
-
 def validate_simplex_subspace_from_config(specs: dict, _) -> None:
     """Validate the discrete space while skipping costly creation steps."""
     # Validate product inputs without constructing it
@@ -761,12 +768,29 @@ def validate_simplex_subspace_from_config(specs: dict, _) -> None:
             specs["simplex_parameters"], list[NumericalDiscreteParameter]
         )
 
-        if not all(min(p.values) >= 0.0 for p in simplex_parameters):
-            raise ValueError(
-                f"All simplex_parameters passed to "
-                f"'{SubspaceDiscrete.from_simplex.__name__}' must have non-negative "
-                f"values only."
-            )
+        simplex_coefficients = specs.get("simplex_coefficients", None)
+        if simplex_coefficients is not None:
+            try:
+                simplex_coefficients = converter.structure(
+                    simplex_coefficients, list[float]
+                )
+            except (IterableValidationError, TypeError, ValueError) as exc:
+                raise ValueError(
+                    "'simplex_coefficients' must be a list of numeric values."
+                ) from exc
+
+            if len(simplex_coefficients) != len(simplex_parameters):
+                raise ValueError(
+                    f"'simplex_coefficients' must have one entry per "
+                    f"'simplex_parameters' entry, but got "
+                    f"{len(simplex_coefficients)} coefficient(s) for "
+                    f"{len(simplex_parameters)} parameter(s)."
+                )
+
+            if any(c == 0.0 for c in simplex_coefficients):
+                raise ValueError(
+                    "All entries in 'simplex_coefficients' must be non-zero."
+                )
 
         product_parameters = specs.get("product_parameters", [])
         if product_parameters:

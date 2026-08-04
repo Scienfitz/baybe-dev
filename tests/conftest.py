@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import os
 import time
-import warnings
 from copy import deepcopy
 from itertools import chain
 from unittest.mock import Mock
@@ -242,7 +241,7 @@ def fixture_parameters(
         NumericalDiscreteParameter(
             name="Fraction_1",
             values=tuple(np.linspace(0, 100, n_grid_points)),
-            tolerance=0.2,
+            tolerance=0.5,
         ),
         NumericalDiscreteParameter(
             name="Fraction_2",
@@ -918,7 +917,7 @@ def fixture_default_onnx_str() -> bytes:
 
     # Train sklearn model
     train_x = torch.arange(10).view(-1, 1)
-    train_y = torch.arange(10).view(-1, 1)
+    train_y = torch.arange(10)
     model = BayesianRidge()
     model.fit(train_x, train_y)
 
@@ -950,9 +949,6 @@ def fixture_default_onnx_surrogate(onnx_str) -> CustomONNXSurrogate:
         retry_if_exception_message(
             match=r".*Expected value argument.*to be within the support.*"
         ),
-    ),
-    before_sleep=lambda x: warnings.warn(
-        f"Retrying iteration test due to '{x.outcome.exception()}'"
     ),
 )
 def run_iterations(
