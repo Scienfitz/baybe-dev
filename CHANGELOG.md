@@ -5,11 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Removed
+- `eval_during_creation` / `eval_during_modeling` constraint class variables
+
 ### Breaking Changes
 - All optional arguments of `SubspaceDiscrete.from_simplex` after `simplex_parameters` 
   are now keyword-only
 - `df_apply_permutation_augmentation` has a different interface and now expects
   permutation groups instead of column groups
+- `ParameterSelectorProtocol.__call__` now declares its input as positional-only
 
 ### Fixed
 - `DiscretePermutationInvarianceConstraint` no longer erroneously removes points where
