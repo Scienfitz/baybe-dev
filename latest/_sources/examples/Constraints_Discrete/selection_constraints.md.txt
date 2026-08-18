@@ -1,6 +1,6 @@
-# Example for using filtering constraints in discrete searchspaces
+# Example for using selection constraints in discrete searchspaces
 
-This example shows how a filtering constraint can be created for a discrete searchspace.
+This example shows how a selection constraint can be created for a discrete searchspace.
 This can be used if some parameter values are incompatible with values of another
 parameter.
 
@@ -18,7 +18,7 @@ import numpy as np
 ```python
 from baybe import Campaign
 from baybe.constraints import (
-    DiscreteFilteringConstraint,
+    DiscreteSelectionConstraint,
     SubSelectionCondition,
     ThresholdCondition,
 )
@@ -75,7 +75,7 @@ compatible with temperatures larger than 151 and should thus be excluded.
 
 
 ```python
-constraint_1 = DiscreteFilteringConstraint(
+constraint_1 = DiscreteSelectionConstraint(
     parameters=["Temp", "Solv"],
     combiner="AND",
     conditions=[
@@ -91,7 +91,7 @@ compatible with pressures larger than 5 and should thus be excluded.
 
 
 ```python
-constraint_2 = DiscreteFilteringConstraint(
+constraint_2 = DiscreteSelectionConstraint(
     parameters=["Pressure", "Solv"],
     combiner="AND",
     conditions=[
@@ -107,7 +107,7 @@ combined with temperatures above 120.
 
 
 ```python
-constraint_3 = DiscreteFilteringConstraint(
+constraint_3 = DiscreteSelectionConstraint(
     parameters=["Pressure", "Temp"],
     combiner="AND",
     conditions=[
@@ -184,9 +184,9 @@ NaN
                 [1150 rows x 4 columns]
              Constraints
                               Type Affected_Paramet
-                0  DiscreteFilt...     [Temp, Solv]
-                1  DiscreteFilt...  [Pressure, S...
-                2  DiscreteFilt...  [Pressure, T...
+                0  DiscreteSele...     [Temp, Solv]
+                1  DiscreteSele...  [Pressure, S...
+                2  DiscreteSele...  [Pressure, T...
              Computational Representation
                       Pressure  Solv_RDKIT2DDESC  ...  Speed   Temp
                 0          1.0              0.0   ...    0.0  100.0

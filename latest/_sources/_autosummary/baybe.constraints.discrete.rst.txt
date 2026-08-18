@@ -30,11 +30,11 @@ baybe.constraints.discrete
       DiscreteCardinalityConstraint
       DiscreteCustomConstraint
       DiscreteDependenciesConstraint
-      DiscreteFilteringConstraint
       DiscreteLinkedParametersConstraint
       DiscreteNoLabelDuplicatesConstraint
       DiscretePermutationInvarianceConstraint
       DiscreteProductConstraint
+      DiscreteSelectionConstraint
       DiscreteSumConstraint
    
    

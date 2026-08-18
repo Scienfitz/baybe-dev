@@ -1,7 +1,7 @@
 DiscreteFilteringConstraint
 ===========================
 
-.. currentmodule:: baybe.constraints.discrete
+.. currentmodule:: baybe.constraints.base
 
 .. autoclass:: DiscreteFilteringConstraint
    :members:                              
@@ -42,8 +42,6 @@ DiscreteFilteringConstraint
 
    .. autosummary::
    
-      ~DiscreteFilteringConstraint.conditions
-      ~DiscreteFilteringConstraint.combiner
       ~DiscreteFilteringConstraint.has_polars_implementation
       ~DiscreteFilteringConstraint.is_continuous
       ~DiscreteFilteringConstraint.is_discrete
