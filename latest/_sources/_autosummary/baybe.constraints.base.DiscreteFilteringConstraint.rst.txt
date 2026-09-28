@@ -42,11 +42,11 @@ DiscreteFilteringConstraint
 
    .. autosummary::
    
+      ~DiscreteFilteringConstraint.exclude
       ~DiscreteFilteringConstraint.has_polars_implementation
       ~DiscreteFilteringConstraint.is_continuous
       ~DiscreteFilteringConstraint.is_discrete
       ~DiscreteFilteringConstraint.numerical_only
       ~DiscreteFilteringConstraint.parameters
-      ~DiscreteFilteringConstraint.exclude
    
    

@@ -44,11 +44,11 @@ DiscreteSelectionConstraint
    
       ~DiscreteSelectionConstraint.conditions
       ~DiscreteSelectionConstraint.combiner
+      ~DiscreteSelectionConstraint.exclude
       ~DiscreteSelectionConstraint.has_polars_implementation
       ~DiscreteSelectionConstraint.is_continuous
       ~DiscreteSelectionConstraint.is_discrete
       ~DiscreteSelectionConstraint.numerical_only
       ~DiscreteSelectionConstraint.parameters
-      ~DiscreteSelectionConstraint.exclude
    
    

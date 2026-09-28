@@ -15,6 +15,9 @@ baybe.constraints.discrete
       :toctree:                                       
    
       DiscreteExcludeConstraint
+      DiscreteLinkedParametersConstraint
+      DiscreteNoLabelDuplicatesConstraint
+      DiscreteSumConstraint
    
    
 
@@ -30,12 +33,11 @@ baybe.constraints.discrete
       DiscreteCardinalityConstraint
       DiscreteCustomConstraint
       DiscreteDependenciesConstraint
-      DiscreteLinkedParametersConstraint
-      DiscreteNoLabelDuplicatesConstraint
+      DiscreteLinearConstraint
       DiscretePermutationInvarianceConstraint
       DiscreteProductConstraint
+      DiscreteRepetitionLimitConstraint
       DiscreteSelectionConstraint
-      DiscreteSumConstraint
    
    
 
