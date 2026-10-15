@@ -1248,16 +1248,16 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_reduce_base_kernels</span><span class="p">(</span>
     <span class="n">kernel</span><span class="p">:</span> <span class="n">AdditiveKernel</span> <span class="o">|</span> <span class="n">ProductKernel</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">searchspace</span><span class="p">:</span> <span class="n">SearchSpace</span><span class="p">,</span> <span class="o">/</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Kernel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove a parameter from all base kernels of a composite kernel.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove a parameter from all base kernels of an additive or product kernel.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        kernel: The composite kernel whose base kernels are to be reduced.</span>
+<span class="sd">        kernel: The additive or product kernel whose base kernels are to be reduced.</span>
 <span class="sd">        name: The name of the parameter to remove.</span>
 <span class="sd">        searchspace: The search space the kernel operates on.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        The reduced composite kernel, the sole remaining base kernel, or ``None``</span>
-<span class="sd">        if no base kernel remains.</span>
+<span class="sd">        The reduced kernel of the same type, the sole remaining base kernel, or</span>
+<span class="sd">        ``None`` if no base kernel remains.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">remaining</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
         <span class="n">reduced</span>

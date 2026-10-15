@@ -1639,7 +1639,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">posterior</span><span class="p">(</span><span class="n">candidates_comp_scaled</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">_ModelContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GPyTorchKernel</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve the GP kernel, applying parameter and transfer overrides.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve the GP kernel, applying parameter-specific overrides.</span>
 
 <span class="sd">        The effective kernel is the surrogate kernel restricted to the</span>
 <span class="sd">        non-overridden dimensions, multiplied by one factor per override.</span>
@@ -1653,7 +1653,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The resolved and partition-validated kernel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">overrides</span> <span class="o">=</span> <span class="n">_override</span><span class="o">.</span><span class="n">extract_parameter_kernel_overrides</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+        <span class="n">overrides</span> <span class="o">=</span> <span class="n">_override</span><span class="o">.</span><span class="n">extract_parameter_kernel_overrides</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">searchspace</span><span class="p">)</span>
 
         <span class="n">excluded_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">overrides</span><span class="p">}</span>
         <span class="n">residual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_residual_kernel</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">excluded_names</span><span class="p">)</span>
@@ -1707,7 +1707,9 @@
         <span class="c1"># Default kernel: build the (task-free) numerical base restricted to the</span>
         <span class="c1"># remaining parameters and re-add the default task kernel unless overridden.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="n">BayBEKernelFactory</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_default_base</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">excluded_names</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_default_base</span><span class="p">(</span>
+                <span class="n">context</span><span class="p">,</span> <span class="n">excluded_names</span><span class="p">,</span> <span class="n">factory</span><span class="o">.</span><span class="n">parameter_selector</span>
+            <span class="p">)</span>
 
         <span class="c1"># A fixed kernel is reduced directly by removing the excluded parameters.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">factory</span><span class="p">,</span> <span class="n">PlainGPComponentFactory</span><span class="p">):</span>
@@ -1733,7 +1735,10 @@
         <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">spec</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">spec</span><span class="o">.</span><span class="n">to_gpytorch</span><span class="p">(</span><span class="n">searchspace</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_default_base</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">_ModelContext</span><span class="p">,</span> <span class="n">excluded_names</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">_ModelContext</span><span class="p">,</span>
+        <span class="n">excluded_names</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">selector</span><span class="p">:</span> <span class="n">ParameterSelectorProtocol</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GPyTorchKernel</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve the default kernel base, excluding the given parameters.</span>
 
@@ -1746,7 +1751,6 @@
         <span class="p">)</span>
 
         <span class="n">searchspace</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">searchspace</span>
-        <span class="n">selector</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel_factory</span><span class="p">,</span> <span class="s2">&quot;parameter_selector&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">task_param</span> <span class="o">=</span> <span class="n">searchspace</span><span class="o">.</span><span class="n">_task_parameter</span>
 
         <span class="n">keep</span><span class="p">:</span> <span class="n">ParameterSelectorProtocol</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">parameter</span><span class="p">:</span> <span class="p">(</span>  <span class="c1"># noqa: E731</span>
