@@ -1,0 +1,299 @@
+"""LLM-based recommender for experimental design."""
+
+from __future__ import annotations
+
+import gc
+import warnings
+from functools import partial
+from typing import Any, ClassVar
+
+import pandas as pd
+from attrs import define, field, fields
+from attrs.validators import deep_mapping, instance_of, min_len
+from typing_extensions import override
+
+from baybe._llm.exceptions import LLMResponseError
+from baybe._llm.query import (
+    query_model,
+    query_model_with_recovery,
+    validate_litellm_args,
+)
+from baybe._optional.info import LLM_INSTALLED
+from baybe.exceptions import (
+    IncompatibilityError,
+    NotEnoughPointsLeftError,
+    OptionalImportError,
+)
+from baybe.objectives.base import Objective
+from baybe.recommenders.pure.base import PureRecommender
+from baybe.recommenders.pure.llm._parsing import parse_llm_response
+from baybe.recommenders.pure.llm._prompts import make_prompt
+from baybe.searchspace import SearchSpace
+from baybe.searchspace.core import SearchSpaceType
+from baybe.serialization import SerialMixin, converter
+from baybe.utils.conversion import to_string
+from baybe.utils.dataframe import fuzzy_row_match
+from baybe.utils.metadata import Metadata
+
+
+@define(slots=False)
+class LLMRecommender(PureRecommender, SerialMixin):
+    """Recommender that uses a language model to recommend new experimental points.
+
+    Recommendations involving a discrete subspace are indexed by the matching stored
+    configurations. Recommendations without a matching stored configuration have missing
+    indices and remain untracked when used in a :class:`~baybe.campaign.Campaign`.
+
+    Measurements remain recorded and are included in the model's prompt. In discrete
+    campaigns, set ``allow_recommending_already_measured=False`` to exclude tracked
+    measured configurations. That flag defaults to ``True``, so adding results alone
+    does not prevent repeats. Symmetry-equivalent configurations may remain untracked.
+    """
+
+    # Class variables
+    compatibility: ClassVar[SearchSpaceType] = SearchSpaceType.HYBRID
+    # See base class.
+
+    supports_discrete_subset_generating_constraints: ClassVar[bool] = True
+    # See base class.
+
+    model: str = field(validator=(instance_of(str), min_len(1)))
+    """The LiteLLM model identifier to use for recommendations."""
+
+    experiment_description: str = field(validator=(instance_of(str), min_len(1)))
+    """Textual description of the experiment.
+
+    For best results, also set :attr:`baybe.objectives.base.Objective.metadata`
+    on the objective passed to :meth:`recommend` to give the language model a
+    description of what to optimize and per-target context such as units.
+    """
+
+    litellm_args: dict[str, Any] = field(
+        factory=dict,
+        converter=dict,
+        repr=False,
+        validator=(
+            deep_mapping(
+                key_validator=instance_of(str),
+                # Values are intentionally unconstrained: LiteLLM accepts
+                # heterogeneous argument types (str, int, float, bool, nested
+                # dicts, ...).
+                value_validator=lambda *_: None,
+            ),
+            validate_litellm_args,
+        ),
+    )
+    """Additional arguments to pass to LiteLLM (e.g. ``temperature``, ``max_tokens``).
+
+    Since these arguments may contain sensitive information, their values are neither
+    shown in string representations nor serialized, i.e. they need to be provided
+    again after deserialization. Nevertheless, prefer configuring API credentials via
+    the environment variables that LiteLLM reads automatically based on the model
+    prefix (e.g. ``OPENAI_API_KEY``, ``ANTHROPIC_API_KEY``).
+    """
+
+    # Stashed context necessary for prompt building
+    _objective: Objective | None = field(default=None, init=False, eq=False)
+
+    _measurements: pd.DataFrame | None = field(default=None, init=False, eq=False)
+
+    _pending_experiments: pd.DataFrame | None = field(
+        default=None, init=False, eq=False
+    )
+
+    @override
+    def __attrs_post_init__(self) -> None:
+        """Raise if the optional LLM dependencies are not installed."""
+        super().__attrs_post_init__()
+        if not LLM_INSTALLED:
+            raise OptionalImportError(name="litellm", group="llm")
+
+    def _make_prompt(
+        self,
+        searchspace: SearchSpace,
+        batch_size: int,
+        *,
+        recovery: tuple[LLMResponseError, str | None] | None = None,
+    ) -> str:
+        """Render a prompt for the current recommendation context.
+
+        Args:
+            searchspace: The search space to generate recommendations for.
+            batch_size: The number of recommendations to request.
+            recovery: Optional error and previous response to render a corrective
+                prompt.
+
+        Returns:
+            The rendered prompt.
+        """
+        return make_prompt(
+            batch_size,
+            searchspace,
+            self._objective,
+            self._measurements,
+            self._pending_experiments,
+            experiment_description=self.experiment_description,
+            recovery=recovery,
+        )
+
+    @override
+    def recommend(
+        self,
+        batch_size: int,
+        searchspace: SearchSpace,
+        objective: Objective | None = None,
+        measurements: pd.DataFrame | None = None,
+        pending_experiments: pd.DataFrame | None = None,
+    ) -> pd.DataFrame:
+        """Generate recommendations using the language model.
+
+        Args:
+            batch_size: The number of recommendations to generate.
+            searchspace: The search space to generate recommendations for.
+            objective: Optional objective to include in the prompt.
+            measurements: Optional measurements to include in the prompt.
+            pending_experiments: Optional pending experiments to include in the prompt.
+
+        Returns:
+            A dataframe containing the recommendations as individual rows.
+
+        Raises:
+            IncompatibilityError: If the searchspace or objective contains a custom
+                component that cannot be described to the language model.
+            LLMAuthenticationError: If authentication with the language model
+                provider fails.
+            LLMCallError: If the call fails for another reason (e.g. network, rate
+                limiting, timeout, unknown model) before a response is produced.
+            LLMRecoveryFailedError: If the response cannot be turned into a valid
+                recommendation batch, even after a recovery attempt.
+            ValueError: If ``batch_size`` is smaller than 1.
+
+        Warns:
+            LLMResponseWarning: If the search space contains continuous constraints
+                that cannot be validated. Compliance of the recommendations with these
+                constraints is not guaranteed.
+        """
+        if batch_size < 1:
+            raise ValueError(
+                f"You must at least request one recommendation per batch, but "
+                f"provided {batch_size=}."
+            )
+
+        if objective is not None and objective.metadata.is_empty:
+            warnings.warn(
+                f"The objective has no metadata description. Without context on "
+                f"what to optimize, the language model may produce suboptimal "
+                f"recommendations. Set the "
+                f"'{fields(Metadata).description.alias}' field on the objective's "
+                f"metadata to guide the LLM.",
+                UserWarning,
+                stacklevel=2,
+            )
+
+        # Stash context for `_recommend_hybrid`, then delegate to the base `recommend`
+        self._objective = objective
+        self._measurements = measurements
+        self._pending_experiments = pending_experiments
+
+        return super().recommend(
+            batch_size=batch_size,
+            searchspace=searchspace,
+            objective=objective,
+            measurements=measurements,
+            pending_experiments=pending_experiments,
+        )
+
+    @override
+    def _recommend_hybrid(
+        self,
+        searchspace: SearchSpace,
+        candidates_exp: pd.DataFrame,
+        batch_size: int,
+    ) -> pd.DataFrame:
+        try:
+            prompt = self._make_prompt(searchspace, batch_size)
+        except NotImplementedError as ex:
+            raise IncompatibilityError(
+                f"Could not construct a prompt for `{self.__class__.__name__}` "
+                f"from the provided recommendations context."
+            ) from ex
+
+        return query_model_with_recovery(
+            prompt,
+            query=partial(
+                query_model, model=self.model, litellm_args=self.litellm_args
+            ),
+            parse=lambda content: parse_llm_response(content, searchspace, batch_size),
+            make_recovery_prompt=lambda error, content: self._make_prompt(
+                searchspace, batch_size, recovery=(error, content)
+            ),
+        )
+
+    @override
+    def _recommend_with_discrete_parts(
+        self,
+        searchspace: SearchSpace,
+        batch_size: int,
+        pending_experiments: pd.DataFrame | None,
+    ) -> pd.DataFrame:
+        # The inherited discrete dispatch extracts candidate indices and reconstructs
+        # stored rows. LLM responses instead contain generated values, so that path
+        # would change the recommendations or fail for symmetry-equivalent variants.
+        # Override it locally to preserve output without changing the parent class.
+        candidates_exp, _ = searchspace.discrete.get_candidates()
+        # This recommender supports subset-generating constraints. Only the base
+        # dispatcher's candidate-count check must be repeated, before any model call.
+        if (
+            searchspace.type is SearchSpaceType.DISCRETE
+            and len(candidates_exp) < batch_size
+        ):
+            raise NotEnoughPointsLeftError(
+                f"Using the current settings, there are fewer than {batch_size} "
+                f"possible data points left to recommend."
+            )
+        # TODO: Remove this override when discrete hooks return dataframes (#837).
+        rec = self._recommend_hybrid(searchspace, candidates_exp, batch_size)
+        rec.index = fuzzy_row_match(
+            searchspace.discrete.exp_rep,
+            rec,
+            searchspace.discrete.parameters,
+            keep_unmatched=True,
+        )
+        return rec
+
+    @override
+    def __str__(self) -> str:
+        flds = [
+            to_string("Model", self.model, single_line=True),
+            # Only the names are shown since the values may contain credentials
+            to_string("LiteLLM Arg Names", list(self.litellm_args), single_line=True),
+            to_string(
+                "Experiment Description", self.experiment_description, single_line=True
+            ),
+        ]
+        return to_string(self.__class__.__name__, *flds)
+
+
+_unstructure_with_litellm_args = converter.get_unstructure_hook(LLMRecommender)
+
+
+def _unstructure_without_litellm_args(obj: LLMRecommender, /) -> dict[str, Any]:
+    """Unstructure an LLM recommender without its LiteLLM arguments."""
+    attribute = fields(LLMRecommender).litellm_args
+    if obj.litellm_args:
+        warnings.warn(
+            f"The '{attribute.alias}' of '{obj.__class__.__name__}' "
+            f"({sorted(obj.litellm_args)}) are not serialized since they may contain "
+            f"sensitive information. Provide them again after deserialization.",
+            UserWarning,
+        )
+    specs = _unstructure_with_litellm_args(obj)
+    del specs[attribute.alias]
+    return specs
+
+
+# The LiteLLM arguments may contain credentials and are hence never serialized
+converter.register_unstructure_hook(LLMRecommender, _unstructure_without_litellm_args)
+
+# Collect leftover original slotted classes processed by `attrs.define`
+gc.collect()

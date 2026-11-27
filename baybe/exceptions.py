@@ -15,6 +15,10 @@ class InputDataTypeWarning(UserWarning):
     """An input has unexpected data type."""
 
 
+class LLMResponseWarning(UserWarning):
+    """A language model response did not fully meet the request."""
+
+
 class UnusedObjectWarning(UserWarning):
     """
     A method or function was called with undesired arguments which indicates an
@@ -47,6 +51,26 @@ class MinimumCardinalityViolatedWarning(UserWarning):
 ##### Exceptions #####
 
 
+class LLMError(Exception):
+    """A language model interaction failed."""
+
+
+class LLMCallError(LLMError):
+    """The call to the language model failed before producing a response.
+
+    Raised for failures such as network errors, rate limiting, timeouts, or an
+    unknown model identifier, where no response is returned to process.
+    """
+
+
+class LLMAuthenticationError(LLMCallError):
+    """Authentication with the language model provider failed."""
+
+
+class LLMRecoveryFailedError(LLMError):
+    """No usable response was produced, even after the recovery attempt."""
+
+
 class IncompatibilityError(Exception):
     """Incompatible components are used together."""
 
@@ -72,6 +96,14 @@ class IncompatibleExplainerError(IncompatibilityError):
 
 class IncompatibleArgumentError(IncompatibilityError):
     """An incompatible argument was passed to a callable."""
+
+
+class IncompatibleOverrideError(IncompatibilityError):
+    """An override conflicts with another specification."""
+
+
+class _UnsupportedSearchSpaceAttributeError(AttributeError):
+    """Access to a blocked attribute on a reduced search space was attempted."""
 
 
 class NonGaussianityError(Exception):
@@ -142,7 +174,7 @@ class OptionalImportError(ImportError):
         if self.msg is None and name is not None:
             group_str = f"`pip install 'baybe[{group}]'` or " if group else ""
             self.msg = (
-                f"The requested functionality requires the optional "  # pyrefly: ignore[bad-assignment]
+                f"The requested functionality requires the optional "
                 f"'{self.name}' package, which is currently not installed. "
                 f"Please install the dependency and try again. "
                 f"You can do so manually (e.g. `pip install {self.name}`) "

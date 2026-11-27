@@ -1,13 +1,14 @@
-"""Base classes for target transformations."""
+"""Base classes for transformations."""
 
 from __future__ import annotations
 
 import gc
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define
-from typing_extensions import override
+from typing_extensions import TypeAliasType, override
 
 from baybe.serialization.mixin import SerialMixin
 from baybe.utils.basic import is_all_instance
@@ -15,13 +16,13 @@ from baybe.utils.dataframe import to_tensor
 from baybe.utils.interval import ConvertibleToInterval, Interval
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
-
     from botorch.acquisition.objective import MCAcquisitionObjective
     from torch import Tensor
 
-    TensorCallable = Callable[[Tensor], Tensor]
-    """Type alias for a torch-based function mapping from reals to reals."""
+# NOTE: Defined as runtime alias so that type hints referencing it can be resolved
+#   (e.g. by `cattrs`) without importing `torch`
+TensorCallable = TypeAliasType("TensorCallable", Callable[["Tensor"], "Tensor"])
+"""Type alias for a torch-based function mapping from reals to reals."""
 
 
 _TTransformation = TypeVar("_TTransformation", bound="Transformation")
@@ -35,7 +36,10 @@ def _image_equals_codomain(cls: type[_TTransformation], /) -> type[_TTransformat
 
 @define(frozen=True)
 class Transformation(SerialMixin, ABC):
-    """Abstract base class for all transformations."""
+    """Abstract base class for one-dimensional maps from reals to reals.
+
+    Transforms an input :math:`x` into an output :math:`f(x)`.
+    """
 
     @abstractmethod
     def __call__(self, x: Tensor, /) -> Tensor:
@@ -48,10 +52,11 @@ class Transformation(SerialMixin, ABC):
         In accordance with the mathematical definition of a function's `codomain
         <https://en.wikipedia.org/wiki/Codomain>`_, we define the codomain of a given
         :class:`~baybe.utils.interval.Interval` under a certain (assumed continuous)
-        :class:`~Transformation` to be an :class:`~baybe.utils.interval.Interval`
-        guaranteed to contain all possible outcomes when the :class:`~Transformation` is
-        applied to all points in the input :class:`~baybe.utils.interval.Interval`. In
-        cases where the image cannot exactly be computed, it is often still possible to
+        :class:`~baybe.transformations.base.Transformation` to be an
+        :class:`~baybe.utils.interval.Interval` guaranteed to contain all possible
+        outcomes when the :class:`~baybe.transformations.base.Transformation` is applied
+        to all points in the input :class:`~baybe.utils.interval.Interval`. In cases
+        where the image cannot exactly be computed, it is often still possible to
         compute a codomain. The codomain always contains the image, but might be larger.
         """
 
@@ -61,10 +66,10 @@ class Transformation(SerialMixin, ABC):
         In accordance with the mathematical definition of a function's `image
         <https://en.wikipedia.org/wiki/Image_(mathematics)>`_, we define the image of a
         given :class:`~baybe.utils.interval.Interval` under a certain (assumed
-        continuous) :class:`~Transformation` to be the smallest
-        :class:`~baybe.utils.interval.Interval` containing all possible outcomes when
-        the :class:`~Transformation` is applied to all points in the input
-        :class:`~baybe.utils.interval.Interval`.
+        continuous) :class:`~baybe.transformations.base.Transformation` to be the
+        smallest :class:`~baybe.utils.interval.Interval` containing all possible
+        outcomes when the :class:`~baybe.transformations.base.Transformation` is applied
+        to all points in the input :class:`~baybe.utils.interval.Interval`.
         """
         # By default, it is assumed that the exact image of an interval cannot be
         # computed but only the codomain is available (see :meth:`get_codomain`).
@@ -225,7 +230,10 @@ class Transformation(SerialMixin, ABC):
 @_image_equals_codomain
 @define(frozen=True)
 class MonotonicTransformation(Transformation, ABC):
-    """Abstract base class for monotonic transformations."""
+    """Abstract base class for monotonic transformations.
+
+    Outputs are nondecreasing or nonincreasing over the valid input domain.
+    """
 
     @override
     def get_codomain(self, interval: Interval | None = None, /) -> Interval:

@@ -14,16 +14,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `df_apply_permutation_augmentation` has a different interface and now expects
   permutation groups instead of column groups
 - `ParameterSelectorProtocol.__call__` now declares its input as positional-only
+- `SequentialMetaRecommender.recommenders` is now a `tuple` instead of a `list`, making
+  the attribute immutable. Serialization is unaffected
 
 ### Fixed
 - `DiscretePermutationInvarianceConstraint` no longer erroneously removes points where
   values of invariant points are degenerate
 - Multi-output surrogate compatibility check in `Surrogate.fit` now correctly uses the
   number of required models instead of the number of transform outputs
+- `SigmoidTransformation` no longer produces NaN gradients for inputs far from its
+  center, which caused `OptimizationGradientError` during recommendation
+- `ThresholdCondition` with the `!=` operator no longer fails when Polars is used for
+  constraint filtering
 
 ### Added
-- `coefficients` attribute for `DiscreteSumConstraint`, enabling weighted sums. Follows
-  the same pattern as `ContinuousLinearConstraint.coefficients`
 - `simplex_coefficients` keyword argument to `SubspaceDiscrete.from_simplex` for
   weighted simplex sum constraints
 - `Symmetry` concept for expressing symmetries of the optimization problem, including
@@ -32,6 +36,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `BayesianRecommender`
 - `Parameter.is_equivalent` method for structural parameter comparison
 - `posterior_mean_function` method to `GaussianProcessSurrogate`
+- `exclude` keyword-only flag available on all discrete filtering constraints,
+  inverting the specification to keep the complement
+- `DiscreteSelectionConstraint` as the condition-based filtering constraint
+  (inclusion-by-default; replaces `DiscreteExcludeConstraint`)
+- `TaskParameter.override_transfer_learning_mode` (and the corresponding
+  `TransferLearningMode` enum) for selecting the kernel that models the task
+  correlations in transfer learning, taking precedence over the task kernel of the
+  configured kernel factory
+- `DiscreteRepetitionLimitConstraint` for controlling value repetition across parameters
+  via `n_max_repetitions` (replaces `DiscreteNoLabelDuplicatesConstraint` and
+  `DiscreteLinkedParametersConstraint`)
+- `DiscreteLinearConstraint` for (optionally weighted) sum constraints on discrete
+  parameters, supporting `coefficients` and mirroring `ContinuousLinearConstraint`'s
+  `operator`/`rhs`/`coefficients` interface (replaces `DiscreteSumConstraint`)
+- Parameter-specific kernel overrides for conveniently composing Gaussian process
+  kernels on individual parameter dimensions
+- `LLMRecommender` for LLM-based experimental design via LiteLLM,
+  available through the optional `llm` dependency group
+- `TwoPhaseMetaRecommender.with_llm_initial_recommender` and
+  `SequentialMetaRecommender.with_alternating_llm_recommender` convenience constructors
+  built on top of `LLMRecommender`: the former warm-starts a campaign with the LLM and
+  then switches to another recommender, the latter alternates between the two
 
 ### Changed
 - `BOTORCH` GP preset now includes `BetaPrior(2.5, 1.5)` for the task covariance
@@ -39,8 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   in version `0.18.0`
 - The `BOTORCH` GP preset now requires BoTorch `>= 0.18.0` and raises an
   `IncompatibilityError` if an older version is installed
-- `DiscreteSumConstraint`, `ContinuousLinearConstraint`, and
-  `SubspaceDiscrete.from_simplex` now forbid 0 as coefficients
+- `ContinuousLinearConstraint` and `SubspaceDiscrete.from_simplex`
+   now forbid 0 as coefficients
 - `SubspaceDiscrete.from_simplex` no longer requires non-negative parameter values
 - Bumped polars to `>=0.20.8`
 - Bumped cattrs to `>=26.1.0`
@@ -48,6 +74,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `mean_factory`, `likelihood_factory`, `fit_criterion_factory`) now default to
   `None`, meaning "auto-select based on context at fit time". Accessing a field
   before fitting may return `None` instead of a concrete factory.
+- Discrete filtering constraints now uniformly define what is **kept** in the search
+  space; set `exclude=True` to invert and keep the complement instead
+- Renamed `exclusion_constraints` example to `selection_constraints`
+- `DiscreteProductConstraint` now uses `operator`/`rhs`/`tolerance` instead of
+  `condition`
+
+### Deprecations
+- `DiscreteExcludeConstraint` in favor of
+  `DiscreteSelectionConstraint(..., exclude=True)`
+- `DiscreteNoLabelDuplicatesConstraint` in favor of
+  `DiscreteRepetitionLimitConstraint(..., n_max_repetitions=1)`
+- `DiscreteLinkedParametersConstraint` in favor of
+  `DiscreteRepetitionLimitConstraint(..., n_max_repetitions=len(parameters)-1,
+  exclude=True)`
+- `DiscreteSumConstraint` in favor of `DiscreteLinearConstraint`
+- `DiscreteProductConstraint(condition=ThresholdCondition(...))` in favor of
+  `DiscreteProductConstraint(operator=..., rhs=...)`
+
+## [0.15.2] - 2026-11-13
+### Fixed
+- `BotorchRecommender` recommendation for discrete and hybrid search spaces no longer
+  fails with `KeyError` when candidate dataframes have a named index
+- With `allow_recommending_pending_experiments=False`, campaign-based recommendation no
+  longer returns pending experiments or drops valid candidates in discrete search spaces
+  when the search space was created from a dataframe with a custom index or when the
+  same pending experiment was provided more than once
+
+## [0.15.1] - 2026-11-11
+### Added
+- Support for Python 3.15
+
+### Fixed
+- Analytic desirability posterior means for minimized targets with affine or identity
+  transformations now include the minimization offset, matching sampled objectives
+- `SHAPInsight` now uses marginal posteriors, avoiding unnecessary covariance
+  computation and supporting independent surrogates with multiple rows
 
 ## [0.15.0] - 2026-06-11
 ### Breaking Changes
