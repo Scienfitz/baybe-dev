@@ -20,6 +20,8 @@ TransferLearningMode
    .. autosummary::
    
       ~TransferLearningMode.INDEX_KERNEL
+      ~TransferLearningMode.NAIVE
       ~TransferLearningMode.POSITIVE_INDEX_KERNEL
+      ~TransferLearningMode.RGPE
    
    
